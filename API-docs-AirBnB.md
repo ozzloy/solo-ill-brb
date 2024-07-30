@@ -47,10 +47,10 @@ correct role(s) or permission(s).
 
 Returns the information about the current user that is logged in.
 
-* Require Authentication: true
+* Require Authentication: false
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Body: none
 
 * Successful Response when there is a logged in user
@@ -67,7 +67,7 @@ Returns the information about the current user that is logged in.
         "lastName": "Smith",
         "email": "john.smith@gmail.com",
         "username": "JohnSmith"
-      } 
+      }
     }
     ```
 
@@ -91,7 +91,7 @@ information.
 * Require Authentication: false
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -117,7 +117,7 @@ information.
         "lastName": "Smith",
         "email": "john.smith@gmail.com",
         "username": "JohnSmith"
-      } 
+      }
     }
     ```
 
@@ -157,7 +157,7 @@ user's information.
 * Require Authentication: false
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -173,7 +173,7 @@ user's information.
     ```
 
 * Successful Response
-  * Status Code: 200
+  * Status Code: 201
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -190,7 +190,7 @@ user's information.
     }
     ```
 
-* Error response: User already exists with the specified email
+* Error response: User already exists with the specified email or username
   * Status Code: 500
   * Headers:
     * Content-Type: application/json
@@ -200,21 +200,7 @@ user's information.
     {
       "message": "User already exists",
       "errors": {
-        "email": "User with that email already exists"
-      }
-    }
-    ```
-
-* Error response: User already exists with the specified username
-  * Status Code: 500
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
-    {
-      "message": "User already exists",
-      "errors": {
+        "email": "User with that email already exists",
         "username": "User with that username already exists"
       }
     }
@@ -247,7 +233,7 @@ Returns all the spots.
 * Require Authentication: false
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Body: none
 
 * Successful Response
@@ -287,7 +273,7 @@ Returns all the spots owned (created) by the current user.
 * Require Authentication: true
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Body: none
 
 * Successful Response
@@ -327,7 +313,7 @@ Returns the details of a spot specified by its id.
 * Require Authentication: false
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Body: none
 
 * Successful Response
@@ -392,7 +378,7 @@ Creates and returns a new spot.
 * Require Authentication: true
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -435,7 +421,7 @@ Creates and returns a new spot.
     }
     ```
 
-* Error Response: Body validation error
+* Error Response: Body validation errors
   * Status Code: 400
   * Headers:
     * Content-Type: application/json
@@ -449,11 +435,11 @@ Creates and returns a new spot.
         "city": "City is required",
         "state": "State is required",
         "country": "Country is required",
-        "lat": "Latitude is not valid",
-        "lng": "Longitude is not valid",
+        "lat": "Latitude must be within -90 and 90",
+        "lng": "Longitude must be within -180 and 180",
         "name": "Name must be less than 50 characters",
         "description": "Description is required",
-        "price": "Price per day is required"
+        "price": "Price per day must be a positive number"
       }
     }
     ```
@@ -466,7 +452,7 @@ Create and return a new image for a spot specified by id.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -479,7 +465,7 @@ Create and return a new image for a spot specified by id.
     ```
 
 * Successful Response
-  * Status Code: 200
+  * Status Code: 201
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -512,7 +498,7 @@ Updates and returns an existing spot.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -555,7 +541,7 @@ Updates and returns an existing spot.
     }
     ```
 
-* Error Response: Body validation error
+* Error Response: Body validation errors
   * Status Code: 400
   * Headers:
     * Content-Type: application/json
@@ -569,11 +555,11 @@ Updates and returns an existing spot.
         "city": "City is required",
         "state": "State is required",
         "country": "Country is required",
-        "lat": "Latitude is not valid",
-        "lng": "Longitude is not valid",
+        "lat": "Latitude must be within -90 and 90",
+        "lng": "Longitude must be within -180 and 180",
         "name": "Name must be less than 50 characters",
         "description": "Description is required",
-        "price": "Price per day is required"
+        "price": "Price per day must be a positive number"
       }
     }
     ```
@@ -598,7 +584,7 @@ Deletes an existing spot.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Body: none
 
 * Successful Response
@@ -634,7 +620,7 @@ Returns all the reviews written by the current user.
 * Require Authentication: true
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Body: none
 
 * Successful Response
@@ -690,7 +676,7 @@ Returns all the reviews that belong to a spot specified by id.
 * Require Authentication: false
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Body: none
 
 * Successful Response
@@ -745,7 +731,7 @@ Create and return a new review for a spot specified by id.
 * Require Authentication: true
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -823,7 +809,7 @@ Create and return a new image for a review specified by id.
 * Require proper authorization: Review must belong to the current user
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -835,7 +821,7 @@ Create and return a new image for a review specified by id.
     ```
 
 * Successful Response
-  * Status Code: 200
+  * Status Code: 201
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -880,7 +866,7 @@ Update and return an existing review.
 * Require proper authorization: Review must belong to the current user
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -946,7 +932,7 @@ Delete an existing review.
 * Require proper authorization: Review must belong to the current user
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Body: none
 
 * Successful Response
@@ -982,7 +968,7 @@ Return all the bookings that the current user has made.
 * Require Authentication: true
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Body: none
 
 * Successful Response
@@ -1027,7 +1013,7 @@ Return all the bookings for a spot specified by id.
 * Require Authentication: true
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Body: none
 
 * Successful Response: If you ARE NOT the owner of the spot.
@@ -1095,7 +1081,9 @@ Create and return a new booking from a spot specified by id.
 * Require proper authorization: Spot must NOT belong to the current user
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
+  * Headers:
+    * Content-Type: application/json
   * Body:
 
     ```json
@@ -1106,7 +1094,7 @@ Create and return a new booking from a spot specified by id.
     ```
 
 * Successful Response
-  * Status Code: 200
+  * Status Code: 201
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1133,6 +1121,7 @@ Create and return a new booking from a spot specified by id.
     {
       "message": "Bad Request", // (or "Validation error" if generated by Sequelize),
       "errors": {
+        "startDate": "startDate cannot be in the past",
         "endDate": "endDate cannot be on or before startDate"
       }
     }
@@ -1174,7 +1163,7 @@ Update and return an existing booking.
 * Require proper authorization: Booking must belong to the current user
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1214,7 +1203,8 @@ Update and return an existing booking.
     {
       "message": "Bad Request", // (or "Validation error" if generated by Sequelize),
       "errors": {
-        "endDate": "endDate cannot come before startDate"
+        "startDate": "startDate cannot be in the past",
+        "endDate": "endDate cannot be on or before startDate"
       }
     }
     ```
@@ -1268,7 +1258,7 @@ Delete an existing booking.
   Spot must belong to the current user
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Body: none
 
 * Successful Response
@@ -1317,7 +1307,7 @@ Delete an existing image for a Spot.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Body: none
 
 * Successful Response
@@ -1352,7 +1342,7 @@ Delete an existing image for a Review.
 * Require proper authorization: Review must belong to the current user
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Body: none
 
 * Successful Response
@@ -1386,9 +1376,9 @@ Return spots filtered by query parameters.
 * Require Authentication: false
 * Request
   * Method: ?
-  * URL: ?
+  * Route path: ?
   * Query Parameters
-    * page: integer, minimum: 1, maximum: 10, default: 1
+    * page: integer, minimum: 1, default: 1
     * size: integer, minimum: 1, maximum: 20, default: 20
     * minLat: decimal, optional
     * maxLat: decimal, optional
@@ -1426,7 +1416,7 @@ Return spots filtered by query parameters.
         }
       ],
       "page": 2,
-      "size": 25
+      "size": 20
     }
     ```
 
@@ -1441,7 +1431,7 @@ Return spots filtered by query parameters.
       "message": "Bad Request", // (or "Validation error" if generated by Sequelize),
       "errors": {
         "page": "Page must be greater than or equal to 1",
-        "size": "Size must be greater than or equal to 1",
+        "size": "Size must be between 1 and 20",
         "maxLat": "Maximum latitude is invalid",
         "minLat": "Minimum latitude is invalid",
         "minLng": "Maximum longitude is invalid",
