@@ -41,12 +41,11 @@ if (!isProduction) {
   );
 
  // backend/app.js
-const routes = require('./routes');
+ const sessionRoutes = require('./routes/api/session');
+ app.use('/api/session', sessionRoutes);
 
-// ...
-
-app.use(routes); // Connect all the routes
-
+ const userRoutes = require('./routes/api/users');
+ app.use('/api/users', userRoutes);
 // backend/app.js
 // ...
 
