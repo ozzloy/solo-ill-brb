@@ -46,6 +46,9 @@ if (!isProduction) {
 
  const userRoutes = require('./routes/api/users');
  app.use('/api/users', userRoutes);
+
+ const spotRoutes = require('./routes/api/spots');
+ app.use('/api/spots', spotRoutes);
 // backend/app.js
 // ...
 

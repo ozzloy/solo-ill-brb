@@ -16,7 +16,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Users"
+          model: "Users",
+          key: 'id'
         },
         onDelete: 'CASCADE'
       },
@@ -38,11 +39,11 @@ module.exports = {
       },
       lat: {
         type: Sequelize.DECIMAL(9,6),
-        allowNul:false
+        allowNull:false
       },
       lng: {
         type: Sequelize.DECIMAL(9,6),
-        allowNul:false
+        allowNull:false
       },
       name: {
         type: Sequelize.STRING(30),
