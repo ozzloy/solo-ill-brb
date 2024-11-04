@@ -26,7 +26,7 @@ if (!isProduction) {
 app.use(
   helmet.crossOriginResourcePolicy({
     policy: "cross-origin",
-  }),
+  })
 );
 
 // Set the _csrf token and create req.csrfToken method
@@ -37,8 +37,11 @@ app.use(
       sameSite: isProduction && "Lax",
       httpOnly: true,
     },
-  }),
+  })
 );
+
+const indexRouter = require("./routes/index");
+app.use("/", indexRouter);
 
 const sessionRoutes = require("./routes/api/session");
 app.use("/api/session", sessionRoutes);
