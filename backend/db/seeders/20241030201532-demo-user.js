@@ -34,7 +34,7 @@ module.exports = {
           hashedPassword: bcrypt.hashSync("password3"),
         },
       ],
-      { validate: true }
+      { validate: true },
     );
   },
 
@@ -46,7 +46,7 @@ module.exports = {
       {
         username: { [Op.in]: ["Demo-lition", "FakeUser1", "FakeUser2"] },
       },
-      {}
+      {},
     );
   },
 };

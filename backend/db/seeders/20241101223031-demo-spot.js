@@ -79,7 +79,7 @@ module.exports = {
       {
         name: { [Op.in]: ["App Academy", "Spot 2", "Mars"] },
       },
-      {}
+      {},
     );
   },
 };
