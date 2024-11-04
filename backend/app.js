@@ -26,7 +26,7 @@ if (!isProduction) {
 app.use(
   helmet.crossOriginResourcePolicy({
     policy: "cross-origin",
-  })
+  }),
 );
 
 // Set the _csrf token and create req.csrfToken method
@@ -37,10 +37,9 @@ app.use(
       sameSite: isProduction && "Lax",
       httpOnly: true,
     },
-  })
+  }),
 );
 
-// backend/app.js
 const sessionRoutes = require("./routes/api/session");
 app.use("/api/session", sessionRoutes);
 
@@ -49,8 +48,6 @@ app.use("/api/users", userRoutes);
 
 const spotRoutes = require("./routes/api/spots");
 app.use("/api/spots", spotRoutes);
-// backend/app.js
-// ...
 
 app.use((_req, _res, next) => {
   const err = new Error("The requested resources couldn't be found.");

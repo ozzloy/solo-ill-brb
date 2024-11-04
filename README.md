@@ -1,8 +1,9 @@
-# `I'll BRB`
+# `I'll BrB`
 
 ## Database Schema Design
 
 [db-schema]: ./images/untitled.png
+
 ## API Documentation
 
 ## USER AUTHENTICATION/AUTHORIZATION
