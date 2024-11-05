@@ -36,6 +36,14 @@ router.get("/current", async (req, res) => {
 router.get("/:spotId/reviews", async (req, res) => {
   const { spotId } = req.params;
 
+  const spot = await Spot.findByPk(spotId);
+
+  if (!spot) {
+    res.status(404).json({
+      message: "Spot couldn't be found",
+    });
+  }
+
   const reviews = await Review.findAll({
     where: {
       spotId,
