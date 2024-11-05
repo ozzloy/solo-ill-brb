@@ -5,11 +5,12 @@ const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 
 const {
+  Booking,
+  Review,
+  ReviewImage,
   Spot,
   SpotImage,
   User,
-  Review,
-  ReviewImage,
 } = require("../../db/models");
 
 const router = express.Router("/spots");
@@ -60,6 +61,21 @@ router.get("/:spotId/reviews", async (req, res) => {
     ],
   });
   res.status(200).json({ reviews });
+});
+
+router.get("/:spotId/bookings", async (req, res) => {
+  const { spotId } = req.params;
+  const { user } = req;
+  const spot = await Spot.findByPk(spotId, {
+    include: [{ model: User, as: "Owner", attributes: ["id"] }],
+  });
+  if (!spot) res.status(404).json({ message: "Spot couldn't be found" });
+  const isOwner = spot.ownerId == user.id;
+  const bookings = await Booking.scope(
+    isOwner ? "ownerView" : "nonOwnerView",
+  ).findAll({ where: { spotId } });
+
+  res.json({ Bookings: bookings });
 });
 
 const validateReview = [

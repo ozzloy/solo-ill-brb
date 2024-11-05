@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "spotId",
         sourceKey: "id",
       });
+      Spot.hasMany(models.Booking, {
+        foreignKey: "spotId",
+        sourceKey: "id",
+      });
     }
   }
   Spot.init(
@@ -99,7 +103,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Spot",
-    }
+    },
   );
   return Spot;
 };
