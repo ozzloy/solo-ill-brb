@@ -2,7 +2,6 @@ const express = require("express");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
-
 const {
   Spot,
   SpotImage,
@@ -10,7 +9,6 @@ const {
   Review,
   ReviewImage,
 } = require("../../db/models");
-const { where } = require("sequelize");
 
 const router = express.Router("/reviews");
 
@@ -46,6 +44,35 @@ router.post("/:reviewId/images", requireAuth, async (req, res) => {
   });
 
   res.status(201).json({ id: image.id, url: image.url });
+});
+
+const validateReview = [
+  check("review").notEmpty().withMessage("Review text is required"),
+  check("stars")
+    .notEmpty()
+    .isFloat({ min: 1, max: 5 })
+    .withMessage("Stars must be an integer from 1 to 5"),
+  handleValidationErrors,
+];
+// Edit a Review
+router.put("/:reviewId", requireAuth, validateReview, async (req, res) => {
+  const { reviewId } = req.params;
+  const { review, stars } = req.body;
+
+  let existingReview = await Review.findByPk(reviewId);
+
+  if (!existingReview) {
+    res.status(404).json({
+      message: "Review couldn't be found",
+    });
+  }
+
+  await existingReview.update({
+    review,
+    stars,
+  });
+
+  res.status(200).json(existingReview);
 });
 
 // Get all Reviews of the Current User
