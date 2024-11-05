@@ -26,6 +26,26 @@ router.get("/current", async (req, res) => {
   res.status(200).json({ Spots: spots });
 });
 
+router.post("/:spotId/images", async (req, res) => {
+  const { spotId } = req.params;
+  const { url, preview } = req.body;
+  const spot = await Spot.findByPk(spotId);
+  if (!spot) {
+    res.status(404).json({ message: "Spot couldn't be found" });
+  }
+
+  const spotImage = await SpotImage.create({
+    spotId,
+    url,
+  });
+  if (preview) {
+    spot.set("previewImage", spotImage.id);
+  }
+  const response = { id: spotImage.id, url: spotImage.url, preview };
+
+  res.status(201).json(response);
+});
+
 //Get spots by Id
 router.get("/:spotId", async (req, res) => {
   const { spotId } = req.params;
@@ -37,6 +57,7 @@ router.get("/:spotId", async (req, res) => {
     include: [
       {
         model: SpotImage,
+        attributes: ["id", "url"],
       },
       {
         model: User,
@@ -46,7 +67,11 @@ router.get("/:spotId", async (req, res) => {
     ],
   });
 
-  res.status(200).json(spot);
+  const spotJson = spot.toJSON();
+  spotJson.SpotImages.forEach((element) => {
+    element.preview = element.id === spotJson.id;
+  });
+  res.status(200).json(spotJson);
 });
 
 const validateSpot = [
