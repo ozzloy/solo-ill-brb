@@ -1,0 +1,217 @@
+* TODO validations on spots
+* TODO test 50 character name for spot
+* TODO validations on all models
+  look at bad responses in readme for constraints and validations
+* development set up
+make sure .env is set up
+
+#+begin_src bash
+npx dotenv -- sequelize db:migrate
+npx dotenv -- sequelize db:seed:all
+
+npm run start:development
+#+end_src
+
+* logging in with a pre-existing user
+
+this worked to log in as a seeded user
+
+#+begin_src bash
+wget localhost:5001/api/session/login | jq "."
+  #  HTTP/1.1 200 OK
+  #  X-Powered-By: Express
+  #  Access-Control-Allow-Origin: *
+  #  Cross-Origin-Resource-Policy: cross-origin
+  #  set-cookie: _csrf=Ugxfo6BVZega-JiKtvid5OyO; Path=/; HttpOnly
+  #  Content-Type: application/json; charset=utf-8
+  #  Content-Length: 52
+  #  ETag: W/"34-iOkxbkQGw4yKxKSdZK2md1ctRfg"
+  #  Date: Mon, 04 Nov 2024 05:14:03 GMT
+  #  Connection: keep-alive
+  #  Keep-Alive: timeout=5
+  #{
+  #  "csrfToken": "IxXoarYO-jj4Ls4pFq9om-JzYIqm01JJexPs"
+  #}
+wget localhost:5001/api/session \
+  --post-data="{\"credential\":\"Demo-lition\",\"password\":\"password\"}" \
+  --header="Content-Type: application/json" \
+  --header="Cookie: _csrf=Ugxfo6BVZega-JiKtvid5OyO; XSRF-TOKEN=IxXoarYO-jj4Ls4pFq9om-JzYIqm01JJexPs" \
+  --header="XSRF-TOKEN: IxXoarYO-jj4Ls4pFq9om-JzYIqm01JJexPs" \
+  | jq "."
+  #  HTTP/1.1 200 OK
+  #  X-Powered-By: Express
+  #  Access-Control-Allow-Origin: *
+  #  Cross-Origin-Resource-Policy: cross-origin
+  #  Set-Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJlbWFpbCI6ImRlbW9AdXNlci5pbyIsInVzZXJuYW1lIjoiRGVtby1saXRpb24ifSwiaWF0IjoxNzMwNjk3MzQxLCJleHAiOjE3MzEzMDIxNDF9.0tXVNheNV2Z_zqFbOS490SJZtsIH-vHGEWNIdt9zqkA; Max-Age=604800; Path=/; Expires=Mon, 11 Nov 2024 05:15:41 GMT; HttpOnly
+  #  Content-Type: application/json; charset=utf-8
+  #  Content-Length: 115
+  #  ETag: W/"73-3/Oza810ahvjkzAQj23BoVEGlEs"
+  #  Date: Mon, 04 Nov 2024 05:15:41 GMT
+  #  Connection: keep-alive
+  #  Keep-Alive: timeout=5
+  #{
+  #  "user": {
+  #    "id": 1,
+  #    "firstName": "afgfasdsadg",
+  #    "lastName": "afgfasdadg",
+  #    "email": "demo@user.io",
+  #    "username": "Demo-lition"
+  #  }
+  #}
+#+end_src
+
+#+begin_quote
+wget localhost:5001/api/users/signup \
+  --post-data="{\"firstName\":\"daniel\",\"lastName\":\"nathaniel\",\"email\":\"example@example.com\",\"username\":\"markanthony\"}" \
+  --header="Content-Type: application/json" \
+  --header="Cookie: _csrf=ByWaA5yyXVk3miefkpXO44VH; XSRF-TOKEN=IxXoarYO-jj4Ls4pFq9om-JzYIqm01JJexPs;" \
+  --header="XSRF-TOKEN: IxXoarYO-jj4Ls4pFq9om-JzYIqm01JJexPs" \
+  | jq "."
+#+end_quote
+
+** TODO fix the path from =/api/session= to =/users/login=
+
+* create a new user
+** POST /users/signup
+#+begin_src json
+    {
+      "firstName": "John",
+      "lastName": "Smith",
+      "email": "john.smith@gmail.com",
+      "username": "JohnSmith",
+      "password": "secret password"
+    }
+#+end_src
+
+#+begin_src bash
+  wget localhost:5001/
+#+end_src
+
+* test everything on aaron's end
+
+** DONE get current user when there is no current user
+CLOSED: [2024-11-04 Mon 08:54]
+*** GET =/api/session=
+**** with no user
+response:
+#+begin_src json
+  { "user": null }
+#+end_src
+** DONE login
+CLOSED: [2024-11-04 Mon 08:54]
+*** get csrf token
+**** GET =/api/session/login=
+response:
+#+begin_src json
+  { "csrfToken": "blablabla" }
+#+end_src
+*** do the login
+**** POST =/api/session/=
+header: CSRF-token: blablabla
+body:
+#+begin_src json
+  { "credential": "usernameoremail", "password": "password" }
+#+end_src
+response:
+#+begin_src json
+  {
+    "id":1,
+    "firstName":"asdf",
+    "lastName":"asdf",
+    "email":"email@example.com",
+    "username":"demo-lition"
+  }
+#+end_src
+** TODO get current user when there is a user
+*** GET =/api/session=
+** DONE get all spots
+CLOSED: [2024-11-04 Mon 08:54]
+*** GET =/api/spots=
+** create new user
+*** POST =/api/users/signup=
+header: CSRF-Token: blablabla
+body:
+first, last, user, pw
+response:
+#+begin_src json
+  {
+    "user":
+    {
+      id, first, last, email, user
+    }
+  }
+#+end_src
+
+** TODO log out current user
+*** DELETE =/api/session=
+
+** TODO constraints
+*** TODO unique username
+*** TODO unique email
+
+* TODO use the endpoints that are in the tests from app academy
+** DONE switch readme to document endpoints in tests
+CLOSED: [2024-11-04 Mon 13:46]
+
+* db schema
+#+begin_src sql
+CREATE TABLE IF NOT EXISTS Users (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  firstName VARCHAR,
+  lastName VARCHAR,
+  email VARCHAR,
+  username VARCHAR,
+  passwordHash VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS Spots (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  ownerId INTEGER NOT NULL,
+  address VARCHAR,
+  city VARCHAR,
+  state VARCHAR,
+  country VARCHAR,
+  lat REAL,
+  lng REAL,
+  name VARCHAR,
+  description TEXT,
+  price REAL,
+  previewImage INTEGER NOT NULL,
+  FOREIGN KEY (ownerId) REFERENCES Users (id),
+  FOREIGN KEY (previewImage) REFERENCES SpotImages (id)
+);
+
+CREATE TABLE IF NOT EXISTS Bookings (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  userId INTEGER NOT NULL,
+  spotId INTEGER NOT NULL,
+  startDate DATETIME,
+  endDate DATETIME,
+  FOREIGN KEY (spotId) REFERENCES Spots (id),
+  FOREIGN KEY (userId) REFERENCES Users (id)
+);
+
+CREATE TABLE IF NOT EXISTS Reviews (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  userId INTEGER NOT NULL,
+  spotId INTEGER NOT NULL,
+  review TEXT,
+  stars INTEGER,
+  FOREIGN KEY (userId) REFERENCES Users (id),
+  FOREIGN KEY (spotId) REFERENCES Spots (id)
+);
+
+CREATE TABLE IF NOT EXISTS ReviewImages (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  url TEXT,
+  reviewId INTEGER NOT NULL,
+  FOREIGN KEY (reviewId) REFERENCES Reviews (id)
+);
+
+CREATE TABLE IF NOT EXISTS SpotImages (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  url TEXT,
+  spotId INTEGER NOT NULL,
+  FOREIGN KEY (spotId) REFERENCES Spots (id)
+);
+#+end_src
