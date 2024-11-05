@@ -26,6 +26,7 @@ router.get("/current", async (req, res) => {
   res.status(200).json({ Spots: spots });
 });
 
+//Post an image based on a SpotId
 router.post("/:spotId/images", async (req, res) => {
   const { spotId } = req.params;
   const { url, preview } = req.body;

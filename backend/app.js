@@ -52,6 +52,9 @@ app.use("/api/users", userRoutes);
 const spotRoutes = require("./routes/api/spots");
 app.use("/api/spots", spotRoutes);
 
+const reviewRoutes = require("./routes/api/reviews");
+app.use("/api/reviews", reviewRoutes);
+
 app.use((_req, _res, next) => {
   const err = new Error("The requested resources couldn't be found.");
   err.title = "Resource Not Found";

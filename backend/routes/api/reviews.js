@@ -1,5 +1,4 @@
 const express = require("express");
-const bcrypt = require("bcryptjs");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 
@@ -15,9 +14,9 @@ const router = express.Router("/reviews");
 
 // Get all Reviews of the Current User
 router.get("/current", async (req, res) => {
-  const { user } = req.body;
+  const { user } = req;
 
-  const reviews = Review.findAll({
+  const reviews = await Review.findAll({
     where: {
       userId: user.id,
     },
@@ -28,6 +27,7 @@ router.get("/current", async (req, res) => {
       },
       {
         model: Spot,
+        attributes: { exclude: ["createdAt", "updatedAt"] },
       },
       {
         model: ReviewImage,
@@ -36,5 +36,7 @@ router.get("/current", async (req, res) => {
     ],
   });
 
-  res.status(200).json(reviews);
+  res.status(200).json({ reviews });
 });
+
+module.exports = router;
