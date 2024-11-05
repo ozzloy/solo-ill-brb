@@ -498,7 +498,7 @@ Updates and returns an existing spot.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: PUT
-  * Route path: spots/:spotId
+  * Route path: /spots/:spotId
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -584,7 +584,7 @@ Deletes an existing spot.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: DELETE
-  * Route path: spots/:spotId
+  * Route path: /spots/:spotId
   * Body: none
 
 * Successful Response
