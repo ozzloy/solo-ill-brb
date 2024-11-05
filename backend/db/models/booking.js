@@ -1,5 +1,7 @@
 "use strict";
+
 const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class Booking extends Model {
     /**
@@ -49,7 +51,29 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Booking",
-    }
+      scopes: {
+        ownerView: {
+          include: [
+            {
+              association: "User",
+              attributes: ["id", "firstName", "lastName"],
+            },
+          ],
+          attributes: [
+            "id",
+            "spotId",
+            "userId",
+            "startDate",
+            "endDate",
+            "createdAt",
+            "updatedAt",
+          ],
+        },
+        nonOwnerView: {
+          attributes: ["spotId", "startDate", "endDate"],
+        },
+      },
+    },
   );
   return Booking;
 };
