@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Spot, {
         foreignKey: "ownerId",
       });
+      User.hasMany(models.Review, {
+        foreignKey: "userId",
+        sourceKey: "id",
+      });
     }
   }
 
@@ -66,7 +70,7 @@ module.exports = (sequelize, DataTypes) => {
           exclude: ["hashedPassword", "email", "createdAt", "updatedAt"],
         },
       },
-    },
+    }
   );
   return User;
 };

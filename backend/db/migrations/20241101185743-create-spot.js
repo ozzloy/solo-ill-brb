@@ -57,13 +57,12 @@ module.exports = {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false,
       },
-      avgRating: {
-        type: Sequelize.DECIMAL(2, 1),
-        allowNull: false,
-      },
       previewImage: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: "SpotImages",
+        },
       },
       createdAt: {
         allowNull: false,

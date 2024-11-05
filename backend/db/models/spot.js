@@ -11,7 +11,17 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Spot.belongsTo(models.User, {
+        as: "Owner",
         foreignKey: "ownerId",
+        onDelete: "CASCADE",
+      });
+      Spot.hasMany(models.SpotImage, {
+        foreignKey: "spotId",
+        sourceKey: "id",
+      });
+      Spot.hasMany(models.Review, {
+        foreignKey: "spotId",
+        sourceKey: "id",
       });
     }
   }
@@ -60,19 +70,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
       },
-      avgRating: {
-        type: DataTypes.DECIMAL(2, 1),
-        allowNull: false,
-      },
       previewImage: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
+        references: {
+          model: "SpotImages",
+        },
       },
     },
     {
       sequelize,
       modelName: "Spot",
-    },
+    }
   );
   return Spot;
 };
