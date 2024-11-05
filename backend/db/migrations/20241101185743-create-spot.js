@@ -46,7 +46,7 @@ module.exports = {
         allowNull: false,
       },
       name: {
-        type: Sequelize.STRING(30),
+        type: Sequelize.STRING(50),
         allowNull: false,
       },
       description: {
@@ -59,10 +59,7 @@ module.exports = {
       },
       previewImage: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: "SpotImages",
-        },
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,

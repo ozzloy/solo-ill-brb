@@ -31,8 +31,7 @@ module.exports = {
         name: "App Academy",
         description: "Place where web developers are created",
         price: 123,
-        avgRating: 4.5,
-        previewImage: "image url",
+        previewImage: 1,
       },
       {
         ownerId: 2,
@@ -45,8 +44,7 @@ module.exports = {
         name: "Spot 2",
         description: "Place where web developers are exploded",
         price: 555,
-        avgRating: 1,
-        previewImage: "image url",
+        previewImage: 2,
       },
       {
         ownerId: 1,
@@ -59,8 +57,7 @@ module.exports = {
         name: "Mars",
         description: "BIP BIP BOP BOP ",
         price: 515.65,
-        avgRating: 5,
-        previewImage: "image url",
+        previewImage: 3,
       },
     ]);
   },
@@ -79,7 +76,7 @@ module.exports = {
       {
         name: { [Op.in]: ["App Academy", "Spot 2", "Mars"] },
       },
-      {},
+      {}
     );
   },
 };

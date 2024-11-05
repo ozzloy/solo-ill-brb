@@ -53,14 +53,25 @@ module.exports = (sequelize, DataTypes) => {
       lat: {
         type: DataTypes.DECIMAL(9, 6),
         allowNull: false,
+        validate: {
+          min: -90,
+          max: 90,
+        },
       },
       lng: {
         type: DataTypes.DECIMAL(9, 6),
         allowNull: false,
+        validate: {
+          min: -180,
+          max: 180,
+        },
       },
       name: {
-        type: DataTypes.STRING(30),
+        type: DataTypes.STRING(50),
         allowNull: false,
+        validate: {
+          len: [2, 50],
+        },
       },
       description: {
         type: DataTypes.TEXT,
@@ -69,10 +80,17 @@ module.exports = (sequelize, DataTypes) => {
       price: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
+        validate: {
+          isPositive(value) {
+            if (value <= 0) {
+              throw new Error("Price per day must be a positive number");
+            }
+          },
+        },
       },
       previewImage: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: "SpotImages",
         },
