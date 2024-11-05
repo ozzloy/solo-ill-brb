@@ -75,6 +75,23 @@ router.put("/:reviewId", requireAuth, validateReview, async (req, res) => {
   res.status(200).json(existingReview);
 });
 
+router.delete("/:reviewId", requireAuth, async (req, res) => {
+  const { reviewId } = req.params;
+  const review = await Review.findByPk(reviewId);
+
+  if (!review) {
+    res.status(404).json({
+      message: "Review couldn't be found",
+    });
+  }
+
+  await review.destroy();
+
+  res.status(200).json({
+    message: "Successfully deleted",
+  });
+});
+
 // Get all Reviews of the Current User
 router.get("/current", async (req, res) => {
   const { user } = req;
