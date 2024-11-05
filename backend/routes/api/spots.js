@@ -4,7 +4,13 @@ const { Op, where } = require("sequelize");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 
-const { Spot, SpotImage, User } = require("../../db/models");
+const {
+  Spot,
+  SpotImage,
+  User,
+  Review,
+  ReviewImage,
+} = require("../../db/models");
 
 const router = express.Router("/spots");
 
@@ -24,6 +30,28 @@ router.get("/current", async (req, res) => {
   });
 
   res.status(200).json({ Spots: spots });
+});
+
+// Get all Reviews by a Spot's id
+router.get("/:spotId/reviews", async (req, res) => {
+  const { spotId } = req.params;
+
+  const reviews = await Review.findAll({
+    where: {
+      spotId,
+    },
+    include: [
+      {
+        model: User,
+        attributes: ["id", "firstName", "lastName"],
+      },
+      {
+        model: ReviewImage,
+        attributes: ["id", "url"],
+      },
+    ],
+  });
+  res.status(200).json({ reviews });
 });
 
 //Post an image based on a SpotId
