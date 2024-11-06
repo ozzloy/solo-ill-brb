@@ -318,19 +318,23 @@ router.get("/:spotId", async (req, res) => {
   const spot = await Spot.scope({
     method: ["withAverageRating", Review, "avgStarRating"],
   }).findOne({
-    exclude: ["previewImage"],
-    where: {
-      id: spotId,
+    attributes: {
+      exclude: ["previewImage"],
+      include: [
+        [sequelize.fn("COUNT", sequelize.col("Reviews.id")), "numReviews"],
+      ],
     },
+    where: { id: spotId },
     include: [
-      {
-        model: SpotImage,
-        attributes: ["id", "url"],
-      },
+      { model: SpotImage, attributes: ["id", "url"] },
       {
         model: User,
         as: "Owner",
         attributes: ["id", "firstName", "lastName"],
+      },
+      {
+        model: Review,
+        attributes: [],
       },
     ],
   });
