@@ -19,7 +19,7 @@ router.post("/:reviewId/images", requireAuth, async (req, res) => {
   const userId = req.user.id;
 
   const review = await Review.findOne({
-    where: { id: reviewId, userId },
+    where: { id: reviewId },
   });
 
   if (!review) {
@@ -95,12 +95,18 @@ router.delete("/:reviewId", requireAuth, async (req, res) => {
   const userId = req.user.id;
 
   let review = await Review.findOne({
-    where: { id: reviewId, userId },
+    where: { id: reviewId },
   });
 
   if (!review) {
     return res.status(404).json({
       message: "Review couldn't be found",
+    });
+  }
+
+  if (review.userId !== userId) {
+    return res.status(403).json({
+      message: "Forbidden",
     });
   }
 
@@ -135,7 +141,7 @@ router.get("/current", requireAuth, async (req, res) => {
     ],
   });
 
-  return res.status(200).json({ reviews });
+  return res.status(200).json({ Reviews: reviews });
 });
 
 module.exports = router;
