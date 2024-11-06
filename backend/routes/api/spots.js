@@ -78,6 +78,163 @@ router.get("/:spotId/bookings", async (req, res) => {
   res.json({ Bookings: bookings });
 });
 
+router.post("/:spotId/bookings", async (req, res) => {
+  /**
+     request body looks like this:
+
+    ```json
+    {
+      "startDate": "2021-11-19",
+      "endDate": "2021-11-20"
+    }
+    ```
+     */
+  const { spotId } = req.params;
+  const { user } = req;
+  const { startDate: startDateString, endDate: endDateString } = req.body;
+
+  const spot = await Spot.findByPk(spotId, {
+    include: [{ model: User, as: "Owner", attributes: ["id"] }],
+  });
+
+  if (!spot) return res.status(404).json({ message: "Spot couldn't be found" });
+
+  const errors = {};
+
+  const requestStart = new Date(startDateString);
+  requestStart.setHours(12, 0, 0, 0);
+  const requestEnd = new Date(endDateString);
+  requestEnd.setHours(12, 0, 0, 0);
+
+  const now = new Date();
+  now.setHours(12, 0, 0, 0);
+
+  /**
+     if startDate is before now
+       errors.startDate = "startDate cannot be in the past";
+     */
+  if (requestStart < now) {
+    errors.startDate = "startDate cannot be in the past";
+  }
+  /**
+     if endDate is on or before startDate,
+       errors.endDate = "endDate cannot be on or before startDate";
+     */
+  if (requestEnd <= requestStart) {
+    errors.endDate = "endDate cannot be on or before startDate";
+  }
+
+  if (Object.keys(errors).length) {
+    return res.status(400).json({ message: "Bad Request", errors });
+  }
+
+  /**
+     find all the bookings for this spot.
+     */
+  const overlappingBookings = await Booking.findAll({
+    /**
+       find all bookings where the requestStart is in between
+       the booking's startDate and endDate,
+
+       or the booking's startDate is in between the requestStart
+       and requestEnd
+       */
+    where: {
+      spotId: spot.id,
+      [Op.or]: [
+        // requested start date falls within existing booking
+        {
+          [Op.and]: [
+            { startDate: { [Op.lte]: requestStart } },
+            { endDate: { [Op.gte]: requestStart } },
+          ],
+        },
+        // extant start date falls within requested booking
+        {
+          [Op.and]: [
+            { startDate: { [Op.gte]: requestStart } },
+            { startDate: { [Op.lte]: requestEnd } },
+          ],
+        },
+      ],
+    },
+  });
+  if (0 < overlappingBookings.length) {
+    /**
+       if the startDate is in between the startDate
+       and endDate for any existing booking for this spot,
+         errors.push({
+           startDate: "Start date conflicts with an existing booking"
+         })
+       */
+    const startDateConflicts = overlappingBookings.some((booking) => {
+      const extantStart = new Date(booking.startDate);
+      extantStart.setHours(12, 0, 0, 0);
+      const extantEnd = new Date(booking.endDate);
+      extantEnd.setHours(12, 0, 0, 0);
+
+      return extantStart <= requestStart && requestStart <= extantEnd;
+    });
+    if (startDateConflicts) {
+      errors.startDate = "Start date conflicts with an existing booking";
+    }
+    /**
+       if the endDate is in between the startDate
+       and endDate for any existing booking for this spot,
+         errors.push({
+           endDate: "End date conflicts with an existing booking"
+         })
+       */
+    const endDateConflicts = overlappingBookings.some((booking) => {
+      const extantStart = new Date(booking.startDate);
+      extantStart.setHours(12, 0, 0, 0);
+      const extantEnd = new Date(booking.endDate);
+      extantEnd.setHours(12, 0, 0, 0);
+
+      return extantStart <= requestStart && requestStart <= extantEnd;
+    });
+    if (endDateConflicts) {
+      errors.endDate = "End date conflicts with an existing booking";
+    }
+
+    // if neither the start nor end requested date is in between
+    //   an extant booking's start and end, then the extant is
+    //   completely inside the requested booking
+    if (!(startDateConflicts || endDateConflicts)) {
+      errors.startDate = "Start date conflicts with an existing booking";
+      errors.endDate = "End date conflicts with an existing booking";
+    }
+
+    const message =
+      "Sorry, this spot is already booked for the specified dates";
+    return res.status(403).json({ message, errors });
+  }
+  /**
+     success!
+     return information about the booking that was just created
+     status 201
+     response body looks like this
+    ```json
+    {
+      "id": 1,
+      "spotId": 1,
+      "userId": 2,
+      "startDate": "2021-11-19",
+      "endDate": "2021-11-20",
+      "createdAt": "2021-11-19 20:39:36",
+      "updatedAt": "2021-11-19 20:39:36"
+    }
+    ```
+     */
+  const booking = await Booking.create({
+    spotId: spot.id,
+    userId: user.id,
+    startDate: requestStart,
+    endDate: requestEnd,
+  });
+  return res.status(201).json(booking);
+});
+
 const validateReview = [
   check("review").notEmpty().withMessage("Review text is required"),
   check("stars")
