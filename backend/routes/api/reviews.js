@@ -75,6 +75,7 @@ router.put("/:reviewId", requireAuth, validateReview, async (req, res) => {
   res.status(200).json(existingReview);
 });
 
+//Delete a review
 router.delete("/:reviewId", requireAuth, async (req, res) => {
   const { reviewId } = req.params;
   const review = await Review.findByPk(reviewId);
@@ -93,7 +94,7 @@ router.delete("/:reviewId", requireAuth, async (req, res) => {
 });
 
 // Get all Reviews of the Current User
-router.get("/current", async (req, res) => {
+router.get("/current", requireAuth, async (req, res) => {
   const { user } = req;
 
   const reviews = await Review.findAll({
