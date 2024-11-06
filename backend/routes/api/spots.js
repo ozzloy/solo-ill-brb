@@ -20,7 +20,7 @@ const router = express.Router("/spots");
 router.get("/", async (req, res, next) => {
   const spots = await Spot.findAll();
 
-  return res.status(200).json(spots);
+  return res.status(200).json({ Spots: spots });
 });
 
 //Get spots of current user
