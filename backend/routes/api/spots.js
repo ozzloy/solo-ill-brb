@@ -17,9 +17,7 @@ const router = express.Router("/spots");
 
 // Get all Spots
 router.get("/", async (_req, res) => {
-  const spots = await Spot.scope({
-    method: ["withAverageRating", Review, "avgRating"],
-  }).findAll();
+  const spots = await Spot.scope({ method: ["withAverageRating"] }).findAll();
 
   return res.status(200).json({ Spots: spots });
 });
@@ -28,9 +26,7 @@ router.get("/", async (_req, res) => {
 router.get("/current", requireAuth, async (req, res) => {
   const { user } = req;
 
-  const spots = await Spot.scope({
-    method: ["withAverageRating", Review, "avgRating"],
-  }).findAll({
+  const spots = await Spot.scope({ method: ["withAverageRating"] }).findAll({
     where: { ownerId: user.id },
   });
 
@@ -315,7 +311,7 @@ router.get("/:spotId", async (req, res) => {
   const { spotId } = req.params;
 
   const spot = await Spot.scope({
-    method: ["withAverageRating", Review, "avgStarRating"],
+    method: ["withAverageRating", "avgStarRating"],
   }).findOne({
     attributes: {
       exclude: ["previewImage"],

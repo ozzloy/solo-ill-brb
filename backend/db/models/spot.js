@@ -28,6 +28,18 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "spotId",
         sourceKey: "id",
       });
+      Spot.addScope("withAverageRating", (fieldName = "avgRating") => ({
+        include: [
+          {
+            model: models.Review,
+            attributes: [],
+          },
+        ],
+        attributes: {
+          include: [[fn("ROUND", fn("AVG", col("Reviews.stars"))), fieldName]],
+        },
+        group: ["Spot.id"],
+      }));
     }
   }
   Spot.init(
@@ -104,24 +116,6 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Spot",
-      scopes: {
-        withAverageRating(Review, fieldName) {
-          return {
-            include: [
-              {
-                model: Review,
-                attributes: [],
-              },
-            ],
-            attributes: {
-              include: [
-                [fn("ROUND", fn("AVG", col("Reviews.stars"))), fieldName],
-              ],
-            },
-            group: ["Spot.id"],
-          };
-        },
-      },
     },
   );
   return Spot;
