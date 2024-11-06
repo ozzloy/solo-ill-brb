@@ -61,7 +61,7 @@ router.get("/:spotId/reviews", requireAuth, async (req, res) => {
       },
     ],
   });
-  return res.status(200).json({ reviews });
+  return res.status(201).json({ reviews });
 });
 
 router.get("/:spotId/bookings", async (req, res) => {
@@ -328,6 +328,12 @@ router.get("/:spotId", async (req, res) => {
     ],
   });
 
+  if (!spot) {
+    return res.status(404).json({
+      message: "Spot couldn't be found",
+    });
+  }
+
   const spotJson = spot.toJSON();
   spotJson.SpotImages.forEach((element) => {
     element.preview = element.id === spotJson.id;
@@ -416,7 +422,7 @@ router.put("/:spotId", requireAuth, validateSpot, async (req, res) => {
 });
 
 // Delete a Spot
-router.delete("/:spotId", async (req, res) => {
+router.delete("/:spotId", requireAuth, async (req, res) => {
   const { spotId } = req.params;
   const spot = await Spot.findByPk(spotId);
   const userId = req.user.id;
