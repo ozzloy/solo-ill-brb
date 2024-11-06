@@ -15,6 +15,17 @@ const {
 
 const router = express.Router("/spots");
 
+// TODO use this middleware in all endpoints that can use it
+const requireSpotExists = async (req, res, next) => {
+  const { spotId } = req.params;
+  const spot = await Spot.findByPk(spotId);
+  if (!spot) {
+    return res.status(404).json({ message: "Spot couldn't be found" });
+  }
+  req.spot = spot;
+  next();
+};
+
 // Get all Spots
 router.get("/", async (_req, res) => {
   const spots = await Spot.scope({ method: ["withAverageRating"] }).findAll();
@@ -245,40 +256,37 @@ const validateReview = [
 ];
 
 // Create a Review for a Spot based on the Spot's id
-router.post("/:spotId/reviews", validateReview, async (req, res) => {
-  const { spotId } = req.params;
+router.post(
+  "/:spotId/reviews",
+  requireAuth,
+  validateReview,
+  requireSpotExists,
+  async (req, res) => {
+    const { spot, user } = req;
 
-  const spot = await Review.findByPk(spotId);
-
-  if (!spot) {
-    return res.status(404).json({
-      message: "Spot couldn't be found",
-    });
-  }
-
-  const { user } = req;
-
-  const existingReview = await Review.findOne({
-    where: { userId: user.id, spotId },
-  });
-
-  if (existingReview) {
-    return res.status(500).json({
-      message: "User already has a review for this spot",
-    });
-  } else {
-    const { review, stars } = req.body;
-
-    const newReview = await Review.create({
-      userId: user.id,
-      spotId,
-      review,
-      stars,
+    const existingReview = await Review.findOne({
+      where: { userId: user.id, spotId: spot.id },
     });
 
-    return res.status(201).json(newReview);
-  }
-});
+    if (existingReview) {
+      return res.status(500).json({
+        message: "User already has a review for this spot",
+      });
+    } else {
+      let { review, stars } = req.body;
+      stars = parseInt(stars);
+
+      const newReview = await Review.create({
+        userId: user.id,
+        spotId: spot.id,
+        review,
+        stars,
+      });
+
+      return res.status(201).json(newReview);
+    }
+  },
+);
 
 //Post an image based on a SpotId
 router.post("/:spotId/images", requireAuth, async (req, res) => {
