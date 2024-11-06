@@ -1,6 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
-const { Op, where } = require("sequelize");
+const sequelize = require("sequelize");
+const { Op } = sequelize;
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
@@ -17,8 +18,10 @@ const {
 const router = express.Router("/spots");
 
 // Get all Spots
-router.get("/", async (req, res, next) => {
-  const spots = await Spot.findAll();
+router.get("/", async (_req, res) => {
+  const spots = await Spot.scope({
+    method: ["withAverageRating", Review],
+  }).findAll();
 
   return res.status(200).json({ Spots: spots });
 });
@@ -27,22 +30,10 @@ router.get("/", async (req, res, next) => {
 router.get("/current", requireAuth, async (req, res) => {
   const { user } = req;
 
-  const spots = await Spot.findAll({
+  const spots = await Spot.scope({
+    method: ["withAverageRating", Review],
+  }).findAll({
     where: { ownerId: user.id },
-    include: [{ model: Review, attributes: [] }],
-    attributes: {
-      include: [
-        [
-          sequelize.fn(
-            "ROUND",
-            sequelize.fn("AVG", sequelize.col("Reviews.stars")),
-            1,
-          ),
-          "avgRating",
-        ],
-      ],
-    },
-    group: ["Spot.id"],
   });
 
   return res.status(200).json({ Spots: spots });
