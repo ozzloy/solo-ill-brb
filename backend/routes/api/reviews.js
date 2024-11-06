@@ -23,8 +23,13 @@ router.post("/:reviewId/images", requireAuth, async (req, res) => {
   });
 
   if (!review) {
-    res.status(404).json({
+    return res.status(404).json({
       message: "Review couldn't be found",
+    });
+  }
+  if (review.userId !== userId) {
+    return res.status(403).json({
+      message: "Forbidden",
     });
   }
 
@@ -33,7 +38,7 @@ router.post("/:reviewId/images", requireAuth, async (req, res) => {
   });
 
   if (totalImages >= 10) {
-    res.status(403).json({
+    return res.status(403).json({
       message: "Maximum number of images for this resource was reached",
     });
   }
@@ -43,7 +48,7 @@ router.post("/:reviewId/images", requireAuth, async (req, res) => {
     reviewId,
   });
 
-  res.status(201).json({ id: image.id, url: image.url });
+  return res.status(201).json({ id: image.id, url: image.url });
 });
 
 const validateReview = [
@@ -58,12 +63,21 @@ const validateReview = [
 router.put("/:reviewId", requireAuth, validateReview, async (req, res) => {
   const { reviewId } = req.params;
   const { review, stars } = req.body;
+  const userId = req.user.id;
 
-  let existingReview = await Review.findByPk(reviewId);
+  let existingReview = await Review.findOne({
+    where: { id: reviewId },
+  });
 
   if (!existingReview) {
-    res.status(404).json({
+    return res.status(404).json({
       message: "Review couldn't be found",
+    });
+  }
+
+  if (existingReview.userId !== userId) {
+    return res.status(403).json({
+      message: "Forbidden",
     });
   }
 
@@ -72,23 +86,32 @@ router.put("/:reviewId", requireAuth, validateReview, async (req, res) => {
     stars,
   });
 
-  res.status(200).json(existingReview);
+  return res.status(200).json(existingReview);
 });
 
 //Delete a review
 router.delete("/:reviewId", requireAuth, async (req, res) => {
   const { reviewId } = req.params;
-  const review = await Review.findByPk(reviewId);
+  const userId = req.user.id;
+
+  let review = await Review.findOne({
+    where: { id: reviewId, userId },
+  });
 
   if (!review) {
-    res.status(404).json({
+    return res.status(404).json({
       message: "Review couldn't be found",
+    });
+  }
+  if (review.userId !== userId) {
+    return res.status(403).json({
+      message: "Forbidden",
     });
   }
 
   await review.destroy();
 
-  res.status(200).json({
+  return res.status(200).json({
     message: "Successfully deleted",
   });
 });
@@ -117,7 +140,7 @@ router.get("/current", requireAuth, async (req, res) => {
     ],
   });
 
-  res.status(200).json({ reviews });
+  return res.status(200).json({ reviews });
 });
 
 module.exports = router;
