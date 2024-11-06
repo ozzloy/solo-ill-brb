@@ -58,6 +58,9 @@ app.use("/api/reviews", reviewRoutes);
 const bookingRoutes = require("./routes/api/bookings");
 app.use("/api/bookings", bookingRoutes);
 
+const reviewImageRoutes = require("./routes/api/review-images");
+app.use("/api/review-images", reviewImageRoutes);
+
 app.use((_req, _res, next) => {
   const err = new Error("The requested resources couldn't be found.");
   err.title = "Resource Not Found";
