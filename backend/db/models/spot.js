@@ -1,7 +1,7 @@
 "use strict";
 
 const sequelize = require("sequelize");
-const { Model } = sequelize;
+const { Model, fn, col } = sequelize;
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
     /**
@@ -115,13 +115,7 @@ module.exports = (sequelize, DataTypes) => {
             ],
             attributes: {
               include: [
-                [
-                  sequelize.fn(
-                    "ROUND",
-                    sequelize.fn("AVG", sequelize.col("Reviews.stars")),
-                  ),
-                  fieldName,
-                ],
+                [fn("ROUND", fn("AVG", col("Reviews.stars"))), fieldName],
               ],
             },
             group: ["Spot.id"],

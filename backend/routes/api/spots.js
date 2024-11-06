@@ -1,6 +1,5 @@
 const express = require("express");
-const sequelize = require("sequelize");
-const { Op } = sequelize;
+const { Op, fn, col } = require("sequelize");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
@@ -320,9 +319,7 @@ router.get("/:spotId", async (req, res) => {
   }).findOne({
     attributes: {
       exclude: ["previewImage"],
-      include: [
-        [sequelize.fn("COUNT", sequelize.col("Reviews.id")), "numReviews"],
-      ],
+      include: [[fn("COUNT", col("Reviews.id")), "numReviews"]],
     },
     where: { id: spotId },
     include: [
