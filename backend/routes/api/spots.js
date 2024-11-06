@@ -29,6 +29,20 @@ router.get("/current", requireAuth, async (req, res) => {
 
   const spots = await Spot.findAll({
     where: { ownerId: user.id },
+    include: [{ model: Review, attributes: [] }],
+    attributes: {
+      include: [
+        [
+          sequelize.fn(
+            "ROUND",
+            sequelize.fn("AVG", sequelize.col("Reviews.stars")),
+            1,
+          ),
+          "avgRating",
+        ],
+      ],
+    },
+    group: ["Spot.id"],
   });
 
   return res.status(200).json({ Spots: spots });
@@ -73,7 +87,7 @@ router.get("/:spotId/bookings", async (req, res) => {
   if (!spot) return res.status(404).json({ message: "Spot couldn't be found" });
   const isOwner = spot.ownerId == user.id;
   const bookings = await Booking.scope(
-    isOwner ? "ownerView" : "nonOwnerView"
+    isOwner ? "ownerView" : "nonOwnerView",
   ).findAll({ where: { spotId } });
 
   return res.json({ Bookings: bookings });
