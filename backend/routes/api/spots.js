@@ -349,6 +349,7 @@ const validateSpot = [
   check("address").notEmpty().withMessage("Street address is required"),
   check("city").notEmpty().withMessage("City is required"),
   check("description").notEmpty().withMessage("Description is required"),
+  check("country").notEmpty().withMessage("Country is required"),
   check("state").notEmpty().withMessage("State is required"),
   check("lat")
     .isFloat({ min: -90, max: 90 })
