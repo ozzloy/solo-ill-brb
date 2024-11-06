@@ -105,7 +105,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "Spot",
       scopes: {
-        withAverageRating(Review) {
+        withAverageRating(Review, fieldName) {
           return {
             include: [
               {
@@ -120,7 +120,7 @@ module.exports = (sequelize, DataTypes) => {
                     "ROUND",
                     sequelize.fn("AVG", sequelize.col("Reviews.stars")),
                   ),
-                  "avgRating",
+                  fieldName,
                 ],
               ],
             },

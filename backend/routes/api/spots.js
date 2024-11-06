@@ -1,5 +1,4 @@
 const express = require("express");
-const bcrypt = require("bcryptjs");
 const sequelize = require("sequelize");
 const { Op } = sequelize;
 const { check } = require("express-validator");
@@ -20,7 +19,7 @@ const router = express.Router("/spots");
 // Get all Spots
 router.get("/", async (_req, res) => {
   const spots = await Spot.scope({
-    method: ["withAverageRating", Review],
+    method: ["withAverageRating", Review, "avgRating"],
   }).findAll();
 
   return res.status(200).json({ Spots: spots });
@@ -31,7 +30,7 @@ router.get("/current", requireAuth, async (req, res) => {
   const { user } = req;
 
   const spots = await Spot.scope({
-    method: ["withAverageRating", Review],
+    method: ["withAverageRating", Review, "avgRating"],
   }).findAll({
     where: { ownerId: user.id },
   });
@@ -316,7 +315,10 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
 router.get("/:spotId", async (req, res) => {
   const { spotId } = req.params;
 
-  const spot = await Spot.findOne({
+  const spot = await Spot.scope({
+    method: ["withAverageRating", Review, "avgStarRating"],
+  }).findOne({
+    exclude: ["previewImage"],
     where: {
       id: spotId,
     },
