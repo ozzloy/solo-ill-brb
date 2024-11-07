@@ -39,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
           include: [[fn("ROUND", fn("AVG", col("Reviews.stars"))), fieldName]],
         },
         group: ["Spot.id"],
+        subQuery: false,
       }));
     }
   }

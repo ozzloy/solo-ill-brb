@@ -1,6 +1,8 @@
 const express = require("express");
 const { Op, fn, col } = require("sequelize");
-const { check } = require("express-validator");
+
+//TODO use body and query instead of "check"
+const { check, query } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
 
@@ -24,14 +26,76 @@ const requireSpotExists = async (req, res, next) => {
     return res.status(404).json({ message: "Spot couldn't be found" });
   }
   req.spot = spot;
-  next();
+  return next();
 };
 
+const validateQuery = [
+  query("page")
+    .optional()
+    .default(1)
+    .isInt({ min: 1 })
+    .withMessage("Page must be greater than or equal to 1")
+    .toInt(),
+  query("size")
+    .optional()
+    .default(20)
+    .isInt({ min: 1, max: 20 })
+    .withMessage("Size must be between 1 and 20")
+    .toInt(),
+  query("minLat")
+    .optional()
+    .isFloat({ min: -90, max: 90 })
+    .withMessage("Minimum latitude is invalid")
+    .toFloat(),
+  query("maxLat")
+    .optional()
+    .isFloat({ min: -90, max: 90 })
+    .withMessage("Maximum latitude is invalid")
+    .toFloat(),
+  query("minLng")
+    .optional()
+    .isFloat({ min: -180, max: 180 })
+    .withMessage("Minimum longitude is invalid")
+    .toFloat(),
+  query("maxLng")
+    .optional()
+    .isFloat({ min: -180, max: 180 })
+    .withMessage("Maximum longitude is invalid")
+    .toFloat(),
+  query("minPrice")
+    .optional()
+    .isFloat({ min: 0 })
+    .withMessage("Minimum price must be greater than or equal to 0"),
+  query("maxPrice")
+    .optional()
+    .isFloat({ min: 0 })
+    .withMessage("Maximum price must be greater than or equal to 0"),
+  handleValidationErrors,
+];
 // Get all Spots
-router.get("/", async (_req, res) => {
-  const spots = await Spot.scope({ method: ["withAverageRating"] }).findAll();
+router.get("/", validateQuery, async (req, res) => {
+  const { query } = req;
+  query.page ||= 1;
+  query.size ||= 20;
+  const { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
+    query;
+  const where = {
+    ...(minLat && { lat: { [Op.gte]: minLat } }),
+    ...(maxLat && { lat: { [Op.lte]: maxLat } }),
+    ...(minLng && { lng: { [Op.gte]: minLng } }),
+    ...(maxLng && { lng: { [Op.lte]: maxLng } }),
+    ...(minPrice && { price: { [Op.gte]: minPrice } }),
+    ...(maxPrice && { price: { [Op.lte]: maxPrice } }),
+  };
+  const offset = (page - 1) * size;
+  const limit = size;
+  const spots = await Spot.scope({ method: ["withAverageRating"] }).findAll({
+    where,
+    offset,
+    limit,
+  });
 
-  return res.status(200).json({ Spots: spots });
+  return res.status(200).json({ Spots: spots, page, size });
 });
 
 //Get spots of current user
