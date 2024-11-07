@@ -1,6 +1,10 @@
 "use strict";
 
 const { Booking } = require("../models");
+let options = {};
+if (process.env.NODE_ENV === "production") {
+  options.schema = process.env.SCHEMA;
+}
 
 const bookings = [
   {
@@ -36,7 +40,8 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("Bookings", {
+    options.tableName = "Bookings";
+    await queryInterface.bulkDelete(options, {
       [Sequelize.Op.or]: bookings.map((booking) => ({
         userId: booking.userId,
         spotId: booking.spotId,
