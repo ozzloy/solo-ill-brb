@@ -14,9 +14,9 @@ const router = express.Router("/reviews");
 
 // Add an Image to a Review based on the Review's id
 router.post("/:reviewId/images", requireAuth, async (req, res) => {
-  const { reviewId } = req.params;
+  const reviewId = parseInt(req.params.reviewId);
   const { url } = req.body;
-  const userId = req.user.id;
+  const userId = parseInt(req.user.id);
 
   const review = await Review.findOne({
     where: { id: reviewId },
@@ -61,9 +61,9 @@ const validateReview = [
 ];
 // Edit a Review
 router.put("/:reviewId", requireAuth, validateReview, async (req, res) => {
-  const { reviewId } = req.params;
+  const reviewId = parseInt(req.params.reviewId);
   const { review, stars } = req.body;
-  const userId = req.user.id;
+  const userId = parseInt(req.user.id);
 
   let existingReview = await Review.findOne({
     where: { id: reviewId },
@@ -91,8 +91,8 @@ router.put("/:reviewId", requireAuth, validateReview, async (req, res) => {
 
 //Delete a review
 router.delete("/:reviewId", requireAuth, async (req, res) => {
-  const { reviewId } = req.params;
-  const userId = req.user.id;
+  const reviewId = parseInt(req.params.reviewId);
+  const userId = parseInt(req.user.id);
 
   let review = await Review.findOne({
     where: { id: reviewId },

@@ -31,8 +31,8 @@ const validateBooking = [
 
 // Edit a Booking
 router.put("/:bookingId", requireAuth, validateBooking, async (req, res) => {
-  const { bookingId } = req.params;
-  const userId = req.user.id;
+  const bookingId = parseInt(req.params.bookingId);
+  const userId = parseInt(req.user.id);
 
   const booking = await Booking.findOne({
     where: { id: bookingId, userId },
