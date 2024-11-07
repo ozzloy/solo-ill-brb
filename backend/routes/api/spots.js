@@ -431,10 +431,12 @@ const validateSpot = [
   check("state").notEmpty().withMessage("State is required"),
   check("lat")
     .isFloat({ min: -90, max: 90 })
-    .withMessage("Latitude must be within -90 and 90"),
+    .withMessage("Latitude must be within -90 and 90")
+    .toFloat(),
   check("lng")
     .isFloat({ min: -180, max: 180 })
-    .withMessage("Longitude must be within -180 and 180"),
+    .withMessage("Longitude must be within -180 and 180")
+    .toFloat(),
   check("name")
     .notEmpty()
     .isLength({ max: 49 })
@@ -442,7 +444,8 @@ const validateSpot = [
   check("price")
     .notEmpty()
     .isFloat({ min: 0.01 })
-    .withMessage("Price per day must be a positive number"),
+    .withMessage("Price per day must be a positive number")
+    .toFloat(),
   handleValidationErrors,
 ];
 
