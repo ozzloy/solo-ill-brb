@@ -215,3 +215,63 @@ CREATE TABLE IF NOT EXISTS SpotImages (
   FOREIGN KEY (spotId) REFERENCES Spots (id)
 );
 #+end_src
+
+* converting from sqlite3 to pgsql
+
+** install pgsql locally, and pgsql support in npm
+
+#+begin_src bash
+  sudo apt update
+  sudo apt install postgresql
+  npm install pg pg-hstore
+#+end_src
+
+** make sure pgsql is running
+
+#+begin_src bash
+  ps aux|grep postgres
+  sudo pg_isready
+#+end_src
+
+** create a database for development
+
+#+begin_src sql
+  CREATE DATABASE ill_brb_dev;
+  CREATE USER your_username WITH PASSWORD 'your_password';
+  GRANT ALL PRIVILEGES ON DATABASE ill_brb_dev TO your_username;
+  -- switch to ill_brb_dev database
+  \c ill_brb_dev
+  -- create schema ill_brb for database ill_brb_dev
+  CREATE SCHEMA ill_brb_schema;
+  GRANT ALL ON SCHEMA ill_brb_schema TO your_username;
+#+end_src
+
+** configure =backend/.env=
+
+#+begin_src bash
+  NODE_ENV="development_with_postgres"
+  DATABASE_URL="postgresql://your_username:your_password@localhost:5432/ill_brb_dev"
+  PORT=5001
+  JWT_SECRET="t9u1WbE2TpQmXQ=="
+  JWT_EXPIRES_IN=604800
+  SCHEMA="ill_brb"
+#+end_src
+
+** configure =backend/config/database.js=
+add this section
+#+begin_src js
+  module.export = {
+    // add the following field
+    development_with_postgres: {
+      use_env_variable: "DATABASE_URL",
+      dialect: "postgres",
+      seederStorage: "sequelize",
+      benchmark: true,
+      logQueryParameters: true,
+      typeValidation: true,
+      define: {
+        schema: process.env.SCHEMA,
+      },
+    },
+  };
+#+end_src

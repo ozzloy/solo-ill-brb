@@ -9,6 +9,7 @@
     "start": "per-env",
     "start:development": "nodemon --legacy-watch bin/www",
     "start:production": "node ./bin/www",
+    "start:development_with_postgres": "nodemon bin/www",
     "build": "node psql-setup-script.js"
   },
   "keywords": [],
@@ -29,6 +30,7 @@
     "morgan": "^1.10.0",
     "per-env": "^1.0.2",
     "pg": "^8.13.1",
+    "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.5",
     "sequelize-cli": "^6.6.2"
   },
