@@ -75,6 +75,9 @@ module.exports = (sequelize, DataTypes) => {
           min: -90,
           max: 90,
         },
+        get() {
+          return parseFloat(this.getDataValue("lat"));
+        },
       },
       lng: {
         type: DataTypes.DECIMAL(9, 6),
@@ -82,6 +85,9 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           min: -180,
           max: 180,
+        },
+        get() {
+          return parseFloat(this.getDataValue("lng"));
         },
       },
       name: {
@@ -104,6 +110,9 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error("Price per day must be a positive number");
             }
           },
+        },
+        get() {
+          return parseFloat(this.getDataValue("lng"));
         },
       },
       previewImage: {
