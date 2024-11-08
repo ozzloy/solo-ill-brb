@@ -390,14 +390,8 @@ router.get("/:spotId", async (req, res) => {
   const { spotId } = req.params;
   const spotIdNumber = parseInt(spotId);
 
-  const spot = await Spot.scope({
-    method: ["withAverageRating", "avgStarRating"],
-  }).findOne({
-    attributes: {
-      exclude: ["previewImage"],
-      include: [[fn("COUNT", col("Reviews.id")), "numReviews"]],
-    },
-    where: { id: spotIdNumber },
+  const spot = await Spot.findByPk(spotIdNumber, {
+    attributes: { exclude: ["previewImage"] },
     include: [
       { model: SpotImage, attributes: ["id", "url"] },
       {
@@ -407,7 +401,7 @@ router.get("/:spotId", async (req, res) => {
       },
       {
         model: Review,
-        attributes: [],
+        attributes: ["stars", "id"],
       },
     ],
   });
@@ -422,7 +416,15 @@ router.get("/:spotId", async (req, res) => {
   spotJson.SpotImages.forEach((element) => {
     element.preview = element.id === spotJson.id;
   });
-  return res.status(200).json(spotJson);
+  const numReviews = spotJson.Reviews.length;
+  const avgStarRating = spotJson.Reviews.length
+    ? spotJson.Reviews.reduce((sum, review) => sum + review.stars, 0) /
+      numReviews
+    : 0.0;
+  const { Reviews, ...formattedSpot } = spotJson;
+  formattedSpot.numReviews = numReviews;
+  formattedSpot.avgStarRating = avgStarRating;
+  return res.status(200).json(formattedSpot);
 });
 
 const validateSpot = [
