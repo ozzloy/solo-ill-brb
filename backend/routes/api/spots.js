@@ -152,7 +152,7 @@ router.get("/:spotId/bookings", async (req, res) => {
   if (!spot) return res.status(404).json({ message: "Spot couldn't be found" });
   const isOwner = spot.ownerId == user.id;
   const bookings = await Booking.scope(
-    isOwner ? "ownerView" : "nonOwnerView"
+    isOwner ? "ownerView" : "nonOwnerView",
   ).findAll({ where: { spotId: spotIdNumber } });
 
   return res.json({ Bookings: bookings });
@@ -355,7 +355,7 @@ router.post(
 
       return res.status(201).json(newReview);
     }
-  }
+  },
 );
 
 //Post an image based on a SpotId
