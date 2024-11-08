@@ -65,11 +65,13 @@ const validateQuery = [
   query("minPrice")
     .optional()
     .isFloat({ min: 0 })
-    .withMessage("Minimum price must be greater than or equal to 0"),
+    .withMessage("Minimum price must be greater than or equal to 0")
+    .toFloat(),
   query("maxPrice")
     .optional()
     .isFloat({ min: 0 })
-    .withMessage("Maximum price must be greater than or equal to 0"),
+    .withMessage("Maximum price must be greater than or equal to 0")
+    .toFloat(),
   handleValidationErrors,
 ];
 // Get all Spots
