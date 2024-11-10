@@ -1,6 +1,6 @@
 "use strict";
 
-let options = {};
+const options = {};
 if (process.env.NODE_ENV === "production") {
   options.schema = process.env.SCHEMA;
 }
@@ -49,7 +49,7 @@ module.exports = {
           type: Sequelize.DATE,
         },
       },
-      options
+      options,
     );
   },
   async down(queryInterface, Sequelize) {

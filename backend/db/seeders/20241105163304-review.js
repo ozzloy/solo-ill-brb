@@ -2,7 +2,7 @@
 
 const { Review } = require("../models");
 
-let options = {};
+const options = {};
 if (process.env.NODE_ENV === "production") {
   options.schema = process.env.SCHEMA; // define your schema in options object
 }
@@ -46,7 +46,7 @@ module.exports = {
           stars: 2,
         },
       ],
-      options
+      options,
     );
   },
 
@@ -62,7 +62,7 @@ module.exports = {
     return queryInterface.bulkDelete(
       options,
       { userId: { [Op.in]: [1, 2, 3] } },
-      {}
+      {},
     );
   },
 };

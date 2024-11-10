@@ -1,6 +1,6 @@
 "use strict";
 
-let options = {};
+const options = {};
 if (process.env.NODE_ENV === "production") {
   options.schema = process.env.SCHEMA;
 }
@@ -39,7 +39,7 @@ module.exports = {
           defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
         },
       },
-      options
+      options,
     );
   },
   async down(queryInterface, Sequelize) {

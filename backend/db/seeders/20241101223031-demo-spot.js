@@ -2,7 +2,7 @@
 
 const { Spot } = require("../models");
 
-let options = {};
+const options = {};
 if (process.env.NODE_ENV === "production") {
   options.schema = process.env.SCHEMA; // define your schema in options object
 }
@@ -76,7 +76,7 @@ module.exports = {
       {
         name: { [Op.in]: ["App Academy", "Spot 2", "Mars"] },
       },
-      {}
+      {},
     );
   },
 };
