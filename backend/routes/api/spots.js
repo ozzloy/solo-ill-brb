@@ -160,7 +160,7 @@ router.get("/:spotId/bookings", async (req, res) => {
 
 const justTheDate = (value) => {
   const date = new Date(value);
-  return date.toISOString().split("T")[0];
+  return new Date(date.toISOString().split("T")[0]);
 };
 const verifyMakeBooking = [
   requireAuth,
@@ -198,7 +198,7 @@ router.post("/:spotId/bookings", verifyMakeBooking, async (req, res) => {
   const { spotId } = req.params;
   const spotIdNumber = parseInt(spotId);
   const { user } = req;
-  const { startDate: startDateString, endDate: endDateString } = req.body;
+  const { startDate, endDate } = req.body;
 
   const spot = await Spot.findByPk(spotIdNumber, {
     include: [{ model: User, as: "Owner", attributes: ["id"] }],
@@ -208,26 +208,20 @@ router.post("/:spotId/bookings", verifyMakeBooking, async (req, res) => {
 
   const errors = {};
 
-  const requestStart = new Date(startDateString);
-  requestStart.setHours(12, 0, 0, 0);
-  const requestEnd = new Date(endDateString);
-  requestEnd.setHours(12, 0, 0, 0);
-
-  const now = new Date();
-  now.setHours(12, 0, 0, 0);
+  const now = justTheDate(Date.now());
 
   /**
      if startDate is before now
        errors.startDate = "startDate cannot be in the past";
      */
-  if (requestStart < now) {
+  if (startDate < now) {
     errors.startDate = "startDate cannot be in the past";
   }
   /**
      if endDate is on or before startDate,
        errors.endDate = "endDate cannot be on or before startDate";
      */
-  if (requestEnd <= requestStart) {
+  if (endDate <= startDate) {
     errors.endDate = "endDate cannot be on or before startDate";
   }
 
@@ -240,11 +234,11 @@ router.post("/:spotId/bookings", verifyMakeBooking, async (req, res) => {
      */
   const overlappingBookings = await Booking.findAll({
     /**
-       find all bookings where the requestStart is in between
+       find all bookings where the startDate is in between
        the booking's startDate and endDate,
 
-       or the booking's startDate is in between the requestStart
-       and requestEnd
+       or the booking's startDate is in between the startDate
+       and endDate
        */
     where: {
       spotId: spot.id,
@@ -252,15 +246,15 @@ router.post("/:spotId/bookings", verifyMakeBooking, async (req, res) => {
         // requested start date falls within existing booking
         {
           [Op.and]: [
-            { startDate: { [Op.lte]: requestStart } },
-            { endDate: { [Op.gte]: requestStart } },
+            { startDate: { [Op.lte]: startDate } },
+            { endDate: { [Op.gte]: startDate } },
           ],
         },
         // extant start date falls within requested booking
         {
           [Op.and]: [
-            { startDate: { [Op.gte]: requestStart } },
-            { startDate: { [Op.lte]: requestEnd } },
+            { startDate: { [Op.gte]: startDate } },
+            { startDate: { [Op.lte]: endDate } },
           ],
         },
       ],
@@ -276,11 +270,12 @@ router.post("/:spotId/bookings", verifyMakeBooking, async (req, res) => {
        */
     const startDateConflicts = overlappingBookings.some((booking) => {
       const extantStart = new Date(booking.startDate);
-      extantStart.setHours(12, 0, 0, 0);
       const extantEnd = new Date(booking.endDate);
-      extantEnd.setHours(12, 0, 0, 0);
 
-      return extantStart <= requestStart && requestStart <= extantEnd;
+      const condition = extantStart <= startDate && startDate <= extantEnd;
+      if (condition) {
+      }
+      return condition;
     });
     if (startDateConflicts) {
       errors.startDate = "Start date conflicts with an existing booking";
@@ -294,11 +289,9 @@ router.post("/:spotId/bookings", verifyMakeBooking, async (req, res) => {
        */
     const endDateConflicts = overlappingBookings.some((booking) => {
       const extantStart = new Date(booking.startDate);
-      extantStart.setHours(12, 0, 0, 0);
       const extantEnd = new Date(booking.endDate);
-      extantEnd.setHours(12, 0, 0, 0);
 
-      return extantStart <= requestStart && requestStart <= extantEnd;
+      return extantStart <= endDate && endDate <= extantEnd;
     });
     if (endDateConflicts) {
       errors.endDate = "End date conflicts with an existing booking";
@@ -336,8 +329,8 @@ router.post("/:spotId/bookings", verifyMakeBooking, async (req, res) => {
   const booking = await Booking.create({
     spotId: spot.id,
     userId: user.id,
-    startDate: requestStart,
-    endDate: requestEnd,
+    startDate,
+    endDate,
   });
   return res.status(201).json(booking);
 });
