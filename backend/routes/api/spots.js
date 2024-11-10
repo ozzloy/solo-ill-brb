@@ -2,7 +2,7 @@ const express = require("express");
 const { Op, fn, col } = require("sequelize");
 
 //TODO use body and query instead of "check"
-const { check, query } = require("express-validator");
+const { check, query, body } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
 
@@ -158,7 +158,33 @@ router.get("/:spotId/bookings", async (req, res) => {
   return res.json({ Bookings: bookings });
 });
 
-router.post("/:spotId/bookings", async (req, res) => {
+const justTheDate = (value) => {
+  const date = new Date(value);
+  return date.toISOString().split("T")[0];
+};
+const verifyMakeBooking = [
+  requireAuth,
+  body("startDate")
+    .isISO8601()
+    .withMessage("startDate must be in iso 8601 acceptable format")
+    .isAfter(new Date().toDateString())
+    .withMessage("startDate cannot be in the past")
+    .customSanitizer(justTheDate),
+  body("endDate")
+    .isISO8601()
+    .withMessage("endDate must be in iso 8601 acceptable format")
+    .customSanitizer(justTheDate)
+    .custom((endDate, { req }) => {
+      const { body } = req;
+      const { startDate } = body;
+      if (endDate <= startDate) {
+        throw new Error("endDate cannot be on or before startDate");
+      }
+      return true;
+    }),
+  handleValidationErrors,
+];
+router.post("/:spotId/bookings", verifyMakeBooking, async (req, res) => {
   /**
      request body looks like this:
 
