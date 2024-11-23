@@ -9,7 +9,14 @@ router.get("/current", requireAuth, async (req, res) => {
   const { user } = req;
   const bookings = await Booking.findAll({
     where: { userId: user.id },
-    include: [{ model: Spot }],
+    include: [
+      {
+        model: Spot,
+        attributes: {
+          exclude: ["description", "createdAt", "updatedAt"],
+        },
+      },
+    ],
   });
 
   return res.json({ Bookings: bookings });
