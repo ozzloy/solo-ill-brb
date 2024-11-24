@@ -1,4 +1,24 @@
-# `I'll BrB`
+# `I'll BrB**
+
+## quickstart
+
+1. start backend
+2. start frontend
+3. open web app
+
+### start backend
+```bash
+cd backend
+cp .env.example .env
+# modify .env to set port, backend db, schema, etc
+npm start
+```
+
+### start frontend
+TODO
+
+### open web browser
+TODO
 
 ## Database Schema Design
 
