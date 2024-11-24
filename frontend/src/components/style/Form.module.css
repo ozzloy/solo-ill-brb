@@ -1,14 +1,26 @@
+.h1 {
+    margin: 1em;
+}
+
 .form {
     text-align: center;
     background-color: black;
     border-radius: 25px;
-    margin: auto;
+    margin: 3em auto;
     padding: 3em;
     width: fit-content;
+    max-width: 400px;
+}
+
+.label {
+    display: block;
+    text-align: left;
+    font-size: 20px;
 }
 
 .error {
     color: red;
+    font-size: 20px;
 }
 
 .input {
@@ -16,10 +28,10 @@
     border: none;
     font-size: 20px;
     border-radius: 10px;
-    margin: 1em;
+    margin: 1em auto;
     padding: 1em;
-    background-color: #333;
-    color: #ccc;
+    background-color: #222;
+    color: #eee;
 }
 
 .button {
