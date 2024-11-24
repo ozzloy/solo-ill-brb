@@ -1,0 +1,33 @@
+.form {
+    text-align: center;
+    background-color: black;
+    border-radius: 25px;
+    margin: auto;
+    padding: 3em;
+    width: fit-content;
+}
+
+.error {
+    color: red;
+}
+
+.input {
+    display: block;
+    border: none;
+    font-size: 20px;
+    border-radius: 10px;
+    margin: 1em;
+    padding: 1em;
+    background-color: #333;
+    color: #ccc;
+}
+
+.button {
+    width: fit-content;
+    padding: 1em;
+    background-color: #794bc4;
+    border-radius: 10px;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
