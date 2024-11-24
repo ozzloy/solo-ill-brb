@@ -15,9 +15,11 @@ router.use("/session", sessionRouter);
 
 router.use("/users", usersRouter);
 
-router.post("/test", function (req, res) {
-  res.json({ requestBody: req.body });
-});
+if (process.env.NODE_ENV !== "production") {
+  router.post("/test", function (req, res) {
+    res.json({ requestBody: req.body });
+  });
+}
 
 // GET /api/set-token-cookie
 const { setTokenCookie } = require("../../utils/auth.js");
