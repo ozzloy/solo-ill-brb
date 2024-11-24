@@ -1,1 +1,4 @@
-export const post = { method: "POST" };
+export const POST = { method: "POST" };
+
+// "delete" is a keyword
+export const DELETE = { method: "DELETE" };

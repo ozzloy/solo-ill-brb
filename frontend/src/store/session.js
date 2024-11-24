@@ -1,5 +1,5 @@
 import { csrfFetch } from "./csrf";
-import { post } from "./fetchHelpers";
+import { POST, DELETE } from "./fetchHelpers";
 
 /////////////////////////////////////////////////////////////////////
 // actiion types
@@ -26,7 +26,7 @@ export const removeUser = () => ({
 
 export const login = (credential, password) => async (dispatch) => {
   const response = await csrfFetch("/api/session", {
-    ...post,
+    ...POST,
     body: JSON.stringify({ credential, password }),
   });
   const json = await response.json();
@@ -45,7 +45,7 @@ export const restoreUser = () => async (dispatch) => {
 
 export const signup = (user) => async (dispatch) => {
   const response = await csrfFetch("/api/users", {
-    ...post,
+    ...POST,
     body: JSON.stringify(user),
   });
   const json = await response.json();
