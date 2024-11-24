@@ -7,7 +7,8 @@ import {
 } from "react-router-dom";
 
 import LoginFormPage from "./components/LoginFormPage";
-import * as sessionActions from "./store/session";
+import SignupFormPage from "./components/SignupFormPage";
+import { restoreUser } from "./store/session";
 
 import "./App.css";
 
@@ -17,7 +18,7 @@ const Layout = () => {
 
   useEffect(() => {
     (async () => {
-      await dispatch(sessionActions.restoreUser());
+      await dispatch(restoreUser());
       setIsLoaded(true);
     })();
   }, [dispatch]);
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <LoginFormPage />,
+      },
+      {
+        path: "/signup",
+        element: <SignupFormPage />,
       },
     ],
   },
