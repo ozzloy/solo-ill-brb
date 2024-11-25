@@ -1,0 +1,14 @@
+.navigation a {
+    color: #ccc;
+    background-color: #111;
+}
+
+.navigation button {
+    width: fit-content;
+    padding: 1em;
+    background-color: #794bc4;
+    border-radius: 10px;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
