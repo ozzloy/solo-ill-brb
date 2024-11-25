@@ -25,7 +25,14 @@ npm run dev
 ```
 
 ### open web browser
-TODO
+browse to http://localhost:5173/
+
+## deploy
+bundle front end
+```bash
+cd frontend
+npm run build
+```
 
 ## Database Schema Design
 
