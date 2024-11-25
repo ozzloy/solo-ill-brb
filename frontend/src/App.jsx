@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   createBrowserRouter,
+  Link,
   Outlet,
   RouterProvider,
 } from "react-router-dom";
@@ -27,9 +28,11 @@ const Layout = () => {
     <>
       <header>
         <h1>
-          <span style={{ color: "#aaa", fontSize: "100px" }}>
-            <FaTruckFast />
-          </span>
+          <Link to="/">
+            <span style={{ color: "#aaa", fontSize: "100px" }}>
+              <FaTruckFast />
+            </span>
+          </Link>
           i'll brb
         </h1>
         <Navigation isLoaded={isLoaded} />
