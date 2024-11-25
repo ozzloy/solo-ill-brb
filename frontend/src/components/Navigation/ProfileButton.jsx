@@ -11,9 +11,12 @@ function ProfileButton({ user }) {
   const [showMenu, setShowMenu] = useState(false);
   const dropDownMenu = useRef();
 
+  const closeMenu = () => setShowMenu(false);
+
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logout());
+    closeMenu();
   };
 
   const toggleMenu = (e) => {
@@ -65,12 +68,14 @@ function ProfileButton({ user }) {
             <li>
               <OpenModalButton
                 buttonText="log in"
+                onButtonClick={closeMenu}
                 modalComponent={<LoginFormModal />}
               />
             </li>
             <li>
               <OpenModalButton
                 buttonText="sign up"
+                onButtonClick={closeMenu}
                 modalComponent={<SignupFormModal />}
               />
             </li>
