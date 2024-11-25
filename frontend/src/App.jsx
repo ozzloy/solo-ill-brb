@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 
 import Navigation from "./components/Navigation";
-import SignupFormPage from "./components/SignupFormPage";
 import { restoreUser } from "./store/session";
 
 import "./App.css";
@@ -38,10 +37,6 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <h1>Welcome!</h1>,
-      },
-      {
-        path: "/signup",
-        element: <SignupFormPage />,
       },
     ],
   },

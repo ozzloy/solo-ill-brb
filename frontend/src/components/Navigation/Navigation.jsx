@@ -5,6 +5,7 @@ import ProfileButton from "./ProfileButton";
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import "./Navigation.css";
+import SignupFormModal from "../SignupFormModal";
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
@@ -24,7 +25,10 @@ function Navigation({ isLoaded }) {
         />
       </li>
       <li>
-        <NavLink to="/signup">sign up</NavLink>
+        <OpenModalButton
+          buttonText="sign up"
+          modalComponent={<SignupFormModal />}
+        />
       </li>
     </>
   );
