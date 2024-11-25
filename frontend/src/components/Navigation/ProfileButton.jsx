@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { FaCircleUser } from "react-icons/fa6";
 import * as sessionActions from "../../store/session";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -12,6 +12,23 @@ function ProfileButton({ user }) {
     dispatch(sessionActions.logout());
   };
 
+  const toggleMenu = (e) => {
+    e.stopPropagation();
+    setShowMenu(!showMenu);
+  };
+
+  useEffect(() => {
+    if (!showMenu) return;
+
+    const closeMenu = () => {
+      setShowMenu(false);
+    };
+
+    document.addEventListener("click", closeMenu);
+
+    return () => document.removeEventListener("click", closeMenu);
+  }, [showMenu]);
+
   const ulClassName =
     "profile-dropdown" + (showMenu ? "" : " hidden");
 
@@ -19,7 +36,7 @@ function ProfileButton({ user }) {
     <>
       <button
         className="profile-icon"
-        onClick={() => setShowMenu(!showMenu)}
+        onClick={toggleMenu}
         style={{ color: "#aaa", fontSize: "100px" }}
       >
         <FaCircleUser />
