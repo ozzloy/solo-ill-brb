@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import LoginFormPage from "./components/LoginFormPage";
+import Navigation from "./components/Navigation";
 import SignupFormPage from "./components/SignupFormPage";
 import { restoreUser } from "./store/session";
 
@@ -23,7 +24,12 @@ const Layout = () => {
     })();
   }, [dispatch]);
 
-  return <>{isLoaded && <Outlet />}</>;
+  return (
+    <>
+      <Navigation isLoaded={isLoaded} />
+      {isLoaded && <Outlet />}
+    </>
+  );
 };
 
 const router = createBrowserRouter([
