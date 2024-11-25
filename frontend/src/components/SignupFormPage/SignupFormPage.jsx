@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { signup } from "../../store/session";
-import styles from "../style/Form.module.css";
+import style from "../style/Form.module.css";
 
 function SignupFormPage() {
   const dispatch = useDispatch();
@@ -43,13 +43,13 @@ function SignupFormPage() {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <h1 className={styles.h1}>sign up</h1>
-      <label className={styles.label} htmlFor="email">
+    <form className={style.form} onSubmit={handleSubmit}>
+      <h1 className={style.h1}>sign up</h1>
+      <label className={style.label} htmlFor="email">
         email
       </label>
       <input
-        className={styles.input}
+        className={style.input}
         name="email"
         id="email"
         placeholder="email"
@@ -58,12 +58,12 @@ function SignupFormPage() {
         onChange={(e) => setEmail(e.target.value)}
         required
       />
-      {errors.email && <p className={styles.error}>{errors.email}</p>}
-      <label className={styles.label} htmlFor="username">
+      {errors.email && <p className={style.error}>{errors.email}</p>}
+      <label className={style.label} htmlFor="username">
         username
       </label>
       <input
-        className={styles.input}
+        className={style.input}
         name="username"
         id="username"
         placeholder="username"
@@ -73,13 +73,13 @@ function SignupFormPage() {
         required
       />
       {errors.username && (
-        <p className={styles.error}>{errors.username}</p>
+        <p className={style.error}>{errors.username}</p>
       )}
-      <label className={styles.label} htmlFor="first-name">
+      <label className={style.label} htmlFor="first-name">
         first name
       </label>
       <input
-        className={styles.input}
+        className={style.input}
         name="first-name"
         id="first-name"
         placeholder="first name"
@@ -89,13 +89,13 @@ function SignupFormPage() {
         required
       />
       {errors.firstName && (
-        <p className={styles.error}>{errors.firstName}</p>
+        <p className={style.error}>{errors.firstName}</p>
       )}
-      <label className={styles.label} htmlFor="last-name">
+      <label className={style.label} htmlFor="last-name">
         last name
       </label>
       <input
-        className={styles.input}
+        className={style.input}
         name="last-name"
         id="last-name"
         type="text"
@@ -105,13 +105,13 @@ function SignupFormPage() {
         required
       />
       {errors.lastName && (
-        <p className={styles.error}>{errors.lastName}</p>
+        <p className={style.error}>{errors.lastName}</p>
       )}
-      <label className={styles.label} htmlFor="password">
+      <label className={style.label} htmlFor="password">
         password
       </label>
       <input
-        className={styles.input}
+        className={style.input}
         name="password"
         id="password"
         type="password"
@@ -121,25 +121,25 @@ function SignupFormPage() {
         required
       />
       {errors.password && (
-        <p className={styles.error}>{errors.password}</p>
+        <p className={style.error}>{errors.password}</p>
       )}
-      <label className={styles.label} htmlFor="confirm-password">
+      <label className={style.label} htmlFor="confirm-password">
         confirm password
       </label>
       <input
         name="confirm-password"
         id="confirm-password"
         placeholder="confirm password"
-        className={styles.input}
+        className={style.input}
         type="password"
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
         required
       />
       {errors.confirmPassword && (
-        <p className={styles.error}>{errors.confirmPassword}</p>
+        <p className={style.error}>{errors.confirmPassword}</p>
       )}
-      <button className={styles.button} type="submit">
+      <button className={style.button} type="submit">
         Sign Up
       </button>
     </form>

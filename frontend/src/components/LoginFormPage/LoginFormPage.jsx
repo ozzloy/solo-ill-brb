@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import styles from "../style/Form.module.css";
+import style from "../style/Form.module.css";
 
 import { login } from "../../store/session";
 
@@ -28,39 +28,39 @@ function LoginFormPage() {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <h1 className={styles.h1}>log in</h1>
-      <label className={styles.label} htmlFor="credential">
+    <form className={style.form} onSubmit={handleSubmit}>
+      <h1 className={style.h1}>log in</h1>
+      <label className={style.label} htmlFor="credential">
         username or email
       </label>
       <input
         name="credential"
         id="credential"
-        className={styles.input}
+        className={style.input}
         placeholder="username or email"
         type="text"
         value={credential}
         onChange={(e) => setCredential(e.target.value)}
         required
       />
-      <label className={styles.label} htmlFor="password">
+      <label className={style.label} htmlFor="password">
         password
       </label>
       <input
         name="password"
         id="password"
-        className={styles.input}
+        className={style.input}
         placeholder="password"
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
       />
-      <button className={styles.button} type="submit">
+      <button className={style.button} type="submit">
         Log In
       </button>
       {errors.message && (
-        <p className={styles.error}>{errors.message}</p>
+        <p className={style.error}>{errors.message}</p>
       )}
     </form>
   );
