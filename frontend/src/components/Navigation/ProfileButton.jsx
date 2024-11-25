@@ -1,28 +1,39 @@
 import { useDispatch } from "react-redux";
 import { FaCircleUser } from "react-icons/fa6";
 import * as sessionActions from "../../store/session";
+import { useState } from "react";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
+  const [showMenu, setShowMenu] = useState(false);
 
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
   };
 
+  const ulClassName =
+    "profile-dropdown" + (showMenu ? "" : " hidden");
+
   return (
     <>
-      <div style={{ color: "#aaa", fontSize: "100px" }}>
+      <button
+        className="profile-icon"
+        onClick={() => setShowMenu(!showMenu)}
+        style={{ color: "#aaa", fontSize: "100px" }}
+      >
         <FaCircleUser />
-      </div>
-      <ul className="profile-dropdown">
+      </button>
+      <ul className={ulClassName}>
         <li>{user.username}</li>
         <li>
           {user.firstName} {user.lastName}
         </li>
         <li>{user.email}</li>
         <li>
-          <button onClick={logout}>log out</button>
+          <button className="logout" onClick={logout}>
+            log out
+          </button>
         </li>
       </ul>
     </>

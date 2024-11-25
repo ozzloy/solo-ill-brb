@@ -3,7 +3,7 @@
     background-color: #111;
 }
 
-.navigation button {
+.navigation .logout {
     width: fit-content;
     padding: 1em;
     background-color: #794bc4;
@@ -11,4 +11,18 @@
     border: none;
     font-size: 20px;
     cursor: pointer;
+}
+
+.navigation .profile-icon {
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.navigation .hidden {
+    display: none;
+}
+
+ul.navigation, ul.navigation ul {
+    list-style: none;
 }
