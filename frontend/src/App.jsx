@@ -6,7 +6,6 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-import LoginFormPage from "./components/LoginFormPage";
 import Navigation from "./components/Navigation";
 import SignupFormPage from "./components/SignupFormPage";
 import { restoreUser } from "./store/session";
@@ -39,10 +38,6 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <h1>Welcome!</h1>,
-      },
-      {
-        path: "/login",
-        element: <LoginFormPage />,
       },
       {
         path: "/signup",

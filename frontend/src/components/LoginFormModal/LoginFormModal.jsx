@@ -1,30 +1,26 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import style from "../style/Form.module.css";
 
 import { login } from "../../store/session";
+import { useModal } from "../../context/Modal";
 
-function LoginFormPage() {
+function LoginFormModal() {
   const dispatch = useDispatch();
-  const sessionUser = useSelector((state) => state.session.user);
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-
-  if (sessionUser) return <Navigate to="/" replace={true} />;
+  const { closeModal } = useModal();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
-    return dispatch(login(credential, password)).catch(
-      async (res) => {
-        console.log("LoginFormPage:res", res);
+    return dispatch(login(credential, password))
+      .then(closeModal)
+      .catch(async (res) => {
         const data = await res.json();
-        console.log("LoginFormPage:data", data);
         if (data?.errors) setErrors(data.errors);
-      },
-    );
+      });
   };
 
   return (
@@ -56,14 +52,14 @@ function LoginFormPage() {
         onChange={(e) => setPassword(e.target.value)}
         required
       />
-      <button className={style.button} type="submit">
-        Log In
-      </button>
       {errors.message && (
         <p className={style.error}>{errors.message}</p>
       )}
+      <button className={style.button} type="submit">
+        Log In
+      </button>
     </form>
   );
 }
 
-export default LoginFormPage;
+export default LoginFormModal;
