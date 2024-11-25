@@ -5,6 +5,7 @@ import {
   Outlet,
   RouterProvider,
 } from "react-router-dom";
+import { FaTruckFast } from "react-icons/fa6";
 
 import Navigation from "./components/Navigation";
 import { restoreUser } from "./store/session";
@@ -24,8 +25,16 @@ const Layout = () => {
 
   return (
     <>
-      <Navigation isLoaded={isLoaded} />
-      {isLoaded && <Outlet />}
+      <header>
+        <h1>
+          <span style={{ color: "#aaa", fontSize: "100px" }}>
+            <FaTruckFast />
+          </span>
+          i'll brb
+        </h1>
+        <Navigation isLoaded={isLoaded} />
+      </header>
+      <main>{isLoaded && <Outlet />}</main>
     </>
   );
 };
