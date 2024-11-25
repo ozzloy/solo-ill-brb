@@ -7,15 +7,22 @@
 3. open web app
 
 ### start backend
+leave this running in a shell specifically for backend
 ```bash
 cd backend
 cp .env.example .env
 # modify .env to set port, backend db, schema, etc
+npm install # only the first time
 npm start
 ```
 
 ### start frontend
-TODO
+leave this running in a shell specifically for frontend
+```bash
+cd frontend
+npm install # only the first time
+npm run dev
+```
 
 ### open web browser
 TODO
