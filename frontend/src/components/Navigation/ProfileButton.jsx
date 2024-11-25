@@ -1,11 +1,12 @@
 import { useDispatch } from "react-redux";
 import { FaCircleUser } from "react-icons/fa6";
 import * as sessionActions from "../../store/session";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
+  const dropDownMenu = useRef();
 
   const logout = (e) => {
     e.preventDefault();
@@ -20,8 +21,12 @@ function ProfileButton({ user }) {
   useEffect(() => {
     if (!showMenu) return;
 
-    const closeMenu = () => {
-      setShowMenu(false);
+    const closeMenu = (e) => {
+      if (
+        dropDownMenu.current &&
+        !dropDownMenu.current.contains(e.target)
+      )
+        setShowMenu(false);
     };
 
     document.addEventListener("click", closeMenu);
@@ -29,7 +34,7 @@ function ProfileButton({ user }) {
     return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
 
-  const ulClassName =
+  const dropDownClassName =
     "profile-dropdown" + (showMenu ? "" : " hidden");
 
   return (
@@ -41,7 +46,7 @@ function ProfileButton({ user }) {
       >
         <FaCircleUser />
       </button>
-      <ul className={ulClassName}>
+      <ul className={dropDownClassName} ref={dropDownMenu}>
         <li>{user.username}</li>
         <li>
           {user.firstName} {user.lastName}
