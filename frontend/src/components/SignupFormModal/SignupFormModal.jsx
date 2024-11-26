@@ -17,11 +17,11 @@ function SignupFormModal() {
 
   const isDisabled =
     username.length < 4 &&
+    password.length < 6 &&
     !(
       email &&
       firstName &&
       lastName &&
-      password &&
       confirmPassword &&
       Object.keys(errors).length === 0
     );
