@@ -14,6 +14,16 @@ function LoginFormModal() {
 
   const isFormInvalid = credential.length < 6 || password.length < 4;
 
+  const handleGuestLogin = (e) => {
+    e.preventDefault();
+    dispatch(login("Demo-lition", "password"))
+      .then(closeModal)
+      .catch(async (res) => {
+        const data = await res.json();
+        if (data?.errors) setErrors(data.errors);
+      });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
@@ -64,8 +74,12 @@ function LoginFormModal() {
       >
         log in
       </button>
-      <button className={style.button} type="submit">
-        guest log in
+      <button
+        className={style.button}
+        type="button"
+        onClick={handleGuestLogin}
+      >
+        Log in as Demo User
       </button>
     </form>
   );
