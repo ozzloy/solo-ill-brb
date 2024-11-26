@@ -4,10 +4,10 @@
 
 .form {
     text-align: center;
-    background-color: black;
+    background-color: #123;
     border-radius: 25px;
-    margin: 3em auto;
-    padding: 3em;
+    margin: 0 auto;
+    padding: 1em 3em;
     width: fit-content;
     max-width: 400px;
 }
@@ -28,13 +28,15 @@
     border: none;
     font-size: 20px;
     border-radius: 10px;
-    margin: 1em auto;
-    padding: 1em;
-    background-color: #222;
+    margin: 0.7em auto 1em auto;
+    padding: 0.5em;
+    background-color: #111;
     color: #eee;
 }
 
 .button {
+    margin: 1em auto;
+    display: block;
     width: fit-content;
     padding: 1em;
     background-color: #794bc4;
@@ -42,7 +44,7 @@
     border: none;
     font-size: 20px;
     cursor: pointer;
-    transition: all 0.2s ease-in-out;
+    transition: all 0.1s ease-in-out;
 }
 
 .button:disabled {
