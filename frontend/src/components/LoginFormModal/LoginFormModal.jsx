@@ -12,6 +12,8 @@ function LoginFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
+  const isFormInvalid = credential.length < 6 || password.length < 4;
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
@@ -55,8 +57,12 @@ function LoginFormModal() {
       {errors.message && (
         <p className={style.error}>{errors.message}</p>
       )}
-      <button className={style.button} type="submit">
-        Log In
+      <button
+        className={style.button}
+        type="submit"
+        disabled={isFormInvalid}
+      >
+        log in
       </button>
     </form>
   );
