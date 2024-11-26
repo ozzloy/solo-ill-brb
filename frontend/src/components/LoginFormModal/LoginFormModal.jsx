@@ -64,6 +64,9 @@ function LoginFormModal() {
       >
         log in
       </button>
+      <button className={style.button} type="submit">
+        guest log in
+      </button>
     </form>
   );
 }
