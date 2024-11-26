@@ -33,7 +33,7 @@ const Layout = () => {
               <FaTruckFast />
             </span>
           </Link>
-          i'll brb
+          i&apos;ll brb
         </h1>
         <Navigation isLoaded={isLoaded} />
       </header>
