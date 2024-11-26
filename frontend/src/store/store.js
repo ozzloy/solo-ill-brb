@@ -6,8 +6,12 @@ import {
 } from "redux";
 import { thunk } from "redux-thunk";
 import sessionReducer from "./session";
+import spotReducer from "./spots";
 
-const rootReducer = combineReducers({ session: sessionReducer });
+const rootReducer = combineReducers({
+  session: sessionReducer,
+  spots: spotReducer,
+});
 
 let enhancer;
 if (import.meta.env.MODE === "production") {
