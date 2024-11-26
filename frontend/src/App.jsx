@@ -9,6 +9,7 @@ import {
 import { FaTruckFast } from "react-icons/fa6";
 
 import Navigation from "./components/Navigation";
+import Spots from "./components/Spots";
 import { restoreUser } from "./store/session";
 
 import "./App.css";
@@ -47,8 +48,12 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: "/",
+        path: "",
         element: <h1>Welcome!</h1>,
+      },
+      {
+        path: "spots",
+        element: <Spots />,
       },
     ],
   },
