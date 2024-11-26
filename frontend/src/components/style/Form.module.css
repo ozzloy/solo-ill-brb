@@ -4,17 +4,8 @@
     background-color: #123;
     border-radius: 25px;
     padding: 1em;
-    width: 600px;
-}
-
-.signup-line {
-    display: flex;
-    justify-content: space-between;
-    width:550px;
-}
-
-.label {
-    font-size: 20px;
+    width: fit-content;
+    max-width: 600px;
 }
 
 .input {
@@ -26,7 +17,6 @@
     background-color: #111;
     padding: 0.5em;
     color: #eee;
-    width: 50%;
 }
 
 .button {
