@@ -13,7 +13,7 @@ const validateSignup = [
   check("email")
     .exists({ checkFalsy: true })
     .isEmail()
-    .withMessage("Invalid email."),
+    .withMessage("The provided email is invalid"),
   check("username")
     .exists({ checkFalsy: true })
     .isLength({ min: 4 })
@@ -50,7 +50,7 @@ router.post("/", validateSignup, async (req, res) => {
     return res.status(500).json({
       message: "User already exists",
       errors: {
-        username: "User with that username already exists",
+        username: "Username must be unique",
       },
     });
   }
