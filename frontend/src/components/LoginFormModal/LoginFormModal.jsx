@@ -38,32 +38,36 @@ function LoginFormModal() {
   return (
     <form className={style.form} onSubmit={handleSubmit}>
       <h1 className={style.h1}>log in</h1>
-      <label className={style.label} htmlFor="credential">
-        username or email
-      </label>
-      <input
-        name="credential"
-        id="credential"
-        className={style.input}
-        placeholder="username or email"
-        type="text"
-        value={credential}
-        onChange={(e) => setCredential(e.target.value)}
-        required
-      />
-      <label className={style.label} htmlFor="password">
-        password
-      </label>
-      <input
-        name="password"
-        id="password"
-        className={style.input}
-        placeholder="password"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
+      <div className="signup-line">
+        <label className={style.label} htmlFor="credential">
+          username or email
+        </label>
+        <input
+          name="credential"
+          id="credential"
+          className={style.input}
+          placeholder="username or email"
+          type="text"
+          value={credential}
+          onChange={(e) => setCredential(e.target.value)}
+          required
+        />
+      </div>
+      <div className="signup-line">
+        <label className={style.label} htmlFor="password">
+          password
+        </label>
+        <input
+          name="password"
+          id="password"
+          className={style.input}
+          placeholder="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+      </div>
       {errors.message && (
         <p className={style.error}>{errors.message}</p>
       )}
