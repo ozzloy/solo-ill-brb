@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import style from "./Spots.module.css";
-import { getSpots, selectSpotsArray } from "../../store/spots";
+import { getSpots, selectSpotsArray } from "../../store/spot";
 import Spot from "../Spot";
 
 const Spots = () => {

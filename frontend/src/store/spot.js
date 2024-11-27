@@ -21,7 +21,7 @@ export const getSpots = () => async (dispatch) => {
 /////////////////////////////////////////////////////////////////////
 // selectors
 export const selectSpots = (state) => {
-  return state.spots.Spots;
+  return state.spot.Spots;
 };
 export const selectSpotsArray = () =>
   createSelector([selectSpots], (spots) => {
@@ -32,16 +32,13 @@ export const selectSpotsArray = () =>
 /////////////////////////////////////////////////////////////////////
 // reducers
 
-const initialState = { Spots: [], page: null, size: null };
+const initialState = { Spots: {}, page: null, size: null };
 
 const handlers = {
-  [LOAD]: (state, { spots }) => {
-    const newState = { ...state, ...spots };
-    return newState;
-  },
+  [LOAD]: (state, { spots }) => ({ ...state, ...spots }),
 };
 
-export const spotReducer = (state = initialState, action) => {
+const spotReducer = (state = initialState, action) => {
   return handlers[action.type]?.(state, action) ?? state;
 };
 export default spotReducer;

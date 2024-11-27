@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import style from "./Spot.module.css";
 import { FaMagnifyingGlassMinus } from "react-icons/fa6";
+import { useDispatch, useSelector } from "react-redux";
+import { getSpotImage, selectSpotImage } from "../../store/spotImage";
 
 /**
  * Each spot tile in the tile list should have a thumbnail image, the
@@ -25,8 +27,15 @@ const Spot = ({ spot }) => {
    *   "avgRating": "1"
    * }
    */
-  const [imageUrl, setImageUrl] = useState("");
-  const { name, city, state } = spot;
+  const dispatch = useDispatch();
+  const { name, city, state, previewImage } = spot;
+  const spotImage = useSelector(selectSpotImage(previewImage));
+  const imageUrl = spotImage?.url;
+
+  useEffect(() => {
+    dispatch(getSpotImage(previewImage));
+  }, [dispatch]);
+
   return (
     <section className={style.spot} title={name}>
       <h2>{name}</h2>
