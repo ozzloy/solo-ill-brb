@@ -879,8 +879,8 @@ Create and return a new image for a review specified by id.
     }
     ```
 
-* Error response: Cannot add any more images because there is a maximum of 10
-  images per resource
+* Error response: Cannot add any more images because there is a
+  maximum of 10 images per resource
   * Status Code: 403
   * Headers:
     * Content-Type: application/json
