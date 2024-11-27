@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
+import style from "./Spots.module.css";
 import { getSpots, selectSpotsArray } from "../../store/spots";
 import Spot from "../Spot";
 
@@ -21,11 +23,11 @@ const Spots = () => {
   if (!user) return null;
   if (!spots.length) return <h2>loading spots...</h2>;
   return (
-    <>
-      {spots.map((spot) => (
-        <Spot spot={spot} />
+    <div className={style.spots}>
+      {spots.map(({ id, ...spot }) => (
+        <Spot key={id} spot={spot} />
       ))}
-    </>
+    </div>
   );
 };
 export default Spots;
