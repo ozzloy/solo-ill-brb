@@ -34,7 +34,7 @@ const Spot = ({ spot }) => {
    * }
    */
   const dispatch = useDispatch();
-  const { name, city, state, previewImage, id } = spot;
+  const { name, city, state, previewImage, id, price } = spot;
   const spotImage = useSelector(selectSpotImage(previewImage));
   const ratings = useSelector(selectSpotReviewRatings(id));
   const imageUrl = spotImage?.url;
@@ -72,7 +72,9 @@ const Spot = ({ spot }) => {
             <dt>state</dt>
             <dd>{state}</dd>
             <dt>average rating</dt>
-            <dl>{averageRating}</dl>
+            <dd>{averageRating}</dd>
+            <dt>price</dt>
+            <dd>{price} per night</dd>
           </dl>
         </div>
       </div>

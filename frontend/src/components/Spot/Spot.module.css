@@ -40,17 +40,24 @@
 
 .details {
     flex-grow: 1;
+    position: relative;
+    width: 100%;
 }
 
 .details dl {
     margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1em;
 }
 
 .details dt {
+    width: 120px;
     font-weight: bold;
-    margin-bottom: 0.25rem;
 }
 
 .details dd {
-    margin: 0 0 1rem 0;
+    width: calc(100% - 120px);
+    margin: 0;
+    padding: 0 0.5em;
 }
