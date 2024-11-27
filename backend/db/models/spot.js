@@ -112,7 +112,7 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
         get() {
-          return parseFloat(this.getDataValue("lng"));
+          return parseFloat(this.getDataValue("price"));
         },
       },
       previewImage: {
