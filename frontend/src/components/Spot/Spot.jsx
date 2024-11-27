@@ -28,7 +28,7 @@ const Spot = ({ spot }) => {
   const [imageUrl, setImageUrl] = useState("");
   const { name, city, state } = spot;
   return (
-    <section className={style.spot}>
+    <section className={style.spot} title={name}>
       <h2>{name}</h2>
       {imageUrl ? (
         <img className={style.img} src={imageUrl} alt={name} />
