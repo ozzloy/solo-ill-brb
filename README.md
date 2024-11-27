@@ -1333,6 +1333,46 @@ Delete an existing booking.
 
 ## IMAGES
 
+### Get a Spot Image
+
+Get an existing image for a Spot.
+
+* Require Authentication: true
+* Request
+  * Method: GET
+  * Route path: /spot-images/:spotImageId
+  * Body: none
+
+* Successful Response
+  * Status Code: 200
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+      "image": {
+        "id": 2,
+        "url": "beach.png",
+        "spotId": 1,
+        "createdAt": "2024-11-27T01:40:06.137Z",
+        "updatedAt": "2024-11-27T01:40:06.137Z"
+      }
+    }
+    ```
+
+* Error response: Couldn't find a Spot Image with the specified id
+  * Status Code: 404
+  * Headers:
+    * Content-Type: application/json
+  * Body:
+
+    ```json
+    {
+        "message": "Spot Image " + imageId + " could not be found",
+    }
+    ```
+
 ### Delete a Spot Image
 
 Delete an existing image for a Spot.

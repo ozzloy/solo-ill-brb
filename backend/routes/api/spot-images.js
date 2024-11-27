@@ -1,28 +1,59 @@
 const express = require("express");
 const { requireAuth } = require("../../utils/auth");
 const { Spot, SpotImage } = require("../../db/models");
+const { param } = require("express-validator");
+const { handleValidationErrors } = require("../../utils/validation");
 
 const router = express.Router();
 
-router.delete("/:imageId", requireAuth, async (req, res) => {
-  const { user } = req;
-  const { imageId } = req.params;
-  const imageIdNumber = parseInt(imageId);
+const validateImageId = [
+  param("imageId")
+    .isInt()
+    .withMessage("imageId must be an integer")
+    .toInt(),
+  handleValidationErrors,
+];
 
-  const image = await SpotImage.findByPk(imageIdNumber, {
-    include: { model: Spot, attributes: ["ownerId"] },
-  });
+router.get(
+  "/:imageId",
+  [requireAuth, validateImageId],
+  async (req, res) => {
+    const { imageId } = req.params;
 
-  if (!image) {
-    return res.status(404).json({ message: "Spot Image couldn't be found" });
-  }
+    const image = await SpotImage.findByPk(imageId);
+    if (!image) {
+      return res.status(404).json({
+        message: "Spot Image " + imageId + " could not be found",
+      });
+    }
+    return res.json({ image });
+  },
+);
 
-  if (image.Spot.ownerId !== user.id) {
-    return res.status(403).json({ message: "Forbidden" });
-  }
+router.delete(
+  "/:imageId",
+  [requireAuth, validateImageId],
+  async (req, res) => {
+    const { user } = req;
+    const { imageId } = req.params;
 
-  image.destroy();
-  return res.json({ message: "Successfully deleted" });
-});
+    const image = await SpotImage.findByPk(imageId, {
+      include: { model: Spot, attributes: ["ownerId"] },
+    });
+
+    if (!image) {
+      return res
+        .status(404)
+        .json({ message: "Spot Image couldn't be found" });
+    }
+
+    if (image.Spot.ownerId !== user.id) {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+
+    image.destroy();
+    return res.json({ message: "Successfully deleted" });
+  },
+);
 
 module.exports = router;
