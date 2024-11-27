@@ -4,3 +4,10 @@
     padding: 1em;
     border-radius: 10px;
 }
+
+.spot .img {
+    width: 200px;
+    height: 200px;
+    font-size: 200px;
+    display: block;
+}
