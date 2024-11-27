@@ -28,19 +28,27 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "spotId",
         sourceKey: "id",
       });
-      Spot.addScope("withAverageRating", (fieldName = "avgRating") => ({
-        include: [
-          {
-            model: models.Review,
-            attributes: [],
+      Spot.addScope(
+        "withAverageRating",
+        (fieldName = "avgRating") => ({
+          include: [
+            {
+              model: models.Review,
+              attributes: [],
+            },
+          ],
+          attributes: {
+            include: [
+              [
+                fn("ROUND", fn("AVG", col("Reviews.stars"))),
+                fieldName,
+              ],
+            ],
           },
-        ],
-        attributes: {
-          include: [[fn("ROUND", fn("AVG", col("Reviews.stars"))), fieldName]],
-        },
-        group: ["Spot.id"],
-        subQuery: false,
-      }));
+          group: ["Spot.id"],
+          subQuery: false,
+        }),
+      );
     }
   }
   Spot.init(
@@ -107,7 +115,9 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isPositive(value) {
             if (value <= 0) {
-              throw new Error("Price per day must be a positive number");
+              throw new Error(
+                "Price per day must be a positive number",
+              );
             }
           },
         },
