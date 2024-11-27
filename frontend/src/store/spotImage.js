@@ -1,7 +1,7 @@
-const ADD = "spot-images/ADD";
-
 /////////////////////////////////////////////////////////////////////
 // action types
+const ADD = "spot-images/ADD";
+
 const add = (spotImage) => ({ type: ADD, spotImage });
 
 /////////////////////////////////////////////////////////////////////
@@ -16,9 +16,13 @@ export const getSpotImage = (id) => async (dispatch) => {
 
 /////////////////////////////////////////////////////////////////////
 // selectors
+
 export const selectSpotImage = (id) => (state) => {
   return state.spotImage.spotImages[id];
 };
+
+/////////////////////////////////////////////////////////////////////
+// reducer
 
 const initialState = { spotImages: {} };
 

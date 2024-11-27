@@ -1,10 +1,10 @@
 import { createSelector } from "reselect";
 import { csrfFetch } from "./csrf";
 
-const LOAD = "spots/LOAD";
-
 /////////////////////////////////////////////////////////////////////
 // actiion types
+
+const LOAD = "spots/LOAD";
 
 const load = (spots) => ({ type: LOAD, spots });
 

@@ -25,7 +25,7 @@ const Spots = () => {
   return (
     <div className={style.spots}>
       {spots.map(({ id, ...spot }) => (
-        <Spot key={id} spot={spot} />
+        <Spot key={id} spot={{ ...spot, id }} />
       ))}
     </div>
   );

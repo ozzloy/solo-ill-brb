@@ -1,8 +1,14 @@
-import { useEffect, useState } from "react";
-import style from "./Spot.module.css";
+import isInteger from "is-integer";
+import { useEffect } from "react";
 import { FaMagnifyingGlassMinus } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
+
+import style from "./Spot.module.css";
 import { getSpotImage, selectSpotImage } from "../../store/spotImage";
+import {
+  getSpotReviews,
+  selectSpotReviewRatings,
+} from "../../store/review";
 
 /**
  * Each spot tile in the tile list should have a thumbnail image, the
@@ -28,25 +34,48 @@ const Spot = ({ spot }) => {
    * }
    */
   const dispatch = useDispatch();
-  const { name, city, state, previewImage } = spot;
+  const { name, city, state, previewImage, id } = spot;
   const spotImage = useSelector(selectSpotImage(previewImage));
+  const ratings = useSelector(selectSpotReviewRatings(id));
   const imageUrl = spotImage?.url;
 
   useEffect(() => {
-    dispatch(getSpotImage(previewImage));
-  }, [dispatch]);
+    if (isInteger(previewImage)) dispatch(getSpotImage(previewImage));
+    if (isInteger(id)) dispatch(getSpotReviews(id));
+  }, [dispatch, id, previewImage]);
+
+  const averageRating =
+    ratings.length === 0
+      ? "new"
+      : ratings.reduce((result, rating) => result + rating, 0) /
+        ratings.length;
+
+  const image = imageUrl ? (
+    <img src={imageUrl} alt={name} />
+  ) : (
+    <span className={style.placeholder} style={{ fontSize: "100px" }}>
+      <FaMagnifyingGlassMinus />
+    </span>
+  );
 
   return (
     <section className={style.spot} title={name}>
-      <h2>{name}</h2>
-      {imageUrl ? (
-        <img className={style.img} src={imageUrl} alt={name} />
-      ) : (
-        <span className={style.img}>
-          <FaMagnifyingGlassMinus />
-        </span>
-      )}
-      city: {city} state: {state}
+      <header>
+        <h2>{name}</h2>
+      </header>
+      <div className={style.content}>
+        <figure className={style.imageContainer}>{image}</figure>
+        <div className={style.details}>
+          <dl>
+            <dt>city</dt>
+            <dd>{city}</dd>
+            <dt>state</dt>
+            <dd>{state}</dd>
+            <dt>average rating</dt>
+            <dl>{averageRating}</dl>
+          </dl>
+        </div>
+      </div>
     </section>
   );
 };
