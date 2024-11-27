@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { FaMagnifyingGlassMinus } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 
-import style from "./Spot.module.css";
+import style from "./SpotTile.module.css";
 import { getSpotImage, selectSpotImage } from "../../store/spotImage";
 import {
   getSpotReviews,
@@ -14,9 +14,9 @@ import {
  * Each spot tile in the tile list should have a thumbnail image, the
  * city, and the state of the spot.
  */
-const Spot = ({ spot }) => {
+const SpotTile = ({ spot }) => {
   /**
-   * Spot.jsx:Spot:spot {
+   * {
    *   "lat": 34.745636,
    *   "lng": -222.478433,
    *   "price": -222.478433,
@@ -81,4 +81,4 @@ const Spot = ({ spot }) => {
     </section>
   );
 };
-export default Spot;
+export default SpotTile;

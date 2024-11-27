@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import style from "./Spots.module.css";
 import { getSpots, selectSpotsArray } from "../../store/spot";
-import Spot from "../Spot";
+import SpotTile from "../SpotTile";
 
 const Spots = () => {
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const Spots = () => {
   return (
     <div className={style.spots}>
       {spots.map(({ id, ...spot }) => (
-        <Spot key={id} spot={{ ...spot, id }} />
+        <SpotTile key={id} spot={{ ...spot, id }} />
       ))}
     </div>
   );
