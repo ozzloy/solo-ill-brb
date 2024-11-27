@@ -32,13 +32,13 @@ export const selectSpotsArray = () =>
 /////////////////////////////////////////////////////////////////////
 // reducers
 
-const initialState = { Spots: {}, page: null, size: null };
+const initialSlice = { Spots: {}, page: null, size: null };
 
 const handlers = {
-  [LOAD]: (state, { spots }) => ({ ...state, ...spots }),
+  [LOAD]: (slice, { spots }) => ({ ...slice, ...spots }),
 };
 
-const spotReducer = (state = initialState, action) => {
-  return handlers[action.type]?.(state, action) ?? state;
+const spotReducer = (slice = initialSlice, action) => {
+  return handlers[action.type]?.(slice, action) ?? slice;
 };
 export default spotReducer;
