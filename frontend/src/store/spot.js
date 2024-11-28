@@ -15,13 +15,15 @@ export const getSpots = () => async (dispatch) => {
   const response = await csrfFetch("/api/spots");
   const json = await response.json();
   if (!response.ok) throw json;
-  dispatch(load(json));
+  const { Spots, ...rest } = json;
+  const spots = { spots: Spots, ...rest };
+  dispatch(load(spots));
 };
 
 /////////////////////////////////////////////////////////////////////
 // selectors
 export const selectSpots = (state) => {
-  return state.spot.Spots;
+  return state.spot.spots;
 };
 export const selectSpotsArray = () =>
   createSelector([selectSpots], (spots) => {
@@ -32,7 +34,7 @@ export const selectSpotsArray = () =>
 /////////////////////////////////////////////////////////////////////
 // reducers
 
-const initialSlice = { Spots: {}, page: null, size: null };
+const initialSlice = { spots: {}, page: null, size: null };
 
 const handlers = {
   [LOAD]: (slice, { spots }) => ({ ...slice, ...spots }),
