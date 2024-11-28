@@ -22,6 +22,7 @@ const Spots = () => {
 
   if (!user) return null;
   if (!spots.length) return <h2>loading spots...</h2>;
+
   return (
     <div className={style.spots}>
       {spots.map(({ id, ...spot }) => (

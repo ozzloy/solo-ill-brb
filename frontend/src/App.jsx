@@ -9,6 +9,7 @@ import {
 import { FaTruckFast } from "react-icons/fa6";
 
 import Navigation from "./components/Navigation";
+import SpotPage from "./components/SpotPage";
 import Spots from "./components/Spots";
 import { restoreUser } from "./store/session";
 
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: "spots",
         element: <Spots />,
+      },
+      {
+        path: "spots/:spotId",
+        element: <SpotPage />,
       },
     ],
   },

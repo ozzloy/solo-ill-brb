@@ -9,6 +9,7 @@ import {
   getSpotReviews,
   selectSpotReviewRatings,
 } from "../../store/review";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Each spot tile in the tile list should have a thumbnail image, the
@@ -33,6 +34,7 @@ const SpotTile = ({ spot }) => {
    *   "avgRating": "1"
    * }
    */
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { name, city, state, previewImage, id, price } = spot;
   const spotImage = useSelector(selectSpotImage(previewImage));
@@ -58,8 +60,17 @@ const SpotTile = ({ spot }) => {
     </span>
   );
 
+  const handleClick = (e) => {
+    e.preventDefault();
+    navigate("/spots/" + id);
+  };
+
   return (
-    <section className={style.spot} title={name}>
+    <section
+      className={style.spot}
+      title={name}
+      onClick={handleClick}
+    >
       <header>
         <h2>{name}</h2>
       </header>
