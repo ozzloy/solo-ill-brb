@@ -1,5 +1,8 @@
+import { csrfFetch } from "./csrf";
+
 /////////////////////////////////////////////////////////////////////
 // action types
+
 const ADD = "spot-images/ADD";
 
 const add = (spotImage) => ({ type: ADD, spotImage });
