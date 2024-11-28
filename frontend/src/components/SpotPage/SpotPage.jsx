@@ -93,7 +93,9 @@ const SpotExists = ({
         <p className={style.description}>{description}</p>
         <div className={style.callout}>
           <span className={style.price}>{price} / night</span>
-          <button>reserve</button>
+          <button onClick={() => alert("Feature coming soon")}>
+            reserve
+          </button>
         </div>
       </div>
     </>
