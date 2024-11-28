@@ -1,6 +1,7 @@
 import { createSelector } from "reselect";
 import { csrfFetch } from "./csrf";
 import merge from "lodash.merge";
+import keyBy from "lodash.keyby";
 
 /////////////////////////////////////////////////////////////////////
 // actiion types
@@ -17,7 +18,7 @@ export const getSpots = () => async (dispatch) => {
   const json = await response.json();
   if (!response.ok) throw json;
   const { Spots, ...rest } = json;
-  const spots = { spots: Spots, ...rest };
+  const spots = { spots: keyBy(Spots, "id"), ...rest };
   dispatch(load(spots));
 };
 
