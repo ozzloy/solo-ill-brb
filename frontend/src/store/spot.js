@@ -25,11 +25,10 @@ export const getSpots = () => async (dispatch) => {
 export const selectSpots = (state) => {
   return state.spot.spots;
 };
-export const selectSpotsArray = () =>
-  createSelector([selectSpots], (spots) => {
-    const spotsArray = Object.values(spots);
-    return spotsArray;
-  });
+export const selectSpotsArray = createSelector(
+  [selectSpots],
+  (spots) => (spots ? Object.values(spots) : []),
+);
 
 /////////////////////////////////////////////////////////////////////
 // reducers

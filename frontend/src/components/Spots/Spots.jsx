@@ -10,7 +10,7 @@ const Spots = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.session.user);
   const navigate = useNavigate();
-  const spots = useSelector(selectSpotsArray());
+  const spots = useSelector(selectSpotsArray);
 
   useEffect(() => {
     if (!user) navigate("/");
@@ -21,7 +21,7 @@ const Spots = () => {
   }, [dispatch]);
 
   if (!user) return null;
-  if (!spots.length) return <h2>loading spots...</h2>;
+  if (!spots?.length) return <h2>loading spots...</h2>;
 
   return (
     <div className={style.spots}>
