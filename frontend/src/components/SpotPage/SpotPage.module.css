@@ -18,8 +18,9 @@
 }
 
 .preview, .loading {
-    width: 400px;
-    height: 400px;
+    display: inline-block;
+    width: 350px;
+    height: 350px;
     object-fit: cover;
     border: 2px solid #ddd;
     border-radius: 5px;
@@ -32,6 +33,11 @@
     object-fit: cover;
     border: 2px solid #ddd;
     border-radius: 5px;
+}
+
+.star {
+    display: inline-block;
+    padding: 0.5em;
 }
 
 .details {
@@ -60,4 +66,8 @@
     margin: 0.5em;
     padding: 0.5em;
     border-radius: 10px;
+}
+
+.numReviews {
+    margin-left: 0.5em;
 }

@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getSpot, selectSpot } from "../../store/spot";
 import { useEffect } from "react";
-import { FaMagnifyingGlassMinus } from "react-icons/fa6";
+import { FaMagnifyingGlassMinus, FaStar } from "react-icons/fa6";
 
 import style from "./SpotPage.module.css";
 
@@ -51,15 +51,26 @@ import style from "./SpotPage.module.css";
  *  }
  */
 
+const ReviewSummary = ({ avgStarRating, numReviews }) => (
+  <div className={style.reviewSummary}>
+    <div className={style.star}>
+      <FaStar /> {avgStarRating}
+    </div>
+    <span className={style.numReviews}>{numReviews} reviews</span>
+  </div>
+);
+
 const SpotExists = ({
-  name,
+  Owner: { firstName, lastName },
+  SpotImages,
+  avgStarRating,
   city,
-  state,
   country,
   description,
-  SpotImages,
-  Owner: { firstName, lastName },
+  name,
+  numReviews,
   price,
+  state,
 }) => {
   const previewImage = SpotImages.find((image) => image.preview);
   const images = SpotImages.filter((image) => !image.preview);
@@ -82,7 +93,7 @@ const SpotExists = ({
       {previewImage ? (
         <img className={style.preview} src={previewImage.url} />
       ) : (
-        <span className={style.loading} style={{ fontSize: "400px" }}>
+        <span className={style.loading} style={{ fontSize: "300px" }}>
           <FaMagnifyingGlassMinus />
         </span>
       )}
@@ -92,12 +103,27 @@ const SpotExists = ({
       <div className={style.details}>
         <p className={style.description}>{description}</p>
         <div className={style.callout}>
-          <span className={style.price}>{price} / night</span>
-          <button onClick={() => alert("Feature coming soon")}>
-            reserve
-          </button>
+          <div>
+            <span className={style.price}>{price} / night</span>
+            <button onClick={() => alert("Feature coming soon")}>
+              reserve
+            </button>
+          </div>
+          <ReviewSummary
+            avgStarRating={avgStarRating}
+            numReviews={numReviews}
+          />
         </div>
       </div>
+      <section className={style.reviews}>
+        <heading>
+          <h2>reviews</h2>
+          <ReviewSummary
+            avgStarRating={avgStarRating}
+            numReviews={numReviews}
+          />
+        </heading>
+      </section>
     </>
   );
 };
@@ -112,14 +138,16 @@ const SpotPage = () => {
   }, [dispatch]);
 
   const requiredKeys = [
-    "name",
-    "price",
+    "Owner",
+    "SpotImages",
+    "avgStarRating",
     "city",
-    "state",
     "country",
     "description",
-    "SpotImages",
-    "Owner",
+    "name",
+    "numReviews",
+    "price",
+    "state",
   ];
   const spotHasRequiredKeys =
     spot && requiredKeys.every((key) => key in spot);
