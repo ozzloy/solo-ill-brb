@@ -1,6 +1,6 @@
 import isInteger from "is-integer";
 import { useEffect } from "react";
-import { FaMagnifyingGlassMinus } from "react-icons/fa6";
+import { FaMagnifyingGlassMinus, FaStar } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 
 import style from "./SpotTile.module.css";
@@ -49,8 +49,10 @@ const SpotTile = ({ spot }) => {
   const averageRating =
     ratings.length === 0
       ? "new"
-      : ratings.reduce((result, rating) => result + rating, 0) /
-        ratings.length;
+      : (
+          ratings.reduce((result, rating) => result + rating, 0) /
+          ratings.length
+        ).toFixed(1);
 
   const image = imageUrl ? (
     <img src={imageUrl} alt={name} />
@@ -75,15 +77,24 @@ const SpotTile = ({ spot }) => {
         <h2>{name}</h2>
       </header>
       <div className={style.content}>
-        <figure className={style.imageContainer}>{image}</figure>
+        <div>
+          <figure className={style.imageContainer}>{image}</figure>
+          <div className={style.rating}>
+            <div>average rating:</div>
+            <div>
+              <span className={style.star}>
+                <FaStar />
+              </span>
+              <span>{averageRating}</span>
+            </div>
+          </div>
+        </div>
         <div className={style.details}>
           <dl>
             <dt>city</dt>
             <dd>{city}</dd>
             <dt>state</dt>
             <dd>{state}</dd>
-            <dt>average rating</dt>
-            <dd>{averageRating}</dd>
             <dt>price</dt>
             <dd>{price} per night</dd>
           </dl>
