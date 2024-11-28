@@ -1,5 +1,6 @@
 import { createSelector } from "reselect";
 import { csrfFetch } from "./csrf";
+import merge from "lodash.merge";
 
 /////////////////////////////////////////////////////////////////////
 // actiion types
@@ -36,7 +37,7 @@ export const selectSpotsArray = createSelector(
 const initialSlice = { spots: {}, page: null, size: null };
 
 const handlers = {
-  [LOAD]: (slice, { spots }) => ({ ...slice, ...spots }),
+  [LOAD]: (slice, { spots }) => merge(spots, slice),
 };
 
 const spotReducer = (slice = initialSlice, action) => {
