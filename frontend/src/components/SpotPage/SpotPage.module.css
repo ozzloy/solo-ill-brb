@@ -1,0 +1,63 @@
+.header {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px;
+}
+
+.location {
+    padding: 0 0.5em;
+}
+
+.hosted {
+    padding: 0 0.5em;
+}
+
+.label {
+    display: inline-block;
+    margin: 0.5em;
+}
+
+.preview, .loading {
+    width: 400px;
+    height: 400px;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    margin: 20px;
+}
+
+.images {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+}
+
+.details {
+    display: flex;
+    margin: 1em;
+    width: 100%;
+    max-width: 700px;
+    justify-content: space-around;
+}
+.details .callout {
+    border: 5px solid green;
+    border-radius: 10px;
+    width: fit-content;
+}
+
+.details .description {
+    margin: 1em;
+}
+
+.details .price{
+    margin: 0.5em;
+    padding: 0.5em;
+}
+
+.details button {
+    margin: 0.5em;
+    padding: 0.5em;
+    border-radius: 10px;
+}

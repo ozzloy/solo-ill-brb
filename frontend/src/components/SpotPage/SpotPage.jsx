@@ -2,6 +2,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getSpot, selectSpot } from "../../store/spot";
 import { useEffect } from "react";
+import { FaMagnifyingGlassMinus } from "react-icons/fa6";
+
+import style from "./SpotPage.module.css";
 
 /**
  * On the spot's detail page, the following information should be
@@ -48,28 +51,77 @@ import { useEffect } from "react";
  *  }
  */
 
-const SpotExists = ({ name, city, state, country }) => (
-  <>
-    <h2>{name}</h2>
-    <dl>
-      <dt>city</dt>
-      <dd>{city}</dd>
-      <dt>state</dt>
-      <dd>{state}</dd>
-      <dt>country</dt>
-      <dd>{country}</dd>
-    </dl>
-  </>
-);
+const SpotExists = ({
+  name,
+  city,
+  state,
+  country,
+  description,
+  SpotImages,
+  Owner: { firstName, lastName },
+  price,
+}) => {
+  const previewImage = SpotImages.find((image) => image.preview);
+  const images = SpotImages.filter((image) => !image.preview);
+
+  return (
+    <>
+      <h2 className={style.header}>{name}</h2>
+      <div className={style.location}>
+        <span className={style.label}>location:</span>
+        <span className={style.detail}>
+          {city}, {state}, {country}
+        </span>
+      </div>
+      <div className={style.hosted}>
+        <span className={style.label}>hosted by:</span>
+        <span className={style.detail}>
+          {firstName} {lastName}
+        </span>
+      </div>
+      {previewImage ? (
+        <img className={style.preview} src={previewImage.url} />
+      ) : (
+        <span className={style.loading} style={{ fontSize: "400px" }}>
+          <FaMagnifyingGlassMinus />
+        </span>
+      )}
+      {images.map(({ url }) => (
+        <img key={url} className={style.images} src={url} />
+      ))}
+      <div className={style.details}>
+        <p className={style.description}>{description}</p>
+        <div className={style.callout}>
+          <span className={style.price}>{price} / night</span>
+          <button>reserve</button>
+        </div>
+      </div>
+    </>
+  );
+};
 
 const SpotPage = () => {
   const dispatch = useDispatch();
   const { spotId } = useParams();
   const spot = useSelector(selectSpot(spotId));
+
   useEffect(() => {
     dispatch(getSpot(spotId));
   }, [dispatch]);
-  if (spot) return SpotExists(spot);
-  return <h2>loading spot details...</h2>;
+
+  const requiredKeys = [
+    "name",
+    "price",
+    "city",
+    "state",
+    "country",
+    "description",
+    "SpotImages",
+    "Owner",
+  ];
+  const spotHasRequiredKeys =
+    spot && requiredKeys.every((key) => key in spot);
+  if (!spotHasRequiredKeys) return <h2>loading spot details...</h2>;
+  return SpotExists(spot);
 };
 export default SpotPage;
