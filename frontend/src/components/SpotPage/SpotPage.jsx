@@ -56,6 +56,7 @@ const ReviewSummary = ({ avgStarRating, numReviews }) => (
     <div className={style.star}>
       <FaStar /> {avgStarRating}
     </div>
+    &middot;
     <span className={style.numReviews}>
       {numReviews === 0
         ? "new"
