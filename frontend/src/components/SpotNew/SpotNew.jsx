@@ -1,4 +1,5 @@
 import { useState } from "react";
+import isInteger from "is-integer";
 
 import style from "./SpotNew.module.css";
 
@@ -9,6 +10,7 @@ const SpotNew = () => {
   const [state, setState] = useState("");
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
+  const [price, setPrice] = useState(0);
 
   const isDisabled =
     country.length === 0 ||
@@ -16,7 +18,9 @@ const SpotNew = () => {
     city.length === 0 ||
     state.length === 0 ||
     description.length < 30 ||
-    name.length === 0;
+    name.length === 0 ||
+    !isInteger(price) ||
+    price <= 0;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -168,6 +172,10 @@ const SpotNew = () => {
         <div className={style.row}>
           <label>Price per night (USD)</label>
           <input
+            name="price"
+            id="price"
+            value={price}
+            onChange={(e) => setPrice(parseInt(e.target.value) || 0)}
             type="number"
             className={style.input}
             placeholder="Price per night (USD)"
