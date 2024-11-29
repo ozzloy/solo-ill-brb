@@ -5,8 +5,10 @@ import style from "./SpotNew.module.css";
 const SpotNew = () => {
   const [country, setCountry] = useState("");
   const [street, setStreet] = useState("");
+  const [city, setCity] = useState("");
 
-  const isDisabled = country.length === 0 || street.length === 0;
+  const isDisabled =
+    country.length === 0 || street.length === 0 || city.length === 0;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -57,7 +59,14 @@ const SpotNew = () => {
         </div>
         <div className={style.row}>
           <label>City</label>
-          <input className={style.input} placeholder="City" />
+          <input
+            name="city"
+            id="city"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            className={style.input}
+            placeholder="City"
+          />
         </div>
         <div className={style.row}>
           <label>State</label>
