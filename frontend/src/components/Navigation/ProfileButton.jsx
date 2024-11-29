@@ -1,10 +1,11 @@
 import { useDispatch } from "react-redux";
 import { FaCircleUser } from "react-icons/fa6";
-import { logout } from "../../store/session";
 import { useEffect, useRef, useState } from "react";
+
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
+import { logout } from "../../store/session";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();

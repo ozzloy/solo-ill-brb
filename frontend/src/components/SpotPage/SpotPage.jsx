@@ -11,11 +11,23 @@ import {
 import { getSpot, selectSpot } from "../../store/spot";
 
 /**
+ * If no reviews have been posted yet and the current user is
+ * logged-in and is NOT the owner of the spot, replace the reviews
+ * list with the text "Be the first to post a review!"
+ */
+const NoReviewsYet = ({ ownerId }) => {
+  const sessionUser = useSelector((state) => state.session.user);
+  if (sessionUser && sessionUser.id !== ownerId)
+    return <div>Be the first to post a review!</div>;
+  return <></>;
+};
+
+/**
  * Each review in the review list must include: The reviewer's first
  * name, the month and the year that the review was posted (e.g.
  * December 2022), and the review comment text.
  */
-const ReviewList = ({ spotId }) => {
+const ReviewList = ({ spotId, ownerId }) => {
   const dispatch = useDispatch();
   const reviews = useSelector(selectSpotReviewsNewestOldest(spotId));
 
@@ -42,6 +54,10 @@ const ReviewList = ({ spotId }) => {
     "november",
     "december",
   ];
+
+  if (reviews.length === 0) {
+    return <NoReviewsYet ownerId={ownerId} />;
+  }
 
   return reviews.map((review) => {
     const { firstName } = review.User;
@@ -83,7 +99,7 @@ const ReviewSummary = ({ avgStarRating, numReviews }) => (
  */
 
 const SpotExists = ({
-  Owner: { firstName, lastName },
+  Owner: { firstName, lastName, id: ownerId },
   SpotImages,
   avgStarRating,
   city,
@@ -146,7 +162,7 @@ const SpotExists = ({
             numReviews={numReviews}
           />
         </header>
-        <ReviewList spotId={id} />
+        <ReviewList spotId={id} ownerId={ownerId} />
       </section>
     </>
   );
