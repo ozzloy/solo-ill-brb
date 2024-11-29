@@ -35,7 +35,7 @@ const bookings = [
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(_queryInterface, _Sequelize) {
     await Booking.bulkCreate(bookings);
   },
 
