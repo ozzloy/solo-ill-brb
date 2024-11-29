@@ -7,12 +7,14 @@ const SpotNew = () => {
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
+  const [description, setDescription] = useState("");
 
   const isDisabled =
     country.length === 0 ||
     street.length === 0 ||
     city.length === 0 ||
-    state.length === 0;
+    state.length === 0 ||
+    description.length < 30;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -115,6 +117,10 @@ const SpotNew = () => {
         the neighborhood.
       </p>
       <textarea
+        name="description"
+        id="description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
         className={style.description}
         placeholder="Please write at least 30 characters"
       ></textarea>
