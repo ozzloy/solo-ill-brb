@@ -23,6 +23,32 @@ export const getSpotReviews = (spotId) => async (dispatch) => {
   );
   const json = await response.json();
   if (!response.ok) throw json;
+  /*
+    {
+      "Reviews": [
+        {
+          "id": 1,
+          "userId": 1,
+          "spotId": 1,
+          "review": "This was an awesome spot!",
+          "stars": 5,
+          "createdAt": "2021-11-19 20:39:36",
+          "updatedAt": "2021-11-19 20:39:36" ,
+          "User": {
+            "id": 1,
+            "firstName": "John",
+            "lastName": "Smith"
+          },
+          "ReviewImages": [
+            {
+              "id": 1,
+              "url": "image url"
+            }
+          ],
+        }
+      ]
+    }
+    */
   const reviews = keyBy(json.Reviews, "id");
   dispatch(load({ reviews }));
 };
@@ -31,6 +57,14 @@ export const getSpotReviews = (spotId) => async (dispatch) => {
 // selectors
 
 const selectReviews = (state) => state.review.reviews;
+
+export const selectSpotReviewsNewestOldest = (spotId) =>
+  createSelector([selectReviews], (reviews) =>
+    Object.values(reviews)
+      .filter((review) => review.spotId === spotId)
+      .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)),
+  );
+
 export const selectSpotReviewRatings = (spotId) =>
   createSelector([selectReviews], (reviews) =>
     Object.values(reviews)

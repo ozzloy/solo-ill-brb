@@ -44,7 +44,7 @@
     display: flex;
     margin: 1em;
     width: 100%;
-    max-width: 700px;
+    max-width: 800px;
     justify-content: space-around;
 }
 .details .callout {
@@ -68,6 +68,21 @@
     border-radius: 10px;
 }
 
+.reviews {
+    width: 60%;
+    max-width: 800px;
+}
+
 .numReviews {
     margin-left: 0.5em;
+}
+
+.review {
+    display: block;
+    border: #ddd 5px solid;
+    border-radius: 5px;
+    margin: 0.5em;
+    padding: 0.5em;
+    width: 90%;
+    max-width: 700px;
 }

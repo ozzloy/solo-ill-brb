@@ -1,10 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getSpot, selectSpot } from "../../store/spot";
 import { useEffect } from "react";
 import { FaMagnifyingGlassMinus, FaStar } from "react-icons/fa6";
 
 import style from "./SpotPage.module.css";
+import {
+  getSpotReviews,
+  selectSpotReviewsNewestOldest,
+} from "../../store/review";
+import { getSpot, selectSpot } from "../../store/spot";
 
 /**
  * On the spot's detail page, the following information should be
@@ -51,12 +55,28 @@ import style from "./SpotPage.module.css";
  *  }
  */
 
+const ReviewList = ({ spotId }) => {
+  const dispatch = useDispatch();
+  const reviews = useSelector(selectSpotReviewsNewestOldest(spotId));
+
+  useEffect(() => {
+    dispatch(getSpotReviews(spotId));
+  }, [dispatch, spotId]);
+
+  return reviews.map((review) => (
+    <div key={review.id} className={style.review}>
+      <div>{review.updatedAt}</div>
+      <div>{review.review} </div>
+    </div>
+  ));
+};
+
 const ReviewSummary = ({ avgStarRating, numReviews }) => (
   <div className={style.reviewSummary}>
     <div className={style.star}>
-      <FaStar /> {avgStarRating}
+      {avgStarRating} <FaStar />
     </div>
-    &middot;
+    {numReviews === 0 ? "" : <>&middot;</>}
     <span className={style.numReviews}>
       {numReviews === 0
         ? "new"
@@ -72,6 +92,7 @@ const SpotExists = ({
   city,
   country,
   description,
+  id,
   name,
   numReviews,
   price,
@@ -121,13 +142,14 @@ const SpotExists = ({
         </div>
       </div>
       <section className={style.reviews}>
-        <heading>
+        <header>
           <h2>reviews</h2>
           <ReviewSummary
             avgStarRating={avgStarRating}
             numReviews={numReviews}
           />
-        </heading>
+        </header>
+        <ReviewList spotId={id} />
       </section>
     </>
   );
@@ -140,7 +162,7 @@ const SpotPage = () => {
 
   useEffect(() => {
     dispatch(getSpot(spotId));
-  }, [dispatch]);
+  }, [dispatch, spotId]);
 
   const requiredKeys = [
     "Owner",
@@ -149,6 +171,7 @@ const SpotPage = () => {
     "city",
     "country",
     "description",
+    "id",
     "name",
     "numReviews",
     "price",
