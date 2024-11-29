@@ -11,50 +11,10 @@ import {
 import { getSpot, selectSpot } from "../../store/spot";
 
 /**
- * On the spot's detail page, the following information should be
- * present: a Heading <spot name>, Location: <city>, <state>,
- * <country>, Images (1 large image and 4 small images), Text: Hosted
- * by <first name>, <last name>, Paragraph: <description>, and the
- * callout information box on the right, below the images.
+ * Each review in the review list must include: The reviewer's first
+ * name, the month and the year that the review was posted (e.g.
+ * December 2022), and the review comment text.
  */
-
-/**
- *  {
- *    "id": 1,
- *    "ownerId": 1,
- *    "address": "123 Disney Lane",
- *    "city": "San Francisco",
- *    "state": "California",
- *    "country": "United States of America",
- *    "lat": 37.7645358,
- *    "lng": -122.4730327,
- *    "name": "App Academy",
- *    "description": "Place where web developers are created",
- *    "price": 123,
- *    "createdAt": "2021-11-19 20:39:36",
- *    "updatedAt": "2021-11-19 20:39:36" ,
- *    "numReviews": 5,
- *    "avgStarRating": 4.5,
- *    "SpotImages": [
- *      {
- *        "id": 1,
- *        "url": "image url",
- *        "preview": true
- *      },
- *      {
- *        "id": 2,
- *        "url": "image url",
- *        "preview": false
- *      }
- *    ],
- *    "Owner": {
- *      "id": 1,
- *      "firstName": "John",
- *      "lastName": "Smith"
- *    }
- *  }
- */
-
 const ReviewList = ({ spotId }) => {
   const dispatch = useDispatch();
   const reviews = useSelector(selectSpotReviewsNewestOldest(spotId));
@@ -63,12 +23,41 @@ const ReviewList = ({ spotId }) => {
     dispatch(getSpotReviews(spotId));
   }, [dispatch, spotId]);
 
-  return reviews.map((review) => (
-    <div key={review.id} className={style.review}>
-      <div>{review.updatedAt}</div>
-      <div>{review.review} </div>
-    </div>
-  ));
+  if (reviews.length)
+    console.log(
+      "components/SpotPage.jsx:ReviewList(" + spotId + "):reviews[0]",
+      reviews[0],
+    );
+  const months = [
+    "january",
+    "february",
+    "march",
+    "april",
+    "may",
+    "june",
+    "july",
+    "august",
+    "september",
+    "october",
+    "november",
+    "december",
+  ];
+
+  return reviews.map((review) => {
+    const { firstName } = review.User;
+    const { updatedAt } = review;
+    const when = new Date(updatedAt);
+    const month = months[when.getMonth()];
+    const year = when.getFullYear();
+    return (
+      <div key={review.id} className={style.review}>
+        <div>
+          in {month} of {year}, {firstName} said:
+        </div>
+        <div>{review.review} </div>
+      </div>
+    );
+  });
 };
 
 const ReviewSummary = ({ avgStarRating, numReviews }) => (
@@ -84,6 +73,14 @@ const ReviewSummary = ({ avgStarRating, numReviews }) => (
     </span>
   </div>
 );
+
+/**
+ * On the spot's detail page, the following information should be
+ * present: a Heading <spot name>, Location: <city>, <state>,
+ * <country>, Images (1 large image and 4 small images), Text: Hosted
+ * by <first name>, <last name>, Paragraph: <description>, and the
+ * callout information box on the right, below the images.
+ */
 
 const SpotExists = ({
   Owner: { firstName, lastName },
