@@ -6,9 +6,13 @@ const SpotNew = () => {
   const [country, setCountry] = useState("");
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
+  const [state, setState] = useState("");
 
   const isDisabled =
-    country.length === 0 || street.length === 0 || city.length === 0;
+    country.length === 0 ||
+    street.length === 0 ||
+    city.length === 0 ||
+    state.length === 0;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -70,7 +74,14 @@ const SpotNew = () => {
         </div>
         <div className={style.row}>
           <label>State</label>
-          <input className={style.input} placeholder="State" />
+          <input
+            name="state"
+            id="state"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+            className={style.input}
+            placeholder="State"
+          />
         </div>
         <div className={style.row + " " + style.future}>
           <label>Latitude</label>
