@@ -113,6 +113,41 @@ const SpotNew = () => (
       </div>
     </div>
 
+    {/**
+     * The fifth section should include: a heading of "Liven up your
+     * spot with photos", a caption of "Submit a link to at least one
+     * photo to publish your spot.", and five text inputs where the
+     * first input has a placeholder of "Preview Image URL" and the
+     * rest of the inputs have a placeholder of "Image URL".
+     */}
+    <h3 className={style.h3}>Liven up your spot with photos</h3>
+    <p>Submit a link to at least one photo to publish your spot.</p>
+    <div className={style.inputs}>
+      <div className={style.row}>
+        <label>Preview Image URL</label>
+        <input
+          className={style.input}
+          placeholder="Preview Image URL"
+        />
+      </div>
+      <div className={style.row}>
+        <label>Image URL</label>
+        <input className={style.input} placeholder="Image URL" />
+      </div>
+      <div className={style.row}>
+        <label>Image URL</label>
+        <input className={style.input} placeholder="Image URL" />
+      </div>
+      <div className={style.row}>
+        <label>Image URL</label>
+        <input className={style.input} placeholder="Image URL" />
+      </div>
+      <div className={style.row}>
+        <label>Image URL</label>
+        <input className={style.input} placeholder="Image URL" />
+      </div>
+    </div>
+
     <button className={style.button}>Submit</button>
   </form>
 );
