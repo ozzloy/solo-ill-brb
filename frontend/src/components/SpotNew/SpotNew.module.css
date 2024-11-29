@@ -1,0 +1,44 @@
+.form {
+    display: block;
+    text-align: center;
+    background-color: #123;
+    border-radius: 25px;
+    padding: 1em;
+    width: fit-content;
+    max-width: 600px;
+}
+
+.input {
+    margin: 0.5em;
+    width: 400px;
+    border: none;
+    font-size: 20px;
+    border-radius: 10px;
+    background-color: #111;
+    padding: 0.5em;
+    color: #eee;
+}
+
+.button {
+    margin: 1em auto;
+    display: block;
+    width: fit-content;
+    padding: 1em;
+    background-color: #794bc4;
+    border-radius: 10px;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+.button:disabled {
+    background-color: #b8a3d6;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.error {
+    color: red;
+    font-size: 20px;
+}
