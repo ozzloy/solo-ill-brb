@@ -1,22 +1,35 @@
 .form {
-    display: block;
-    text-align: center;
     background-color: #123;
-    border-radius: 25px;
-    padding: 1em;
-    width: fit-content;
-    max-width: 600px;
+    border-radius:25px;
+    width: 80%;
+    max-width: 800px;
+    padding: 30px;
+    margin: auto;
 }
 
-.input {
-    margin: 0.5em;
-    width: 400px;
-    border: none;
-    font-size: 20px;
+.inputs {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.row label {
+    width: 120px;
+}
+
+.row.future {
+    text-decoration: line-through;
+}
+
+.row input {
+    padding: 1em;
     border-radius: 10px;
-    background-color: #111;
-    padding: 0.5em;
-    color: #eee;
 }
 
 .button {
@@ -30,15 +43,4 @@
     font-size: 20px;
     cursor: pointer;
     transition: all 0.1s ease-in-out;
-}
-
-.button:disabled {
-    background-color: #b8a3d6;
-    cursor: not-allowed;
-    opacity: 0.7;
-}
-
-.error {
-    color: red;
-    font-size: 20px;
 }
