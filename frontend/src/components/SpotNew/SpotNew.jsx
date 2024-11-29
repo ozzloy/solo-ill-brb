@@ -148,7 +148,8 @@ const SpotNew = () => (
       </div>
     </div>
 
-    <button className={style.button}>Submit</button>
+    {/** The submit button should have the text of "Create Spot". */}
+    <button className={style.button}>Create Spot</button>
   </form>
 );
 export default SpotNew;
