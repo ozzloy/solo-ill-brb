@@ -90,6 +90,29 @@ const SpotNew = () => (
       </div>
     </div>
 
+    {/**
+     * The fourth section should include: a heading of "Set a base
+     * price for your spot", a caption of "Competitive pricing can
+     * help your listing stand out and rank higher in search
+     * results.", and a number input with a placeholder of "Price
+     * per night (USD)".
+     */}
+    <h3 className={style.h3}>Set a base price for your spot</h3>
+    <p>
+      Competitive pricing can help your listing stand out and rank
+      higher in search results.
+    </p>
+    <div className={style.inputs}>
+      <div className={style.row}>
+        <label>Price per night (USD)</label>
+        <input
+          type="number"
+          className={style.input}
+          placeholder="Price per night (USD)"
+        />
+      </div>
+    </div>
+
     <button className={style.button}>Submit</button>
   </form>
 );
