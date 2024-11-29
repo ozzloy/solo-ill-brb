@@ -39,6 +39,7 @@
 .row input {
     padding: 1em;
     border-radius: 10px;
+    min-width: 300px;
 }
 
 .button {
