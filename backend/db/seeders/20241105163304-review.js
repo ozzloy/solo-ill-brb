@@ -1,15 +1,16 @@
 "use strict";
 
-const { Review } = require("../models");
+const { Review, User, Spot } = require("../models");
 
 const options = {};
 if (process.env.NODE_ENV === "production") {
-  options.schema = process.env.SCHEMA; // define your schema in options object
+  // define your schema in options object
+  options.schema = process.env.SCHEMA;
 }
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(_queryInterface, _Sequelize) {
     /**
      * Add seed commands here.
      *
@@ -19,34 +20,60 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
+    const demoUser = await User.findOne({
+      where: { email: "demo@example.com" },
+    });
+
+    const user2 = await User.findOne({
+      where: { email: "user2@example.com" },
+    });
+
+    const user3 = await User.findOne({
+      where: { email: "user3@example.com" },
+    });
+
+    const spot1 = await Spot.findOne({
+      where: { ownerId: demoUser.id, name: "App Academy" },
+    });
+
+    const spot2 = await Spot.findOne({
+      where: { ownerId: user2.id, name: "Spot 2" },
+    });
+
+    const spot3 = await Spot.findOne({
+      where: { ownerId: demoUser.id, name: "Mars" },
+    });
+
     await Review.bulkCreate(
       [
         {
-          userId: 1,
-          spotId: 1,
+          userId: demoUser.id,
+          spotId: spot1.id,
           review: "This was an awesome spot!",
           stars: 5,
+          createdAt: new Date("2000-01-01T12:00:00Z"),
+          updatedAt: new Date("2000-01-01T12:00:00Z"),
         },
         {
-          userId: 2,
-          spotId: 2,
+          userId: user2.id,
+          spotId: spot2.id,
           review: "This was a horrible spot!",
           stars: 1,
         },
         {
-          userId: 3,
-          spotId: 3,
+          userId: user3.id,
+          spotId: spot3.id,
           review: "Martians are so nice",
           stars: 4,
         },
         {
-          userId: 3,
-          spotId: 1,
+          userId: user3.id,
+          spotId: spot1.id,
           review: "Meh!",
           stars: 2,
         },
       ],
-      options,
+      { ...options, returning: true },
     );
   },
 
