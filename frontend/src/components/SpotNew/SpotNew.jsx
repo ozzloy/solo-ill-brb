@@ -69,6 +69,27 @@ const SpotNew = () => (
       placeholder="Please write at least 30 characters"
     ></textarea>
 
+    {/**
+     * The third section should include: a heading of "Create a title
+     * for your spot", a caption of "Catch guests' attention with a
+     * spot title that highlights what makes your place special.",
+     * and a text input with a placeholder of "Name of your spot".
+     */}
+    <h3 className={style.h3}>Create a title for your spot</h3>
+    <p>
+      Catch guests' attention with a spot title that highlights what
+      makes your place special.
+    </p>
+    <div className={style.inputs}>
+      <div className={style.row}>
+        <label>Name of your spot</label>
+        <input
+          className={style.input}
+          placeholder="Name of your spot"
+        />
+      </div>
+    </div>
+
     <button className={style.button}>Submit</button>
   </form>
 );
