@@ -50,6 +50,25 @@ const SpotNew = () => (
         />
       </div>
     </div>
+
+    {/**
+     * The second section should include: a heading of "Describe your
+     * place to guests", a caption of "Mention the best features of
+     * your space, any special amentities like fast wifi or parking,
+     * and what you love about the neighborhood.", and a text area
+     * with a placeholder of "Please write at least 30 characters".
+     */}
+    <h3 className={style.h3}>Describe your place to guests</h3>
+    <p>
+      Mention the best features of your space, any special amentities
+      like fast wifi or parking, and what you love about the
+      neighborhood.
+    </p>
+    <textarea
+      className={style.description}
+      placeholder="Please write at least 30 characters"
+    ></textarea>
+
     <button className={style.button}>Submit</button>
   </form>
 );
