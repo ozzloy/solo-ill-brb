@@ -8,13 +8,15 @@ const SpotNew = () => {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [description, setDescription] = useState("");
+  const [name, setName] = useState("");
 
   const isDisabled =
     country.length === 0 ||
     street.length === 0 ||
     city.length === 0 ||
     state.length === 0 ||
-    description.length < 30;
+    description.length < 30 ||
+    name.length === 0;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -140,6 +142,10 @@ const SpotNew = () => {
         <div className={style.row}>
           <label>Name of your spot</label>
           <input
+            name="name"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             className={style.input}
             placeholder="Name of your spot"
           />
