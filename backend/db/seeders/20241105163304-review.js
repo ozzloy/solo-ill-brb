@@ -50,7 +50,16 @@ module.exports = {
     );
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface, _Sequelize) {
+    options.tableName = "Reviews";
+    await queryInterface.bulkDelete(options, null, {
+      truncate: true,
+      cascade: true,
+      restartIdentity: true,
+    });
+  },
+
+  async oldDown(queryInterface, Sequelize) {
     /**
      * Add commands to revert seed here.
      *

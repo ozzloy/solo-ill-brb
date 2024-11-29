@@ -38,13 +38,24 @@ module.exports = {
     );
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface, _Sequelize) {
+    options.tableName = "Users";
+    await queryInterface.bulkDelete(options, null, {
+      truncate: true,
+      cascade: true,
+      restartIdentity: true,
+    });
+  },
+
+  async oldDown(queryInterface, Sequelize) {
     options.tableName = "Users";
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(
       options,
       {
-        username: { [Op.in]: ["Demo-lition", "FakeUser1", "FakeUser2"] },
+        username: {
+          [Op.in]: ["Demo-lition", "turkeylurkey", "honk"],
+        },
       },
       {},
     );

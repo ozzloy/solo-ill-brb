@@ -39,7 +39,16 @@ module.exports = {
     await Booking.bulkCreate(bookings);
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface, _Sequelize) {
+    options.tableName = "Bookings";
+    await queryInterface.bulkDelete(options, null, {
+      truncate: true,
+      cascade: true,
+      restartIdentity: true,
+    });
+  },
+
+  async oldDown(queryInterface, Sequelize) {
     options.tableName = "Bookings";
     await queryInterface.bulkDelete(options, {
       [Sequelize.Op.or]: bookings.map((booking) => ({
