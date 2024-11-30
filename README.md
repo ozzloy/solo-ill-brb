@@ -34,6 +34,30 @@ cd frontend
 npm run build
 ```
 
+## development tips
+
+### db
+#### reset db
+```bash
+cd backend
+npx dotenv -- sequelize db:seed:undo:all
+npx dotenv -- sequelize db:seed:all
+```
+
+#### connect to psql
+```bash
+sudo -u postgres psql
+```
+
+```psql
+\l # list databases
+\c ill_brb_dev # connect to db "ill_brb_dev"
+set search_path to ill_brb; # switch to schema "ill_brb"
+\dt # list tables
+select "ownerId" from "Spots"; # see all Spots' ownerIds
+delete from "Spots" where id = 5;
+```
+
 ## Database Schema Design
 
 ![db schema](./db-schema.png)
