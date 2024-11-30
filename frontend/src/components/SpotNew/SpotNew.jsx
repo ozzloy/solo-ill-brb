@@ -11,6 +11,7 @@ const SpotNew = () => {
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
+  const [preview, setPreview] = useState("");
 
   const isDisabled =
     country.length === 0 ||
@@ -20,7 +21,8 @@ const SpotNew = () => {
     description.length < 30 ||
     name.length === 0 ||
     !isInteger(price) ||
-    price <= 0;
+    price <= 0 ||
+    preview.length === 0;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -196,6 +198,10 @@ const SpotNew = () => {
         <div className={style.row}>
           <label>Preview Image URL</label>
           <input
+            name="preview"
+            id="preview"
+            value={preview}
+            onChange={(e) => setPreview(e.target.value)}
             className={style.input}
             placeholder="Preview Image URL"
           />
