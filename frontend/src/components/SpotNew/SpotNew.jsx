@@ -12,6 +12,10 @@ const SpotNew = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [preview, setPreview] = useState("");
+  const [image1, setImage1] = useState("");
+  const [image2, setImage2] = useState("");
+  const [image3, setImage3] = useState("");
+  const [image4, setImage4] = useState("");
 
   const isDisabled =
     country.length === 0 ||
@@ -208,19 +212,47 @@ const SpotNew = () => {
         </div>
         <div className={style.row}>
           <label>Image URL</label>
-          <input className={style.input} placeholder="Image URL" />
+          <input
+            name="image1"
+            id="image1"
+            value={image1}
+            onChange={(e) => setImage1(e.target.value)}
+            className={style.input}
+            placeholder="Image URL"
+          />
         </div>
         <div className={style.row}>
           <label>Image URL</label>
-          <input className={style.input} placeholder="Image URL" />
+          <input
+            name="image2"
+            id="image2"
+            value={image2}
+            onChange={(e) => setImage2(e.target.value)}
+            className={style.input}
+            placeholder="Image URL"
+          />
         </div>
         <div className={style.row}>
           <label>Image URL</label>
-          <input className={style.input} placeholder="Image URL" />
+          <input
+            name="image3"
+            id="image3"
+            value={image3}
+            onChange={(e) => setImage3(e.target.value)}
+            className={style.input}
+            placeholder="Image URL"
+          />
         </div>
         <div className={style.row}>
           <label>Image URL</label>
-          <input className={style.input} placeholder="Image URL" />
+          <input
+            name="image4"
+            id="image4"
+            value={image4}
+            onChange={(e) => setImage4(e.target.value)}
+            className={style.input}
+            placeholder="Image URL"
+          />
         </div>
       </div>
 
