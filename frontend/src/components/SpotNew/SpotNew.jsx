@@ -28,7 +28,7 @@ const SpotNew = () => {
   const [state, setState] = useState("");
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState("1");
   const [previewUrl, setPreviewUrl] = useState("");
   const [image1, setImage1] = useState("");
   const [image2, setImage2] = useState("");
