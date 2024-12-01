@@ -19,6 +19,17 @@
     color: #eee;
 }
 
+.textarea {
+    margin: 0.5em;
+    padding: 1em;
+    width: 400px;
+    height: 200px;
+    font-size: 16px;
+    border-radius: 10px;
+    background-color: #111;
+    color: #eee;
+}
+
 .button {
     margin: 1em auto;
     display: block;
