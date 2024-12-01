@@ -111,9 +111,9 @@ export const selectSpot = (id) => (state) => state.spot.spots[id];
 const initialSlice = { spots: {}, page: null, size: null };
 
 const handlers = {
-  [LOAD]: (slice, { spots }) => merge(spots, slice),
+  [LOAD]: (slice, { spots }) => merge({}, slice, spots),
   [CREATE]: (slice, { data }) =>
-    merge({ ...slice }, { spots: { [data.id]: data } }),
+    merge({}, slice, { spots: { [data.id]: data } }),
   [SET_PREVIEW]: (
     slice,
     { previewImageData: { spotId, previewImage } },
@@ -125,6 +125,7 @@ const handlers = {
 };
 
 const spotReducer = (slice = initialSlice, action) => {
+  console.log("store/spot.js:spotReducer():slice", slice);
   return handlers[action.type]?.(slice, action) ?? slice;
 };
 export default spotReducer;
