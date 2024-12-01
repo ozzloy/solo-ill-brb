@@ -435,13 +435,12 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
   return res.status(201).json(response);
 });
 
-//Get spots by Id
+//Get spot by Id
 router.get("/:spotId", async (req, res) => {
   const { spotId } = req.params;
   const spotIdNumber = parseInt(spotId);
 
   const spot = await Spot.findByPk(spotIdNumber, {
-    attributes: { exclude: ["previewImage"] },
     include: [
       { model: SpotImage, attributes: ["id", "url"] },
       {
@@ -464,7 +463,7 @@ router.get("/:spotId", async (req, res) => {
 
   const spotJson = spot.toJSON();
   spotJson.SpotImages.forEach((element) => {
-    element.preview = element.id === spotJson.id;
+    element.preview = element.id === spotJson.previewImage;
   });
   const numReviews = spotJson.Reviews.length;
   const avgStarRating = spotJson.Reviews.length
@@ -473,7 +472,7 @@ router.get("/:spotId", async (req, res) => {
         0,
       ) / numReviews
     : 0.0;
-  const { Reviews, ...formattedSpot } = spotJson;
+  const { Reviews, previewImage, ...formattedSpot } = spotJson;
   formattedSpot.numReviews = numReviews;
   formattedSpot.avgStarRating = avgStarRating;
   return res.status(200).json(formattedSpot);

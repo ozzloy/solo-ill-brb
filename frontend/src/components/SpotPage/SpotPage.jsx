@@ -35,11 +35,6 @@ const ReviewList = ({ spotId, ownerId }) => {
     dispatch(getSpotReviews(spotId));
   }, [dispatch, spotId]);
 
-  if (reviews.length)
-    console.log(
-      "components/SpotPage.jsx:ReviewList(" + spotId + "):reviews[0]",
-      reviews[0],
-    );
   const months = [
     "january",
     "february",

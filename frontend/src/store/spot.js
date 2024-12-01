@@ -82,6 +82,7 @@ export const createSpot =
 
 /////////////////////////////////////////////////////////////////////
 // selectors
+
 export const selectSpots = (state) => {
   return state.spot.spots;
 };
