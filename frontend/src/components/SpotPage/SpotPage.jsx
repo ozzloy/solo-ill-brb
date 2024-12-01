@@ -9,6 +9,8 @@ import {
   selectSpotReviewsNewestOldest,
 } from "../../store/review";
 import { getSpot, selectSpot } from "../../store/spot";
+import ReviewFormModal from "../ReviewFormModal";
+import { useModal } from "../../context/Modal";
 
 /**
  * If the current user is logged-in and they are viewing a spot's
@@ -18,16 +20,20 @@ import { getSpot, selectSpot } from "../../store/spot";
  */
 const UserHasNotReviewedYet = ({ spot }) => {
   const sessionUser = useSelector((state) => state.session.user);
+  const reviews = useSelector(selectSpotReviewsNewestOldest(spot.id));
+  const { setModalContent } = useModal();
   if (!sessionUser) {
     return <></>;
   }
-  const reviews = useSelector(selectSpotReviewsNewestOldest(spot.id));
   const userReviews = reviews.filter(
     (review) => review.userId === sessionUser.id,
   );
+  const onClick = () => {
+    setModalContent(<ReviewFormModal />);
+  };
   if (userReviews.length === 0 && sessionUser.id !== spot.ownerId)
     return (
-      <button className={style.postYourReview}>
+      <button onClick={onClick} className={style.postYourReview}>
         Post Your Review
       </button>
     );
