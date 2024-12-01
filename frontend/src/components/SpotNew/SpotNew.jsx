@@ -59,6 +59,18 @@ const SpotNew = () => {
     setErrors(newErrors);
   };
 
+  const handleStateBlur = (e) => {
+    const newState = e.target.value;
+    setState(newState);
+    const newErrors = { ...errors };
+    if (newState.length) {
+      delete newErrors.state;
+    } else {
+      newErrors.state = "State is required";
+    }
+    setErrors(newErrors);
+  };
+
   const latTypingRegex =
     /^-?(?:90(?:\.0*)?|(?:\d|[1-8]\d)(?:\.\d*)?)?$/;
   const latRegex = /^-?(?:90(?:\.0*)?|(?:\d|[1-8]\d)(?:\.\d*)?)$/;
@@ -223,10 +235,14 @@ const SpotNew = () => {
             id="state"
             value={state}
             onChange={(e) => setState(e.target.value)}
+            onBlur={handleStateBlur}
             className={style.input}
             placeholder="State"
           />
         </div>
+        {errors.state && (
+          <div className={style.error}>{errors.state}</div>
+        )}
         <div className={style.row}>
           <label>Latitude</label>
           <input
