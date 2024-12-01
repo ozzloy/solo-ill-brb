@@ -191,6 +191,54 @@ const SpotNew = () => {
     setErrors(newErrors);
   };
 
+  const handleImage1Blur = (e) => {
+    const newImage1 = e.target.value;
+    setImage1(newImage1);
+    const newErrors = { ...errors };
+    if (isValidUrlString(newImage1) || newImage1.length === 0) {
+      delete newErrors.image1;
+    } else {
+      newErrors.image1 = "image url must be a valid url or blank";
+    }
+    setErrors(newErrors);
+  };
+
+  const handleImage2Blur = (e) => {
+    const newImage2 = e.target.value;
+    setImage2(newImage2);
+    const newErrors = { ...errors };
+    if (isValidUrlString(newImage2) || newImage2.length === 0) {
+      delete newErrors.image2;
+    } else {
+      newErrors.image2 = "image url must be a valid url or blank";
+    }
+    setErrors(newErrors);
+  };
+
+  const handleImage3Blur = (e) => {
+    const newImage3 = e.target.value;
+    setImage3(newImage3);
+    const newErrors = { ...errors };
+    if (isValidUrlString(newImage3) || newImage3.length === 0) {
+      delete newErrors.image3;
+    } else {
+      newErrors.image3 = "image url must be a valid url or blank";
+    }
+    setErrors(newErrors);
+  };
+
+  const handleImage4Blur = (e) => {
+    const newImage4 = e.target.value;
+    setImage4(newImage4);
+    const newErrors = { ...errors };
+    if (isValidUrlString(newImage4) || newImage4.length === 0) {
+      delete newErrors.image4;
+    } else {
+      newErrors.image4 = "image url must be a valid url or blank";
+    }
+    setErrors(newErrors);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const imageUrls = [image1, image2, image3, image4].filter(
@@ -454,10 +502,14 @@ const SpotNew = () => {
             id="image1"
             value={image1}
             onChange={(e) => setImage1(e.target.value)}
+            onBlur={handleImage1Blur}
             className={style.input}
             placeholder="Image URL"
           />
         </div>
+        {errors.image1 && (
+          <div className={style.error}>{errors.image1}</div>
+        )}
         <div className={style.row}>
           <label>Image URL</label>
           <input
@@ -465,10 +517,14 @@ const SpotNew = () => {
             id="image2"
             value={image2}
             onChange={(e) => setImage2(e.target.value)}
+            onBlur={handleImage2Blur}
             className={style.input}
             placeholder="Image URL"
           />
         </div>
+        {errors.image2 && (
+          <div className={style.error}>{errors.image2}</div>
+        )}
         <div className={style.row}>
           <label>Image URL</label>
           <input
@@ -476,10 +532,14 @@ const SpotNew = () => {
             id="image3"
             value={image3}
             onChange={(e) => setImage3(e.target.value)}
+            onBlur={handleImage3Blur}
             className={style.input}
             placeholder="Image URL"
           />
         </div>
+        {errors.image3 && (
+          <div className={style.error}>{errors.image3}</div>
+        )}
         <div className={style.row}>
           <label>Image URL</label>
           <input
@@ -487,10 +547,14 @@ const SpotNew = () => {
             id="image4"
             value={image4}
             onChange={(e) => setImage4(e.target.value)}
+            onBlur={handleImage4Blur}
             className={style.input}
             placeholder="Image URL"
           />
         </div>
+        {errors.image4 && (
+          <div className={style.error}>{errors.image4}</div>
+        )}
       </div>
 
       {/** The submit button should have the text of "Create Spot". */}
