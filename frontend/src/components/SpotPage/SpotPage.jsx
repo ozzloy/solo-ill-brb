@@ -16,16 +16,16 @@ import { getSpot, selectSpot } from "../../store/spot";
  * "Post Your Review" button shows between the rating/reviews heading
  * and the list of reviews.
  */
-const UserHasNotReviewedYet = ({ spotId, ownerId }) => {
+const UserHasNotReviewedYet = ({ spot }) => {
   const sessionUser = useSelector((state) => state.session.user);
   if (!sessionUser) {
     return <></>;
   }
-  const reviews = useSelector(selectSpotReviewsNewestOldest(spotId));
+  const reviews = useSelector(selectSpotReviewsNewestOldest(spot.id));
   const userReviews = reviews.filter(
     (review) => review.userId === sessionUser.id,
   );
-  if (userReviews.length === 0)
+  if (userReviews.length === 0 && sessionUser.id !== spot.ownerId)
     return (
       <button className={style.postYourReview}>
         Post Your Review
@@ -118,19 +118,20 @@ const ReviewSummary = ({ avgStarRating, numReviews }) => (
  * callout information box on the right, below the images.
  */
 
-const SpotExists = ({
-  Owner: { firstName, lastName, id: ownerId },
-  SpotImages,
-  avgStarRating,
-  city,
-  country,
-  description,
-  id,
-  name,
-  numReviews,
-  price,
-  state,
-}) => {
+const SpotExists = ({ spot }) => {
+  const {
+    Owner: { firstName, lastName, id: ownerId },
+    SpotImages,
+    avgStarRating,
+    city,
+    country,
+    description,
+    id,
+    name,
+    numReviews,
+    price,
+    state,
+  } = spot;
   const previewImage = SpotImages.find((image) => image.preview);
   const images = SpotImages.filter((image) => !image.preview);
 
@@ -182,7 +183,7 @@ const SpotExists = ({
             numReviews={numReviews}
           />
         </header>
-        <UserHasNotReviewedYet spotId={id} ownerId={ownerId} />
+        <UserHasNotReviewedYet spot={spot} />
         <ReviewList spotId={id} ownerId={ownerId} />
       </section>
     </>
@@ -214,6 +215,6 @@ const SpotPage = () => {
   const spotHasRequiredKeys =
     spot && requiredKeys.every((key) => key in spot);
   if (!spotHasRequiredKeys) return <h2>loading spot details...</h2>;
-  return SpotExists(spot);
+  return <SpotExists spot={spot} />;
 };
 export default SpotPage;
