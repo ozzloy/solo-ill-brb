@@ -1,9 +1,11 @@
 import { useState } from "react";
-import isInteger from "is-integer";
 
 import style from "./SpotNew.module.css";
 import { useDispatch } from "react-redux";
 import { createSpot } from "../../store/spot";
+
+const isValidNumberString = (string) =>
+  string.trim() !== "" && !isNaN(Number(string));
 
 const SpotNew = () => {
   const dispatch = useDispatch();
@@ -15,7 +17,7 @@ const SpotNew = () => {
   const [state, setState] = useState("");
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
-  const [price, setPrice] = useState(1);
+  const [price, setPrice] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
   const [image1, setImage1] = useState("");
   const [image2, setImage2] = useState("");
@@ -143,6 +145,31 @@ const SpotNew = () => {
     setErrors(newErrors);
   };
 
+  const handleNameBlur = (e) => {
+    const newName = e.target.value;
+    setName(newName);
+    const newErrors = { ...errors };
+    if (newName.length) {
+      delete newErrors.name;
+    } else {
+      newErrors.name = "Name is required";
+    }
+    setErrors(newErrors);
+  };
+
+  const handlePriceBlur = (e) => {
+    const newPrice = e.target.value;
+    setPrice(newPrice);
+    const newErrors = { ...errors };
+
+    if (isValidNumberString(newPrice) && 0 < Number(newPrice)) {
+      delete newErrors.price;
+    } else {
+      newErrors.price = "Price per night must be a positive number";
+    }
+    setErrors(newErrors);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const imageUrls = [image1, image2, image3, image4].filter(
@@ -158,7 +185,7 @@ const SpotNew = () => {
         country,
         name,
         description,
-        price,
+        price: Number(price),
         previewUrl,
         imageUrls,
       }),
@@ -172,7 +199,7 @@ const SpotNew = () => {
     state.length === 0 ||
     description.length < 30 ||
     name.length === 0 ||
-    !isInteger(price) ||
+    !isValidNumberString(price) ||
     price <= 0 ||
     previewUrl.length === 0 ||
     !latRegex.test(lat) ||
@@ -333,10 +360,14 @@ const SpotNew = () => {
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            onBlur={handleNameBlur}
             className={style.input}
             placeholder="Name of your spot"
           />
         </div>
+        {errors.name && (
+          <div className={style.error}>{errors.name}</div>
+        )}
       </div>
 
       {/**
@@ -358,12 +389,16 @@ const SpotNew = () => {
             name="price"
             id="price"
             value={price}
-            onChange={(e) => setPrice(parseInt(e.target.value) || 0)}
+            onChange={(e) => setPrice(e.target.value)}
+            onBlur={handlePriceBlur}
             type="number"
             className={style.input}
             placeholder="Price per night (USD)"
           />
         </div>
+        {errors.price && (
+          <div className={style.error}>{errors.price}</div>
+        )}
       </div>
 
       {/**
