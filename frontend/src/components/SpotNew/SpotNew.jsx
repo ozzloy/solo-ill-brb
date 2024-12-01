@@ -23,6 +23,30 @@ const SpotNew = () => {
   const [image4, setImage4] = useState("");
   const [errors, setErrors] = useState({});
 
+  const handleCountryBlur = (e) => {
+    const newCountry = e.target.value;
+    setCountry(newCountry);
+    const newErrors = { ...errors };
+    if (newCountry.length) {
+      delete newErrors.country;
+    } else {
+      newErrors.country = "Country is required";
+    }
+    setErrors(newErrors);
+  };
+
+  const handleAddressBlur = (e) => {
+    const newAddress = e.target.value;
+    setAddress(newAddress);
+    const newErrors = { ...errors };
+    if (newAddress.length) {
+      delete newErrors.address;
+    } else {
+      newErrors.address = "Address is required";
+    }
+    setErrors(newErrors);
+  };
+
   const latTypingRegex =
     /^-?(?:90(?:\.0*)?|(?:\d|[1-8]\d)(?:\.\d*)?)?$/;
   const latRegex = /^-?(?:90(?:\.0*)?|(?:\d|[1-8]\d)(?:\.\d*)?)$/;
@@ -142,10 +166,14 @@ const SpotNew = () => {
             id="country"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
+            onBlur={handleCountryBlur}
             className={style.input}
             placeholder="Country"
           />
         </div>
+        {errors.country && (
+          <div className={style.error}>{errors.country}</div>
+        )}
         <div className={style.row}>
           <label>Street Address</label>
           <input
@@ -154,9 +182,13 @@ const SpotNew = () => {
             value={address}
             className={style.input}
             onChange={(e) => setAddress(e.target.value)}
+            onBlur={handleAddressBlur}
             placeholder="Street Address"
           />
         </div>
+        {errors.address && (
+          <div className={style.error}>{errors.address}</div>
+        )}
         <div className={style.row}>
           <label>City</label>
           <input
