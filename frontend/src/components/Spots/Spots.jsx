@@ -20,7 +20,6 @@ const Spots = () => {
     dispatch(getSpots());
   }, [dispatch]);
 
-  if (!user) return <h2>sign in to see spots</h2>;
   if (!spots?.length) return <h2>loading spots...</h2>;
 
   return (
