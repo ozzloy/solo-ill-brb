@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import style from "../style/Form.module.css";
+import StarRatingInput from "../StarRatingInput";
 
 function ReviewFormModal() {
   /**
@@ -51,6 +52,8 @@ function ReviewFormModal() {
         value={review}
         required
       />
+
+      <StarRatingInput />
 
       <button disabled={isDisabled} className={style.button}>
         Submit Your Review
