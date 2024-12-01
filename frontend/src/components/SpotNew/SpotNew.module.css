@@ -63,18 +63,23 @@
 
 .error {
     margin-left: 190px;
-    margin-bottom:20px;
+    overflow: hidden;
     color: red;
     animation: fadeIn 0.5s ease-in;
+    margin-bottom: 20px;
 }
 
 @keyframes fadeIn {
     from {
         opacity: 0;
         transform: translateY(-10px);
+        max-height: 0;
+        margin-bottom: 0;
     }
     to {
         opacity: 1;
         transform: translateY(0);
+        max-height: 1em;
+        margin-bottom: 20px;
     }
 }
