@@ -130,6 +130,19 @@ const SpotNew = () => {
     setErrors(newErrors);
   };
 
+  const handleDescriptionBlur = (e) => {
+    const newDescription = e.target.value;
+    setDescription(newDescription);
+    const newErrors = { ...errors };
+    if (newDescription.length < 30) {
+      newErrors.description =
+        "Description must be at least 30 characters";
+    } else {
+      delete newErrors.description;
+    }
+    setErrors(newErrors);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const imageUrls = [image1, image2, image3, image4].filter(
@@ -293,9 +306,13 @@ const SpotNew = () => {
         id="description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
+        onBlur={handleDescriptionBlur}
         className={style.description}
         placeholder="Please write at least 30 characters"
       ></textarea>
+      {errors.description && (
+        <div className={style.error}>{errors.description}</div>
+      )}
 
       {/**
        * The third section should include: a heading of "Create a title
