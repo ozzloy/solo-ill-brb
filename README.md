@@ -40,13 +40,13 @@ npm run build
 #### reset db
 ```bash
 cd backend
-npx dotenv -- sequelize db:seed:undo:all
+npx dotenv -- sequelize db:seed:undo:all && \
 npx dotenv -- sequelize db:seed:all
 ```
 
 #### connect to psql
 ```bash
-sudo -u postgres psql -d ill_brb_dev -c "SET search_path TO ill_brb;"
+sudo -u postgres psql "dbname=ill_brb_dev options=--search-path=ill_brb"
 ```
 
 ```psql
@@ -56,6 +56,8 @@ set search_path to ill_brb; # switch to schema "ill_brb"
 \dt # list tables
 select "ownerId" from "Spots"; # see all Spots' ownerIds
 delete from "Spots" where id = 5;
+alter sequence "Spots_id_seq" restart with 5;
+alter sequence "SpotImages_id_seq" restart with 4;
 \q # kill connection to psql
 ```
 
