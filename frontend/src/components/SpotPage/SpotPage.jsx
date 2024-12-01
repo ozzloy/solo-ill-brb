@@ -16,8 +16,22 @@ import { getSpot, selectSpot } from "../../store/spot";
  * "Post Your Review" button shows between the rating/reviews heading
  * and the list of reviews.
  */
-const UserHasNotReviewedYet = () => {
-  return <button>Post Your Review</button>;
+const UserHasNotReviewedYet = ({ spotId, ownerId }) => {
+  const sessionUser = useSelector((state) => state.session.user);
+  if (!sessionUser) {
+    return <></>;
+  }
+  const reviews = useSelector(selectSpotReviewsNewestOldest(spotId));
+  const userReviews = reviews.filter(
+    (review) => review.userId === sessionUser.id,
+  );
+  if (userReviews.length === 0)
+    return (
+      <button className={style.postYourReview}>
+        Post Your Review
+      </button>
+    );
+  return <></>;
 };
 
 /**
@@ -27,8 +41,9 @@ const UserHasNotReviewedYet = () => {
  */
 const NoReviewsYet = ({ ownerId }) => {
   const sessionUser = useSelector((state) => state.session.user);
-  if (sessionUser && sessionUser.id !== ownerId)
+  if (sessionUser && sessionUser.id !== ownerId) {
     return <div>Be the first to post a review!</div>;
+  }
   return <></>;
 };
 
@@ -167,7 +182,7 @@ const SpotExists = ({
             numReviews={numReviews}
           />
         </header>
-        <UserHasNotReviewedYet />
+        <UserHasNotReviewedYet spotId={id} ownerId={ownerId} />
         <ReviewList spotId={id} ownerId={ownerId} />
       </section>
     </>
