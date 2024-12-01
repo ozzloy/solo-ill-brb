@@ -7,6 +7,15 @@ import { createSpot } from "../../store/spot";
 const isValidNumberString = (string) =>
   string.trim() !== "" && !isNaN(Number(string));
 
+const isValidUrlString = (string) => {
+  try {
+    new URL(string);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 const SpotNew = () => {
   const dispatch = useDispatch();
   const [lat, setLat] = useState("");
@@ -166,6 +175,18 @@ const SpotNew = () => {
       delete newErrors.price;
     } else {
       newErrors.price = "Price per night must be a positive number";
+    }
+    setErrors(newErrors);
+  };
+
+  const handlePreviewUrlBlur = (e) => {
+    const newPreviewUrl = e.target.value;
+    setPreviewUrl(newPreviewUrl);
+    const newErrors = { ...errors };
+    if (isValidUrlString(newPreviewUrl)) {
+      delete newErrors.previewUrl;
+    } else {
+      newErrors.previewUrl = "Preview image url must be a valid url";
     }
     setErrors(newErrors);
   };
@@ -418,10 +439,14 @@ const SpotNew = () => {
             id="previewUrl"
             value={previewUrl}
             onChange={(e) => setPreviewUrl(e.target.value)}
+            onBlur={handlePreviewUrlBlur}
             className={style.input}
             placeholder="Preview Image URL"
           />
         </div>
+        {errors.previewUrl && (
+          <div className={style.error}>{errors.previewUrl}</div>
+        )}
         <div className={style.row}>
           <label>Image URL</label>
           <input
