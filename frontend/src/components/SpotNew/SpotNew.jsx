@@ -47,6 +47,18 @@ const SpotNew = () => {
     setErrors(newErrors);
   };
 
+  const handleCityBlur = (e) => {
+    const newCity = e.target.value;
+    setCity(newCity);
+    const newErrors = { ...errors };
+    if (newCity.length) {
+      delete newErrors.city;
+    } else {
+      newErrors.city = "City is required";
+    }
+    setErrors(newErrors);
+  };
+
   const latTypingRegex =
     /^-?(?:90(?:\.0*)?|(?:\d|[1-8]\d)(?:\.\d*)?)?$/;
   const latRegex = /^-?(?:90(?:\.0*)?|(?:\d|[1-8]\d)(?:\.\d*)?)$/;
@@ -196,10 +208,14 @@ const SpotNew = () => {
             id="city"
             value={city}
             onChange={(e) => setCity(e.target.value)}
+            onBlur={handleCityBlur}
             className={style.input}
             placeholder="City"
           />
         </div>
+        {errors.city && (
+          <div className={style.error}>{errors.city}</div>
+        )}
         <div className={style.row}>
           <label>State</label>
           <input
