@@ -141,6 +141,16 @@ const SpotNew = () => {
     setErrors(newErrors);
   };
 
+  const handleDescriptionChange = (e) => {
+    const newDescription = e.target.value;
+    setDescription(newDescription);
+    const newErrors = { ...errors };
+    if (newErrors.description && 30 <= newDescription.length) {
+      delete newErrors.description;
+    }
+    setErrors(newErrors);
+  };
+
   const handleDescriptionBlur = (e) => {
     const newDescription = e.target.value;
     setDescription(newDescription);
@@ -401,7 +411,7 @@ const SpotNew = () => {
         name="description"
         id="description"
         value={description}
-        onChange={(e) => setDescription(e.target.value)}
+        onChange={handleDescriptionChange}
         onBlur={handleDescriptionBlur}
         className={style.description}
         placeholder="Please write at least 30 characters"
