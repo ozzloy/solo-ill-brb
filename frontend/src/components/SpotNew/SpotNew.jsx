@@ -21,49 +21,65 @@ const SpotNew = () => {
   const [image2, setImage2] = useState("");
   const [image3, setImage3] = useState("");
   const [image4, setImage4] = useState("");
+  const [errors, setErrors] = useState({});
 
   const latTypingRegex =
     /^-?(?:90(?:\.0*)?|(?:\d|[1-8]\d)(?:\.\d*)?)?$/;
+  const latRegex = /^-?(?:90(?:\.0*)?|(?:\d|[1-8]\d)(?:\.\d*)?)$/;
+  const latError =
+    "Latitude must be a number from the range -90 to 90";
+  const handleLatChange = (e) => {
+    const newLat = e.target.value;
+    setLat(newLat);
+    const newErrors = { ...errors };
+    if (latTypingRegex.test(newLat)) {
+      delete newErrors.lat;
+    } else {
+      newErrors.lat = latError;
+    }
+    setErrors(newErrors);
+  };
+
+  const handleLatBlur = (e) => {
+    const newLat = e.target.value;
+    setLat(newLat);
+    const newErrors = { ...errors };
+    if (latRegex.test(newLat)) {
+      delete newErrors.lat;
+    } else {
+      newErrors.lat = latError;
+    }
+    setErrors(newErrors);
+  };
+
   const lngTypingRegex =
     /^-?(?:180(?:\.0*)?|(?:\d|[1-9]\d|1[0-7]\d)(?:\.\d*)?)?$/;
-
-  const latRegex = /^-?(?:90(?:\.0*)?|(?:\d|[1-8]\d)(?:\.\d*)?)$/;
   const lngRegex =
     /^-?(?:180(?:\.0*)?|(?:\d|[1-9]\d|1[0-7]\d)(?:\.\d*)?)$/;
-
-  const isDisabled =
-    country.length === 0 ||
-    address.length === 0 ||
-    city.length === 0 ||
-    state.length === 0 ||
-    description.length < 30 ||
-    name.length === 0 ||
-    !isInteger(price) ||
-    price <= 0 ||
-    previewUrl.length === 0 ||
-    !latRegex.test(lat) ||
-    !lngRegex.test(lng);
-
-  const handleLatChange = (e) => {
-    const maybeLat = e.target.value;
-    if (!latTypingRegex.test(maybeLat)) setLat("");
-    setLat(maybeLat);
-  };
-
-  const handleLatBlur = () => {
-    if (latRegex.test(lat)) return;
-    setLat("");
-  };
-
+  const lngError =
+    "Longitude must be a number from the range -180 to 180";
   const handleLngChange = (e) => {
-    const maybeLng = e.target.value;
-    if (!lngTypingRegex.test(maybeLng)) setLng("");
-    setLng(maybeLng);
+    const newLng = e.target.value;
+    setLng(newLng);
+    const newErrors = { ...errors };
+    if (lngTypingRegex.test(newLng)) {
+      delete newErrors.lng;
+    } else {
+      newErrors.lng = lngError;
+    }
+    setErrors(newErrors);
   };
 
-  const handleLngBlur = () => {
-    if (lngRegex.test(lng)) return;
-    setLng("");
+  const handleLngBlur = (e) => {
+    const newLng = e.target.value;
+    setLng(newLng);
+    const newErrors = { ...errors };
+    if (lngRegex.test(newLng)) {
+      delete newErrors.lng;
+    } else {
+      newErrors.lng = lngError;
+    }
+    setErrors(newErrors);
   };
 
   const handleSubmit = (e) => {
@@ -87,6 +103,20 @@ const SpotNew = () => {
       }),
     );
   };
+
+  const isDisabled =
+    country.length === 0 ||
+    address.length === 0 ||
+    city.length === 0 ||
+    state.length === 0 ||
+    description.length < 30 ||
+    name.length === 0 ||
+    !isInteger(price) ||
+    price <= 0 ||
+    previewUrl.length === 0 ||
+    !latRegex.test(lat) ||
+    !lngRegex.test(lng) ||
+    Object.keys(errors).length !== 0;
 
   return (
     <form className={style.form} onSubmit={handleSubmit}>
@@ -155,12 +185,15 @@ const SpotNew = () => {
             name="lat"
             id="lat"
             value={lat}
-            onBlur={handleLatBlur}
             onChange={handleLatChange}
+            onBlur={handleLatBlur}
             className={style.input}
             placeholder="Latitude"
           />
         </div>
+        {errors.lat && (
+          <div className={style.error}>{errors.lat}</div>
+        )}
         <div className={style.row}>
           <label>Longitude</label>
           <input
@@ -173,6 +206,9 @@ const SpotNew = () => {
             placeholder="Longitude"
           />
         </div>
+        {errors.lng && (
+          <div className={style.error}>{errors.lng}</div>
+        )}
       </div>
 
       {/**
