@@ -32,10 +32,6 @@
     width: 150px;
 }
 
-.row.future {
-    text-decoration: line-through;
-}
-
 .row input {
     padding: 1em;
     border-radius: 10px;

@@ -2,13 +2,22 @@ import { createSelector } from "reselect";
 import { csrfFetch } from "./csrf";
 import merge from "lodash.merge";
 import keyBy from "lodash.keyby";
+import { POST } from "./fetchHelpers";
+import { createSpotImage } from "./spotImage";
 
 /////////////////////////////////////////////////////////////////////
 // actiion types
 
 const LOAD = "spots/LOAD";
+const CREATE = "spots/CREATE";
+const SET_PREVIEW = "spots/SET_PREVIEW";
 
 const load = (spots) => ({ type: LOAD, spots });
+const create = (data) => ({ type: CREATE, data });
+const setPreview = (previewImageData) => ({
+  type: SET_PREVIEW,
+  previewImageData,
+});
 
 /////////////////////////////////////////////////////////////////////
 // thunk action creators
@@ -31,6 +40,59 @@ export const getSpot = (spotId) => async (dispatch) => {
   dispatch(load(spots));
 };
 
+export const createSpot =
+  ({
+    address,
+    city,
+    state,
+    lat,
+    lng,
+    country,
+    name,
+    description,
+    price,
+    previewUrl,
+    imageUrls,
+  }) =>
+  async (dispatch) => {
+    const spotData = {
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+    };
+    const response = await csrfFetch("/api/spots", {
+      ...POST,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(spotData),
+    });
+    const json = await response.json();
+    if (!response.ok) throw json;
+    const spot = json;
+    dispatch(create(spot));
+    const previewData = {
+      spotId: spot.id,
+      url: previewUrl,
+      preview: true,
+    };
+    const previewImage = await dispatch(createSpotImage(previewData));
+    const previewImageData = {
+      spotId: previewImage.spotId,
+      previewImage: previewImage.id,
+    };
+    dispatch(setPreview(previewImageData));
+    imageUrls.forEach((url) => {
+      dispatch(
+        createSpotImage({ spotId: spot.id, url, preview: false }),
+      );
+    });
+  };
+
 /////////////////////////////////////////////////////////////////////
 // selectors
 export const selectSpots = (state) => {
@@ -49,6 +111,16 @@ const initialSlice = { spots: {}, page: null, size: null };
 
 const handlers = {
   [LOAD]: (slice, { spots }) => merge(spots, slice),
+  [CREATE]: (slice, { data }) =>
+    merge({ ...slice }, { spots: { [data.id]: data } }),
+  [SET_PREVIEW]: (
+    slice,
+    { previewImageData: { spotId, previewImage } },
+  ) => {
+    const newSlice = { ...slice };
+    newSlice.spots[spotId].previewImage = previewImage;
+    return newSlice;
+  },
 };
 
 const spotReducer = (slice = initialSlice, action) => {

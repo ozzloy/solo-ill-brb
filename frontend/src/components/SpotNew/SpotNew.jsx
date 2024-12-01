@@ -2,37 +2,89 @@ import { useState } from "react";
 import isInteger from "is-integer";
 
 import style from "./SpotNew.module.css";
+import { useDispatch } from "react-redux";
+import { createSpot } from "../../store/spot";
 
 const SpotNew = () => {
+  const dispatch = useDispatch();
+  const [lat, setLat] = useState("");
+  const [lng, setLng] = useState("");
   const [country, setCountry] = useState("");
-  const [street, setStreet] = useState("");
+  const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
-  const [preview, setPreview] = useState("");
+  const [price, setPrice] = useState(1);
+  const [previewUrl, setPreviewUrl] = useState("");
   const [image1, setImage1] = useState("");
   const [image2, setImage2] = useState("");
   const [image3, setImage3] = useState("");
   const [image4, setImage4] = useState("");
 
+  const latTypingRegex =
+    /^-?(?:90(?:\.0*)?|(?:\d|[1-8]\d)(?:\.\d*)?)?$/;
+  const lngTypingRegex =
+    /^-?(?:180(?:\.0*)?|(?:\d|[1-9]\d|1[0-7]\d)(?:\.\d*)?)?$/;
+
+  const latRegex = /^-?(?:90(?:\.0*)?|(?:\d|[1-8]\d)(?:\.\d*)?)$/;
+  const lngRegex =
+    /^-?(?:180(?:\.0*)?|(?:\d|[1-9]\d|1[0-7]\d)(?:\.\d*)?)$/;
+
   const isDisabled =
     country.length === 0 ||
-    street.length === 0 ||
+    address.length === 0 ||
     city.length === 0 ||
     state.length === 0 ||
     description.length < 30 ||
     name.length === 0 ||
     !isInteger(price) ||
     price <= 0 ||
-    preview.length === 0;
+    previewUrl.length === 0 ||
+    !latRegex.test(lat) ||
+    !lngRegex.test(lng);
+
+  const handleLatChange = (e) => {
+    const maybeLat = e.target.value;
+    if (!latTypingRegex.test(maybeLat)) setLat("");
+    setLat(maybeLat);
+  };
+
+  const handleLatBlur = () => {
+    if (latRegex.test(lat)) return;
+    setLat("");
+  };
+
+  const handleLngChange = (e) => {
+    const maybeLng = e.target.value;
+    if (!lngTypingRegex.test(maybeLng)) setLng("");
+    setLng(maybeLng);
+  };
+
+  const handleLngBlur = () => {
+    if (lngRegex.test(lng)) return;
+    setLng("");
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(
-      "components/SpotNew.jsx:SpotNew():handleSubmit(e):country",
-      country,
+    const imageUrls = [image1, image2, image3, image4].filter(
+      (i) => i,
+    );
+    return dispatch(
+      createSpot({
+        address,
+        city,
+        state,
+        lat: Number(lat),
+        lng: Number(lng),
+        country,
+        name,
+        description,
+        price,
+        previewUrl,
+        imageUrls,
+      }),
     );
   };
 
@@ -47,7 +99,7 @@ const SpotNew = () => {
        * "City", and "State" ("Latitude" and "Longitude" inputs are
        * optional for MVP)
        */}
-      <h3 className={style.h3}>Where's your place located?</h3>
+      <h3 className={style.h3}>Where&apos;s your place located?</h3>
       <p>
         Guests will only get your exact address once they booked a
         reservation.
@@ -67,11 +119,11 @@ const SpotNew = () => {
         <div className={style.row}>
           <label>Street Address</label>
           <input
-            name="street"
-            id="street"
-            value={street}
+            name="address"
+            id="address"
+            value={address}
             className={style.input}
-            onChange={(e) => setStreet(e.target.value)}
+            onChange={(e) => setAddress(e.target.value)}
             placeholder="Street Address"
           />
         </div>
@@ -97,20 +149,28 @@ const SpotNew = () => {
             placeholder="State"
           />
         </div>
-        <div className={style.row + " " + style.future}>
+        <div className={style.row}>
           <label>Latitude</label>
           <input
+            name="lat"
+            id="lat"
+            value={lat}
+            onBlur={handleLatBlur}
+            onChange={handleLatChange}
             className={style.input}
-            placeholder="future feature Latitude"
-            disabled={true}
+            placeholder="Latitude"
           />
         </div>
-        <div className={style.row + " " + style.future}>
+        <div className={style.row}>
           <label>Longitude</label>
           <input
+            name="lng"
+            id="lng"
+            value={lng}
+            onChange={handleLngChange}
+            onBlur={handleLngBlur}
             className={style.input}
-            placeholder="future feature Longitude"
-            disabled={true}
+            placeholder="Longitude"
           />
         </div>
       </div>
@@ -145,8 +205,8 @@ const SpotNew = () => {
        */}
       <h3 className={style.h3}>Create a title for your spot</h3>
       <p>
-        Catch guests' attention with a spot title that highlights what
-        makes your place special.
+        Catch guests&apos; attention with a spot title that highlights
+        what makes your place special.
       </p>
       <div className={style.inputs}>
         <div className={style.row}>
@@ -202,10 +262,10 @@ const SpotNew = () => {
         <div className={style.row}>
           <label>Preview Image URL</label>
           <input
-            name="preview"
-            id="preview"
-            value={preview}
-            onChange={(e) => setPreview(e.target.value)}
+            name="previewUrl"
+            id="previewUrl"
+            value={previewUrl}
+            onChange={(e) => setPreviewUrl(e.target.value)}
             className={style.input}
             placeholder="Preview Image URL"
           />
