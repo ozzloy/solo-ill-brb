@@ -11,6 +11,16 @@ import {
 import { getSpot, selectSpot } from "../../store/spot";
 
 /**
+ * If the current user is logged-in and they are viewing a spot's
+ * detail page for a spot that they HAVE NOT posted a review yet, a
+ * "Post Your Review" button shows between the rating/reviews heading
+ * and the list of reviews.
+ */
+const UserHasNotReviewedYet = () => {
+  return <button>Post Your Review</button>;
+};
+
+/**
  * If no reviews have been posted yet and the current user is
  * logged-in and is NOT the owner of the spot, replace the reviews
  * list with the text "Be the first to post a review!"
@@ -157,6 +167,7 @@ const SpotExists = ({
             numReviews={numReviews}
           />
         </header>
+        <UserHasNotReviewedYet />
         <ReviewList spotId={id} ownerId={ownerId} />
       </section>
     </>
