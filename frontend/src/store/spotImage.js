@@ -1,5 +1,5 @@
 import { csrfFetch } from "./csrf";
-import { POST } from "./fetchHelpers";
+import { body, headers, POST } from "./fetchHelpers";
 
 /////////////////////////////////////////////////////////////////////
 // action types
@@ -15,24 +15,25 @@ export const getSpotImage = (id) => async (dispatch) => {
   const response = await csrfFetch("/api/spot-images/" + id);
   const json = await response.json();
   if (!response.ok) throw json;
-  dispatch(add(json.image));
+  await dispatch(add(json.image));
 };
 
 export const createSpotImage =
   ({ spotId, url, preview }) =>
   async (dispatch) => {
+    const options = {
+      ...POST,
+      ...headers,
+      ...body({ url, preview }),
+    };
     const response = await csrfFetch(
       "/api/spots/" + spotId + "/images",
-      {
-        ...POST,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url, preview }),
-      },
+      options,
     );
     const json = await response.json();
     if (!response.ok) throw json;
     const spotImage = { ...json, spotId };
-    dispatch(add(spotImage));
+    await dispatch(add(spotImage));
     return spotImage;
   };
 

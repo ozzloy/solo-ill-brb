@@ -550,18 +550,6 @@ router.put(
     const { spotId } = req.params;
     const spotIdNumber = parseInt(spotId);
 
-    const {
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
-    } = req.body;
-
     const userId = req.user.id;
 
     const spot = await Spot.findByPk(spotIdNumber);
@@ -576,17 +564,7 @@ router.put(
       return res.status(403).json({ message: "Forbidden" });
     }
 
-    await spot.update({
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
-    });
+    await spot.update(req.body);
 
     return res.status(200).json(spot);
   },
