@@ -91,6 +91,7 @@ export const createSpot =
         createSpotImage({ spotId: spot.id, url, preview: false }),
       );
     });
+    return spot.id;
   };
 
 /////////////////////////////////////////////////////////////////////

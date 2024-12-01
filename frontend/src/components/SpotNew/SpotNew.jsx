@@ -3,6 +3,7 @@ import { useState } from "react";
 import style from "./SpotNew.module.css";
 import { useDispatch } from "react-redux";
 import { createSpot } from "../../store/spot";
+import { useNavigate } from "react-router-dom";
 
 const isValidNumberString = (string) =>
   string.trim() !== "" && !isNaN(Number(string));
@@ -17,6 +18,7 @@ const isValidUrlString = (string) => {
 };
 
 const SpotNew = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [lat, setLat] = useState("");
   const [lng, setLng] = useState("");
@@ -249,12 +251,12 @@ const SpotNew = () => {
     setErrors(newErrors);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const imageUrls = [image1, image2, image3, image4].filter(
       (i) => i,
     );
-    return dispatch(
+    const spotId = await dispatch(
       createSpot({
         address,
         city,
@@ -269,6 +271,7 @@ const SpotNew = () => {
         imageUrls,
       }),
     );
+    navigate("/spots/" + spotId);
   };
 
   const isDisabled =
