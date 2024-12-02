@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import style from "./SpotNew.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createSpot } from "../../store/spot";
 import { useNavigate } from "react-router-dom";
 
@@ -17,7 +17,7 @@ const isValidUrlString = (string) => {
   }
 };
 
-const SpotNew = () => {
+const SpotNewUserExists = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [lat, setLat] = useState("");
@@ -576,5 +576,17 @@ const SpotNew = () => {
       </button>
     </form>
   );
+};
+const SpotNew = () => {
+  const user = useSelector((state) => state.session.user);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) navigate("/");
+  }, [user, navigate]);
+
+  if (!user) return <h2>going home</h2>;
+
+  return <SpotNewUserExists />;
 };
 export default SpotNew;
