@@ -13,7 +13,7 @@ function ReviewFormModal() {
    */
   const [review, setReview] = useState("");
   const [errors, setErrors] = useState({});
-  const [rating, setRating] = useState(3);
+  const [rating, setRating] = useState(0);
 
   const handleReviewChange = (e) => {
     const newReview = e.target.value;
@@ -41,7 +41,7 @@ function ReviewFormModal() {
     console.log("handling star change. rating:", rating);
     setRating(rating);
   };
-  const isDisabled = review.length < 10;
+  const isDisabled = review.length < 10 || rating === 0;
 
   return (
     <form className={style.form}>
