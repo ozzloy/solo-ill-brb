@@ -10,30 +10,15 @@ import {
   selectSpotReviewRatings,
 } from "../../store/review";
 import { useNavigate } from "react-router-dom";
+import { useModal } from "../../context/Modal";
+import DeleteSpotModal from "../DeleteSpotModal";
 
 /**
  * Each spot tile in the tile list should have a thumbnail image, the
  * city, and the state of the spot.
  */
 const SpotTileManage = ({ spot }) => {
-  /**
-   * {
-   *   "lat": 34.745636,
-   *   "lng": -222.478433,
-   *   "price": -222.478433,
-   *   "ownerId": 2,
-   *   "address": "156 invented road",
-   *   "city": "San Pancho",
-   *   "state": "Arizona",
-   *   "country": "United States of America",
-   *   "name": "Spot 2",
-   *   "description": "Place where web developers are exploded",
-   *   "previewImage": 2,
-   *   "createdAt": "2024-11-08T00:50:00.942Z",
-   *   "updatedAt": "2024-11-08T00:50:00.942Z",
-   *   "avgRating": "1"
-   * }
-   */
+  const { setModalContent } = useModal();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { name, city, state, previewImage, id, price } = spot;
@@ -76,7 +61,7 @@ const SpotTileManage = ({ spot }) => {
   const handleDeleteClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("handling delete click");
+    setModalContent(<DeleteSpotModal spot={spot} />);
   };
 
   return (
