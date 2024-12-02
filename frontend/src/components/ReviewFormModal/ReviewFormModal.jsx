@@ -55,7 +55,9 @@ function ReviewFormModal({ spot }) {
     <form onSubmit={handleSubmit} className={style.form}>
       <h1 className={style.h1}>How was your stay?</h1>
       {Object.keys(errors).map((error) => (
-        <p className={style.error}>{errors[error]}</p>
+        <p key={error} className={style.error}>
+          {errors[error]}
+        </p>
       ))}
       <textarea
         className={style.textarea}
