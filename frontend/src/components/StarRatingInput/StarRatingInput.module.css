@@ -1,0 +1,10 @@
+.ratingInput {
+    margin: 0.5em;
+}
+.filled {
+    color: yellow;
+}
+
+.empty {
+    color:gray;
+}

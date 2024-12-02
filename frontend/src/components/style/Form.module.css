@@ -28,6 +28,7 @@
     border-radius: 10px;
     background-color: #111;
     color: #eee;
+    display:block;
 }
 
 .button {

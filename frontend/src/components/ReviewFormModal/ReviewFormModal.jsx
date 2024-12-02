@@ -13,6 +13,7 @@ function ReviewFormModal() {
    */
   const [review, setReview] = useState("");
   const [errors, setErrors] = useState({});
+  const [rating, setRating] = useState(3);
 
   const handleReviewChange = (e) => {
     const newReview = e.target.value;
@@ -36,12 +37,15 @@ function ReviewFormModal() {
     setErrors(newErrors);
   };
 
+  const handleStarChange = (rating) => {
+    console.log("handling star change. rating:", rating);
+    setRating(rating);
+  };
   const isDisabled = review.length < 10;
 
   return (
     <form className={style.form}>
       <h1 className={style.h1}>How was your stay?</h1>
-
       <textarea
         className={style.textarea}
         placeholder="Leave your review here..."
@@ -52,9 +56,12 @@ function ReviewFormModal() {
         value={review}
         required
       />
-
-      <StarRatingInput />
-
+      <StarRatingInput
+        disabled={false}
+        onChange={handleStarChange}
+        rating={rating}
+      />
+      Stars
       <button disabled={isDisabled} className={style.button}>
         Submit Your Review
       </button>
