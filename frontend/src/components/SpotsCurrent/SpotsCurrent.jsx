@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 import style from "./SpotsCurrent.module.css";
 import { getSpotsByUser, selectSpotsByUser } from "../../store/spot";
-import SpotTile from "../SpotTile";
+import SpotTileManage from "../SpotTileManage";
 
 const UserExists = () => {
   const dispatch = useDispatch();
@@ -21,7 +21,9 @@ const UserExists = () => {
         <h2>Manage Spots</h2>
       </header>
       {spots.length ? (
-        spots.map((spot) => <SpotTile key={spot.id} spot={spot} />)
+        spots.map((spot) => (
+          <SpotTileManage key={spot.id} spot={spot} />
+        ))
       ) : (
         <Link className={style.link} to="/spots/new">
           Create a New Spot

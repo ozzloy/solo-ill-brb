@@ -1,0 +1,85 @@
+.spot {
+    width: 45%;
+    max-width: 600px;
+    background-color: #123456;
+    padding: 1em;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.content {
+    display: flex;
+    gap: 1.5rem;
+    margin-top:1rem;
+}
+
+.imageContainer {
+    margin: 0;
+    flex-shrink: 0;
+    width: 200px;
+    height: 200px;
+}
+
+.imageContainer img,
+.imageContainer .placeholder {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.placeholder svg {
+    width: 50px;
+    height: 50px;
+}
+
+.rating {
+    margin: 0.5em;
+}
+
+.rating span {
+    margin: 0.5em;
+}
+
+.details {
+    flex-grow: 1;
+    position: relative;
+    width: 100%;
+}
+
+.details dl {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1em;
+}
+
+.details dt {
+    width: 120px;
+    font-weight: bold;
+}
+
+.details dd {
+    width: calc(100% - 120px);
+    margin: 0;
+    padding: 0 0.5em;
+}
+
+.button {
+    margin: 0.5em;
+    display: inline-block;
+    width: fit-content;
+    padding: 1em;
+    background-color: #794bc4;
+    border-radius: 10px;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
