@@ -82,8 +82,9 @@ const initialSlice = { reviews: {} };
 const handlers = {
   [LOAD]: (slice, { reviews }) => merge({}, slice, reviews),
   [REMOVE]: (slice, { id }) => {
-    const { [id]: removed, ...rest } = { ...slice.reviews };
-    return { ...slice, reviews: { ...rest } };
+    const reviews = { ...slice.reviews };
+    delete reviews[id];
+    return { ...slice, reviews: { ...reviews } };
   },
 };
 

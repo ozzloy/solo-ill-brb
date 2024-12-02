@@ -292,7 +292,7 @@ const SpotUpdateUserExists = () => {
     const imageUrls = [image1, image2, image3, image4].filter(
       (i) => i,
     );
-    const spotId = await dispatch(
+    await dispatch(
       updateSpot({
         id: spot.id,
         address,

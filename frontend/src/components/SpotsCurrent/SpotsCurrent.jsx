@@ -13,7 +13,7 @@ const UserExists = () => {
 
   useEffect(() => {
     dispatch(getSpotsByUser(user));
-  }, [dispatch]);
+  }, [dispatch, user]);
 
   return (
     <section className={style.spots}>
