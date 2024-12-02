@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import style from "./SpotUpdate.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { createSpot, getSpot, selectSpot } from "../../store/spot";
+import { updateSpot, getSpot, selectSpot } from "../../store/spot";
 import { useNavigate, useParams } from "react-router-dom";
 
 const isValidNumberString = (string) =>
@@ -293,7 +293,8 @@ const SpotUpdateUserExists = () => {
       (i) => i,
     );
     const spotId = await dispatch(
-      createSpot({
+      updateSpot({
+        id: spot.id,
         address,
         city,
         state,
@@ -307,7 +308,7 @@ const SpotUpdateUserExists = () => {
         imageUrls,
       }),
     );
-    navigate("/spots/" + spotId);
+    navigate("/spots/" + spot.id);
   };
 
   const isDisabled =
@@ -326,7 +327,7 @@ const SpotUpdateUserExists = () => {
 
   return (
     <form className={style.form} onSubmit={handleSubmit}>
-      <h2 className={style.h2}>Create a New Spot</h2>
+      <h2 className={style.h2}>Update {spot.name}</h2>
       {/**
        * The first section should include: a heading of "Where's your
        * place located?", a caption of "Guests will only get your exact
@@ -606,9 +607,8 @@ const SpotUpdateUserExists = () => {
         )}
       </div>
 
-      {/** The submit button should have the text of "Create Spot". */}
       <button disabled={isDisabled} className={style.button}>
-        Create Spot
+        Update Spot
       </button>
     </form>
   );
