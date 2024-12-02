@@ -41,7 +41,6 @@ function ReviewFormModal({ spot }) {
   };
 
   const handleStarChange = (stars) => {
-    console.log("handling star change. stars:", stars);
     setStars(stars);
   };
   const isDisabled = review.length < 10 || stars === 0;
