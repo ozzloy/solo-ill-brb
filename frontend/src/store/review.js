@@ -36,8 +36,8 @@ export const createReview = (reviewInput) => async (dispatch) => {
   const response = await csrfFetch(path, options);
   const json = await response.json();
   if (!response.ok) throw json;
-  const review = json;
-  await dispatch(load({ reviews: { [review.id]: review } }));
+  // HACK to get the latest reviews with nested data
+  await dispatch(getSpotReviews(spotId));
 };
 
 /////////////////////////////////////////////////////////////////////
