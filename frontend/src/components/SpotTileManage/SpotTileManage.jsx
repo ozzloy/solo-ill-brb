@@ -62,16 +62,22 @@ const SpotTileManage = ({ spot }) => {
     </span>
   );
 
-  const handleClick = (e) => {
+  const handleTileClick = (e) => {
     e.preventDefault();
     navigate("/spots/" + id);
+  };
+
+  const handleUpdateClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate("/spots/" + id + "/update");
   };
 
   return (
     <section
       className={style.spot}
       title={name}
-      onClick={handleClick}
+      onClick={handleTileClick}
     >
       <header>
         <h2>{name}</h2>
@@ -98,7 +104,12 @@ const SpotTileManage = ({ spot }) => {
             <dt>price</dt>
             <dd>{price} per night</dd>
           </dl>
-          <button className={style.button}>Update</button>
+          <button
+            onClick={handleUpdateClick}
+            className={style.button}
+          >
+            Update
+          </button>
           <button className={style.button}>Delete</button>
         </div>
       </div>
