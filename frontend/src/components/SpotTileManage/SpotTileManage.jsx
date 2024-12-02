@@ -73,6 +73,12 @@ const SpotTileManage = ({ spot }) => {
     navigate("/spots/" + id + "/update");
   };
 
+  const handleDeleteClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("handling delete click");
+  };
+
   return (
     <section
       className={style.spot}
@@ -110,7 +116,12 @@ const SpotTileManage = ({ spot }) => {
           >
             Update
           </button>
-          <button className={style.button}>Delete</button>
+          <button
+            onClick={handleDeleteClick}
+            className={style.button}
+          >
+            Delete
+          </button>
         </div>
       </div>
     </section>
