@@ -55,14 +55,15 @@ export const getSpotReviews = (spotId) => async (dispatch) => {
   dispatch(load({ reviews }));
 };
 
-export const createReview = (review) => async (dispatch) => {
-  const { spotId, ...reviewData } = review;
+export const createReview = (reviewInput) => async (dispatch) => {
+  const { spotId, ...reviewData } = reviewInput;
   const path = "/api/spots/" + spotId + "/reviews";
   const options = { ...POST, ...headers, ...body(reviewData) };
   const response = await csrfFetch(path, options);
   const json = await response.json();
   if (!response.ok) throw json;
-  console.log("store/review.js:createSpotReview():json", json);
+  const review = json;
+  await dispatch(load({ reviews: { [review.id]: review } }));
 };
 
 /////////////////////////////////////////////////////////////////////
