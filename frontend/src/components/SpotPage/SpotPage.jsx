@@ -29,7 +29,7 @@ const UserHasNotReviewedYet = ({ spot }) => {
     (review) => review.userId === sessionUser.id,
   );
   const onClick = () => {
-    setModalContent(<ReviewFormModal />);
+    setModalContent(<ReviewFormModal spot={spot} />);
   };
   if (userReviews.length === 0 && sessionUser.id !== spot.ownerId)
     return (

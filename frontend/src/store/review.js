@@ -1,8 +1,10 @@
 import keyBy from "lodash.keyby";
 import merge from "lodash.merge";
-import { csrfFetch } from "./csrf";
 import { createSelector } from "reselect";
 import isInteger from "is-integer";
+
+import { csrfFetch } from "./csrf";
+import { body, headers, POST } from "./fetchHelpers";
 
 /////////////////////////////////////////////////////////////////////
 // actiion types
@@ -51,6 +53,16 @@ export const getSpotReviews = (spotId) => async (dispatch) => {
     */
   const reviews = keyBy(json.Reviews, "id");
   dispatch(load({ reviews }));
+};
+
+export const createReview = (review) => async (dispatch) => {
+  const { spotId, ...reviewData } = review;
+  const path = "/api/spots/" + spotId + "/reviews";
+  const options = { ...POST, ...headers, ...body(reviewData) };
+  const response = await csrfFetch(path, options);
+  const json = await response.json();
+  if (!response.ok) throw json;
+  console.log("store/review.js:createSpotReview():json", json);
 };
 
 /////////////////////////////////////////////////////////////////////
