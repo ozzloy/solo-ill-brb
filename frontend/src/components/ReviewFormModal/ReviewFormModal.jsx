@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import style from "../style/Form.module.css";
 import StarRatingInput from "../StarRatingInput";
 import { createReview } from "../../store/review";
+import { useModal } from "../../context/Modal";
 
 function ReviewFormModal({ spot }) {
   /**
@@ -14,6 +15,7 @@ function ReviewFormModal({ spot }) {
    * your review here...".
    */
   const dispatch = useDispatch();
+  const { closeModal } = useModal();
   const [review, setReview] = useState("");
   const [errors, setErrors] = useState({});
   const [stars, setStars] = useState(0);
@@ -45,9 +47,10 @@ function ReviewFormModal({ spot }) {
   };
   const isDisabled = review.length < 10 || stars === 0;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(createReview({ spotId: spot.id, review, stars }));
+    await dispatch(createReview({ spotId: spot.id, review, stars }));
+    closeModal();
   };
 
   return (
