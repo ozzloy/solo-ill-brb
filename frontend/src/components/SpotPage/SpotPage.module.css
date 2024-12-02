@@ -93,3 +93,16 @@
     border-radius: 5px;
     border: none;
 }
+
+.button {
+    margin: 0.5em;
+    display: block;
+    width: fit-content;
+    padding: 0.5em;
+    background-color: #794bc4;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}

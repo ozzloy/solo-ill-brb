@@ -60,6 +60,7 @@ const NoReviewsYet = ({ ownerId }) => {
  */
 const ReviewList = ({ spotId, ownerId }) => {
   const dispatch = useDispatch();
+  const sessionUser = useSelector((state) => state.session.user);
   const reviews = useSelector(selectSpotReviewsNewestOldest(spotId));
 
   useEffect(() => {
@@ -84,6 +85,14 @@ const ReviewList = ({ spotId, ownerId }) => {
   if (reviews.length === 0) {
     return <NoReviewsYet ownerId={ownerId} />;
   }
+  const handleReviewDeleteClick = (reviewId) => (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log(
+      "handling review's delete button click reviewId",
+      reviewId,
+    );
+  };
 
   return reviews.map((review) => {
     const { firstName } = review.User;
@@ -97,6 +106,14 @@ const ReviewList = ({ spotId, ownerId }) => {
           in {month} of {year}, {firstName} said:
         </div>
         <div>{review.review} </div>
+        {sessionUser && review.userId === sessionUser.id && (
+          <button
+            className={style.button}
+            onClick={handleReviewDeleteClick(review.id)}
+          >
+            Delete
+          </button>
+        )}
       </div>
     );
   });
