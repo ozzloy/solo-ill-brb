@@ -16,7 +16,10 @@ const validateImageId = [
 
 router.get(
   "/:imageId",
-  [requireAuth, validateImageId],
+  [
+    // requireAuth,
+    validateImageId,
+  ],
   async (req, res) => {
     const { imageId } = req.params;
 

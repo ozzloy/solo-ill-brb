@@ -126,35 +126,38 @@ router.get("/current", requireAuth, async (req, res) => {
 });
 
 // Get all Reviews by a Spot's id
-router.get("/:spotId/reviews", requireAuth, async (req, res) => {
-  const { spotId } = req.params;
-  const spotIdNumber = parseInt(spotId);
+router.get(
+  "/:spotId/reviews",
+  /*requireAuth,*/ async (req, res) => {
+    const { spotId } = req.params;
+    const spotIdNumber = parseInt(spotId);
 
-  const spot = await Spot.findByPk(spotIdNumber);
+    const spot = await Spot.findByPk(spotIdNumber);
 
-  if (!spot) {
-    return res.status(404).json({
-      message: "Spot couldn't be found",
+    if (!spot) {
+      return res.status(404).json({
+        message: "Spot couldn't be found",
+      });
+    }
+
+    const reviews = await Review.findAll({
+      where: {
+        spotId: spotIdNumber,
+      },
+      include: [
+        {
+          model: User,
+          attributes: ["id", "firstName", "lastName"],
+        },
+        {
+          model: ReviewImage,
+          attributes: ["id", "url"],
+        },
+      ],
     });
-  }
-
-  const reviews = await Review.findAll({
-    where: {
-      spotId: spotIdNumber,
-    },
-    include: [
-      {
-        model: User,
-        attributes: ["id", "firstName", "lastName"],
-      },
-      {
-        model: ReviewImage,
-        attributes: ["id", "url"],
-      },
-    ],
-  });
-  return res.status(200).json({ Reviews: reviews });
-});
+    return res.status(200).json({ Reviews: reviews });
+  },
+);
 
 router.get("/:spotId/bookings", async (req, res) => {
   const { spotId } = req.params;

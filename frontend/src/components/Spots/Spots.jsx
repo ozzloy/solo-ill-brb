@@ -14,7 +14,7 @@ const Spots = () => {
 
   useEffect(() => {
     if (!user) navigate("/");
-  }, [user, navigate]);
+  }, [navigate, user]);
 
   useEffect(() => {
     dispatch(getSpots());
