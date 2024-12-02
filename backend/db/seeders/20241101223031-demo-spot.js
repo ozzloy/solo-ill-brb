@@ -83,7 +83,7 @@ module.exports = {
         name: "happiest place on earth",
         description: "we juggle on sundays at the lighthouse",
         price: 420.69,
-        //previewImage: 0,
+        previewImage: 4,
       },
     ]);
   },

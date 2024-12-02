@@ -9,16 +9,44 @@ if (process.env.NODE_ENV === "production") {
 
 const spotImages = [
   {
-    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/14_Strada_Vasile_Conta%2C_Bucharest_%2802%29.jpg/477px-14_Strada_Vasile_Conta%2C_Bucharest_%2802%29.jpg",
+    url: "https://each.do/~ozzloy/solo-ill-brb/14_Strada_Vasile_Conta,_Bucharest_(02).jpg",
     spotId: 1,
   },
   {
-    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Yasaka-dori_early_morning_with_street_lanterns_and_the_Tower_of_Yasaka_%28Hokan-ji_Temple%29%2C_Kyoto%2C_Japan.jpg/640px-Yasaka-dori_early_morning_with_street_lanterns_and_the_Tower_of_Yasaka_%28Hokan-ji_Temple%29%2C_Kyoto%2C_Japan.jpg",
+    url: "https://each.do/~ozzloy/solo-ill-brb/Yasaka-dori_early_morning_with_street_lanterns_and_the_Tower_of_Yasaka_(Hokan-ji_Temple),_Kyoto,_Japan.jpg",
     spotId: 2,
   },
   {
-    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Cam0492_Habitation_de_Pouss.jpg/640px-Cam0492_Habitation_de_Pouss.jpg",
+    url: "https://each.do/~ozzloy/solo-ill-brb/Cam0492_Habitation_de_Pouss.jpg",
     spotId: 3,
+  },
+  {
+    url: "https://each.do/~ozzloy/solo-ill-brb/Deras-TreeHouse.JPG",
+    spotId: 4,
+  },
+  {
+    url: "https://each.do/~ozzloy/solo-ill-brb/248_Ashley_Ave_-_2017.jpg",
+    spotId: 1,
+  },
+  {
+    url: "https://each.do/~ozzloy/solo-ill-brb/255px-103_Hanover.jpg",
+    spotId: 1,
+  },
+  {
+    url: "https://each.do/~ozzloy/solo-ill-brb/261px-9,_Strada_Mitropolit_Nifon,_Bucharest_(Romania).jpg",
+    spotId: 2,
+  },
+  {
+    url: "https://each.do/~ozzloy/solo-ill-brb/320px-Casa_Assan_1.jpg",
+    spotId: 2,
+  },
+  {
+    url: "https://each.do/~ozzloy/solo-ill-brb/640px-Katsura_Imperial_Villa_in_Spring.jpeg",
+    spotId: 3,
+  },
+  {
+    url: "https://each.do/~ozzloy/solo-ill-brb/Bamboo_House_in_Sambava_Madagascar.JPG",
+    spotId: 4,
   },
 ];
 
