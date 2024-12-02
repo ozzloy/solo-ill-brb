@@ -12,6 +12,7 @@ import Navigation from "./components/Navigation";
 import SpotPage from "./components/SpotPage";
 import Spots from "./components/Spots";
 import SpotNew from "./components/SpotNew";
+import SpotsCurrent from "./components/SpotsCurrent";
 
 import { restoreUser } from "./store/session";
 
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "",
         element: <Spots />,
+      },
+      {
+        path: "spots/current",
+        element: <SpotsCurrent />,
       },
       {
         path: "spots/new",
