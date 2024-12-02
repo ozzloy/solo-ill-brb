@@ -70,11 +70,7 @@ export const selectSpotReviewRatings = (spotId) =>
 const initialSlice = { reviews: {} };
 
 const handlers = {
-  [LOAD]: (slice, { reviews }) => {
-    const newSlice = { ...slice };
-    newSlice.reviews = merge(newSlice.reviews, reviews.reviews);
-    return newSlice;
-  },
+  [LOAD]: (slice, { reviews }) => merge({}, slice, reviews),
 };
 
 const reviewReducer = (slice = initialSlice, action) => {
