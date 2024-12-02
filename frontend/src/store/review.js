@@ -4,17 +4,19 @@ import { createSelector } from "reselect";
 import isInteger from "is-integer";
 
 import { csrfFetch } from "./csrf";
-import { body, headers, POST } from "./fetchHelpers";
+import { body, DELETE, headers, POST } from "./fetchHelpers";
 
 /////////////////////////////////////////////////////////////////////
 // actiion types
 
 const LOAD = "reviews/LOAD";
+const REMOVE = "reviews/REMOVE";
 
 const load = (reviews) => ({
   type: LOAD,
   reviews,
 });
+const remove = (id) => ({ type: REMOVE, id });
 
 /////////////////////////////////////////////////////////////////////
 // thunk action creators
@@ -38,6 +40,14 @@ export const createReview = (reviewInput) => async (dispatch) => {
   if (!response.ok) throw json;
   // HACK to get the latest reviews with nested data
   await dispatch(getSpotReviews(spotId));
+};
+
+export const deleteReview = (id) => async (dispatch) => {
+  const path = "/api/reviews/" + id;
+  const response = await csrfFetch(path, { ...DELETE });
+  const json = await response.json();
+  if (!response.ok) throw json;
+  await dispatch(remove(id));
 };
 
 /////////////////////////////////////////////////////////////////////
@@ -71,6 +81,10 @@ const initialSlice = { reviews: {} };
 
 const handlers = {
   [LOAD]: (slice, { reviews }) => merge({}, slice, reviews),
+  [REMOVE]: (slice, { id }) => {
+    const { [id]: removed, ...rest } = { ...slice.reviews };
+    return { ...slice, reviews: { ...rest } };
+  },
 };
 
 const reviewReducer = (slice = initialSlice, action) => {

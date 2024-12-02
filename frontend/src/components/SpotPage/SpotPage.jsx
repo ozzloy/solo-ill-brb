@@ -11,6 +11,7 @@ import {
 import { getSpot, selectSpot } from "../../store/spot";
 import ReviewFormModal from "../ReviewFormModal";
 import { useModal } from "../../context/Modal";
+import DeleteReviewModal from "../DeleteReviewModal";
 
 /**
  * If the current user is logged-in and they are viewing a spot's
@@ -62,6 +63,7 @@ const ReviewList = ({ spotId, ownerId }) => {
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
   const reviews = useSelector(selectSpotReviewsNewestOldest(spotId));
+  const { setModalContent } = useModal();
 
   useEffect(() => {
     dispatch(getSpotReviews(spotId));
@@ -88,10 +90,7 @@ const ReviewList = ({ spotId, ownerId }) => {
   const handleReviewDeleteClick = (reviewId) => (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log(
-      "handling review's delete button click reviewId",
-      reviewId,
-    );
+    setModalContent(<DeleteReviewModal reviewId={reviewId} />);
   };
 
   return reviews.map((review) => {

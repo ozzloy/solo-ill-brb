@@ -128,9 +128,7 @@ const handlers = {
   [CREATE]: (slice, { data }) =>
     merge({}, slice, { spots: { [data.id]: data } }),
   [REMOVE]: (slice, { id }) => {
-    console.log("handlers[REMOVE]:id", id);
     const { [id]: removed, ...newSpots } = { ...slice.spots };
-    console.log("handlers[REMOVE]:removed", removed);
     return { ...slice, spots: { ...newSpots } };
   },
 };
