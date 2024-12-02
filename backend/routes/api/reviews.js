@@ -4,7 +4,6 @@ const { handleValidationErrors } = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
 const {
   Spot,
-  SpotImage,
   User,
   Review,
   ReviewImage,
