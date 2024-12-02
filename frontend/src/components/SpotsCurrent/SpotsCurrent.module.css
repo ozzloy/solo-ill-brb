@@ -1,0 +1,18 @@
+.spots {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+
+.link {
+    width: fit-content;
+    color: #ccc;
+    text-decoration: none;
+    padding: 1em;
+    background-color: #794bc4;
+    border-radius: 10px;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}

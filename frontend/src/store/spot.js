@@ -36,6 +36,16 @@ export const getSpot = (spotId) => async (dispatch) => {
   await dispatch(load(spots));
 };
 
+export const getSpotsByUser = () => async (dispatch) => {
+  const response = await csrfFetch("/api/spots/current");
+  const json = await response.json();
+  if (!response.ok) throw json();
+  console.log("getSpotsByUser():json", json);
+  const spots = keyBy(json.Spots, "id");
+  console.log("getSpotsByUser():spots", spots);
+  dispatch(load({ spots }));
+};
+
 export const updateSpot =
   ({ id, ...spot }) =>
   async (dispatch) => {
@@ -91,6 +101,14 @@ export const selectSpotsArray = createSelector(
   (spots) => (spots ? Object.values(spots) : []),
 );
 export const selectSpot = (id) => (state) => state.spot.spots[id];
+export const selectSpotsByUser = (user) =>
+  createSelector([selectSpots], (spots) =>
+    spots
+      ? Object.values(spots).filter(
+          (spot) => spot.ownerId === user.id,
+        )
+      : [],
+  );
 
 /////////////////////////////////////////////////////////////////////
 // reducers
