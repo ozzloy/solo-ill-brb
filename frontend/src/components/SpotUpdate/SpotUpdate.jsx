@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 
 import style from "./SpotUpdate.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { createSpot } from "../../store/spot";
-import { useNavigate } from "react-router-dom";
+import { createSpot, getSpot, selectSpot } from "../../store/spot";
+import { useNavigate, useParams } from "react-router-dom";
 
 const isValidNumberString = (string) =>
   string.trim() !== "" && !isNaN(Number(string));
@@ -18,6 +18,8 @@ const isValidUrlString = (string) => {
 };
 
 const SpotUpdateUserExists = () => {
+  const user = useSelector((state) => state.session.user);
+  const { spotId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [lat, setLat] = useState("");
@@ -35,6 +37,40 @@ const SpotUpdateUserExists = () => {
   const [image3, setImage3] = useState("");
   const [image4, setImage4] = useState("");
   const [errors, setErrors] = useState({});
+  const spot = useSelector(selectSpot(spotId));
+
+  useEffect(() => {
+    dispatch(getSpot(spotId));
+  }, [dispatch, spotId]);
+
+  useEffect(() => {
+    if (user && spot && spot.ownerId !== user.id) {
+      navigate("/");
+      return;
+    }
+    setLat("loading");
+    setLng("loading");
+    setCountry("loading");
+    setAddress("loading");
+    setCity("loading");
+    setState("loading");
+    setDescription("loading");
+    setName("loading");
+    setPrice("loading");
+    if (user && spot && spot.ownerId === user.id) {
+      setLat(spot.lat.toString() || "failed to load");
+      setLng(spot.lng.toString() || "failed to load");
+      setCountry(spot.country || "failed to load");
+      setAddress(spot.address || "failed to load");
+      setCity(spot.city || "failed to load");
+      setState(spot.state || "failed to load");
+      setDescription(spot.description || "failed to load");
+      setName(spot.name || "failed to load");
+      setPrice(spot.price.toString() || "failed to load");
+    }
+  }, [user, spot, navigate]);
+
+  if (spot === undefined) return <h2>loading...</h2>;
 
   const handleCountryBlur = (e) => {
     const newCountry = e.target.value;
@@ -577,6 +613,7 @@ const SpotUpdateUserExists = () => {
     </form>
   );
 };
+
 const SpotUpdate = () => {
   const user = useSelector((state) => state.session.user);
   const navigate = useNavigate();
