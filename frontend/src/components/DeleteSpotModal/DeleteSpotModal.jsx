@@ -1,7 +1,7 @@
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import style from "../style/Form.module.css";
-// import { deleteReview } from "../../store/review";
+import { deleteSpot } from "../../store/spot";
 import { useModal } from "../../context/Modal";
 
 /**
@@ -12,22 +12,20 @@ import { useModal } from "../../context/Modal";
  * "No (Keep Spot)".
  */
 function DeleteSpotModal({ spot }) {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const { closeModal } = useModal();
 
   const handleDelete = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    // await dispatch(deleteReview(spot.id));
     console.log("deleting spot " + spot.id);
+    await dispatch(deleteSpot(spot.id));
     closeModal();
   };
 
   const handleKeep = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    // await dispatch(deleteReview(spot.id));
-    console.log("keeping spot " + spot.id);
     closeModal();
   };
 

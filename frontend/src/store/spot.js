@@ -3,7 +3,7 @@ import { csrfFetch } from "./csrf";
 import merge from "lodash.merge";
 import keyBy from "lodash.keyby";
 
-import { body, headers, POST, PUT } from "./fetchHelpers";
+import { body, headers, POST, PUT, DELETE } from "./fetchHelpers";
 import { createSpotImage } from "./spotImage";
 
 /////////////////////////////////////////////////////////////////////
@@ -11,9 +11,11 @@ import { createSpotImage } from "./spotImage";
 
 const LOAD = "spots/LOAD";
 const CREATE = "spots/CREATE";
+const REMOVE = "spots/REMOVE";
 
 const load = (spots) => ({ type: LOAD, spots });
 const create = (data) => ({ type: CREATE, data });
+const remove = (id) => ({ type: REMOVE, id });
 
 /////////////////////////////////////////////////////////////////////
 // thunk action creators
@@ -40,9 +42,7 @@ export const getSpotsByUser = () => async (dispatch) => {
   const response = await csrfFetch("/api/spots/current");
   const json = await response.json();
   if (!response.ok) throw json();
-  console.log("getSpotsByUser():json", json);
   const spots = keyBy(json.Spots, "id");
-  console.log("getSpotsByUser():spots", spots);
   dispatch(load({ spots }));
 };
 
@@ -90,6 +90,14 @@ export const createSpot =
     return spot.id;
   };
 
+export const deleteSpot = (id) => async (dispatch) => {
+  const path = "/api/spots/" + id;
+  const response = await csrfFetch(path, { ...DELETE });
+  const json = await response.json();
+  if (!response.ok) throw json;
+  await dispatch(remove(id));
+};
+
 /////////////////////////////////////////////////////////////////////
 // selectors
 
@@ -119,6 +127,12 @@ const handlers = {
   [LOAD]: (slice, { spots }) => merge({}, slice, spots),
   [CREATE]: (slice, { data }) =>
     merge({}, slice, { spots: { [data.id]: data } }),
+  [REMOVE]: (slice, { id }) => {
+    console.log("handlers[REMOVE]:id", id);
+    const { [id]: removed, ...newSpots } = { ...slice.spots };
+    console.log("handlers[REMOVE]:removed", removed);
+    return { ...slice, spots: { ...newSpots } };
+  },
 };
 
 const spotReducer = (slice = initialSlice, action) => {
