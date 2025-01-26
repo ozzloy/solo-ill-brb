@@ -1,7 +1,11 @@
 #! /usr/bin/env bash
 
-cd /var/www/ill-brb.example.com
+# to be run by deploy user from root of project
+
 git pull
-cd frontend
+cd backend
+npm install
+cd ../frontend
+npm install
 npm run build
 sudo systemctl restart ill-brb-back ill-brb-front
