@@ -72,7 +72,9 @@ app.use("/api/spot-images", spotImageRoutes);
 app.use((_req, _res, next) => {
   const err = new Error("The requested resources couldn't be found.");
   err.title = "Resource Not Found";
-  err.errors = { message: "The requested resource couldn't be found." };
+  err.errors = {
+    message: "The requested resource couldn't be found.",
+  };
   err.status = 404;
   next(err);
 });

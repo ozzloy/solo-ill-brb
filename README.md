@@ -1364,7 +1364,7 @@ Delete an existing booking.
 
 Get an existing image for a Spot.
 
-* Require Authentication: true
+* Require Authentication: false
 * Request
   * Method: GET
   * Route path: /spot-images/:spotImageId
