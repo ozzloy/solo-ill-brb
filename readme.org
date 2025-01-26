@@ -1,0 +1,26 @@
+#+begin_src bash
+  # Create system user
+  sudo useradd -r -s /bin/bash -d /var/www/ill-brb.example.com ill-brb
+  sudo chown -R ill-brb:ill-brb /var/www/ill-brb.example.com
+
+  # Update service files to use ill-brb user
+  sudo sed -i 's/User=www-data/User=ill-brb/' /etc/systemd/system/ill-brb-frontend.service
+  sudo sed -i 's/User=www-data/User=ill-brb/' /etc/systemd/system/ill-brb-backend.service
+  sudo systemctl daemon-reload
+
+  # Allow ill-brb to restart services
+  sudo tee /etc/sudoers.d/ill-brb <<'EOF'
+  ill-brb ALL=NOPASSWD: /bin/systemctl restart ill-brb-frontend
+  ill-brb ALL=NOPASSWD: /bin/systemctl restart ill-brb-backend
+  EOF
+#+end_src
+
+deploy.sh:
+#+begin_src bash
+  #!/bin/bash
+  cd /var/www/ill-brb.example.com
+  git pull
+  cd front
+  npm run build
+  sudo systemctl restart ill-brb-frontend ill-brb-backend
+#+end_src

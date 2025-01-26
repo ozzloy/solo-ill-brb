@@ -1,0 +1,26 @@
+* deployment
+  + clone
+  + set up .env
+  + set up psql
+    + create db, user, schema
+
+#+begin_src bash
+  npx dotenv -- sequelize db:migrate
+  npx dotenv -- sequelize db:seed:all
+  npm start
+#+end_src
+
+** apache
+
+copy =../conf/etc/apache2/sites-available/ill-brb.example.com.conf=
+
+to =/etc/apache2/sites-available/ill-brb.example.com.conf=
+
+this location is changeable.
+
+#+begin_src bash
+  sudo a2ensite ill-brb.example.com
+  sudo systemctl reload apache2
+#+end_src
+
+make sure /api traffic goes to 5001 and all other goes to 3001

@@ -1,0 +1,14 @@
+[Unit]
+Description=ill-brb back
+After=network.target
+
+[Service]
+Type=simple
+User=ill-brb
+WorkingDirectory=/var/www/ill-brb.example.com/back
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/npm run start:production
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
