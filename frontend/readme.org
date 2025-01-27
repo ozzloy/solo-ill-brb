@@ -2,3 +2,6 @@
 
   + clone
   + set up backend, including apache frontend configuration
+
+* development
+** TODO document how to start in development mode

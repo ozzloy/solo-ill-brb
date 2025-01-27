@@ -24,3 +24,6 @@ this location is changeable.
 #+end_src
 
 make sure /api traffic goes to 5001 and all other goes to 3001
+
+* development
+** TODO document how to start in dev mode
