@@ -54,6 +54,12 @@ bash
        /var/www/ill-brb.example.com/backend/.env
   # edit /var/www/ill-brb.example.com/backend/.env
 
+  ##########################################################
+  # set up future deployment script
+  sudo cp /var/www/ill-brb.example.com/example.deploy.sh \
+       /var/www/ill-brb.example.com/deploy.sh
+  # edit /var/www/ill-brb.example.com/deploy.sh
+
   sudo chown -R ill-brb:ill-brb /var/www/ill-brb.example.com
 
   ##########################################################
@@ -71,18 +77,12 @@ bash
        /etc/systemd/system/ill-brb-back.service
   # edit /etc/systemd/system/ill-brb-back.service
 
-  sudo cp conf/etc/systemd/system/ill-brb-front.service \
-       /etc/systemd/system/ill-brb-front.service
-  # edit /etc/systemd/system/ill-brb-front.service
-
   # load the new services into systemd
   sudo systemctl daemon-reload
-  # make sure back and front start on boot
+  # make sure back start on boot
   sudo systemctl enable ill-brb-back.service
-  sudo systemctl enable ill-brb-front.service
-  # turn on the backend and frontend right now
+  # turn on the backend right now
   sudo systemctl start ill-brb-back.service
-  sudo systemctl start ill-brb-front.service
 
   ##########################################################
   # configure apache
