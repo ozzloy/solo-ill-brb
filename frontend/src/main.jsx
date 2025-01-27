@@ -10,12 +10,13 @@ import { Modal, ModalProvider } from "./context/Modal";
 
 const store = configureStore();
 
-if (import.meta.env.MODE !== "production") {
-  restoreCSRF();
-  window.csrfFetch = csrfFetch;
-  window.store = store;
-  window.sessionActions = sessionActions;
-}
+// TODO use csrf in back instead of csurf
+// if (import.meta.env.MODE !== "production") {
+restoreCSRF();
+window.csrfFetch = csrfFetch;
+window.store = store;
+window.sessionActions = sessionActions;
+// }
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
