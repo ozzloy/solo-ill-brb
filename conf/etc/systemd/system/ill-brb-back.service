@@ -5,9 +5,9 @@ After=network.target
 [Service]
 Type=simple
 User=ill-brb
-WorkingDirectory=/var/www/ill-brb.example.com/backend
+WorkingDirectory=/var/www/ill-brb.example.com/backend/
 Environment=NODE_ENV=production
-ExecStart=/usr/bin/npm run start:production
+ExecStart=/usr/bin/npm run start
 Restart=always
 
 [Install]

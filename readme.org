@@ -1,26 +1,125 @@
+* system setup
+
+** db
+
+bash
+
 #+begin_src bash
-  # Create system user
-  sudo useradd -r -s /bin/bash -d /var/www/ill-brb.example.com ill-brb
+  sudo -u postgres psql
+#+end_src
+
+postgres
+
+#+begin_src sql
+  CREATE USER ill_brb_user WITH PASSWORD 'ill brb user password';
+  -- CREATE ROLE
+
+  CREATE DATABASE ill_brb_db OWNER ill_brb_user;
+  -- CREATE DATABASE
+
+  \c ill_brb_db
+  -- You are now connected to database "ill_brb_db" as user "postgres".
+
+  CREATE SCHEMA ill_brb_schema AUTHORIZATION ill_brb_user;
+  -- CREATE SCHEMA
+
+  GRANT ALL ON SCHEMA ill_brb_schema TO ill_brb_user;
+  -- GRANT
+
+  \q
+  -- back to bash
+#+end_src
+
+bash
+
+#+begin_src bash
+  ##########################################################
+  # create system user
+  sudo useradd \
+       --system \
+       --shell /bin/bash \
+       --home-dir /var/www/ill-brb.example.com \
+       ill-brb
+
+  ##########################################################
+  # get the code
+  sudo git clone \
+       --branch deploy \
+       <the project> \
+       /var/lib/ill-brb.example.com
+
+  ##########################################################
+  # environment
+  sudo cp /var/www/ill-brb.example.com/backend/.env.example \
+       /var/www/ill-brb.example.com/backend/.env
+  # edit /var/www/ill-brb.example.com/backend/.env
+
   sudo chown -R ill-brb:ill-brb /var/www/ill-brb.example.com
 
-  # Update service files to use ill-brb user
-  sudo sed -i 's/User=www-data/User=ill-brb/' /etc/systemd/system/ill-brb-frontend.service
-  sudo sed -i 's/User=www-data/User=ill-brb/' /etc/systemd/system/ill-brb-backend.service
+  ##########################################################
+  # allow ill-brb user to restart service
+  sudo cp \
+       /var/www/ill-brb.example.com/conf/etc/sudoers.d/ill-brb \
+       /etc/sudoers.d/ill-brb
+  sudo chmod 440 /etc/sudoers.d/ill-brb
+  visudo -c -f /etc/sudoers.d/ill-brb
+  # /etc/sudoers.d/ill-brb: parsed OK
+
+  ##########################################################
+  # systemd services
+  sudo cp conf/etc/systemd/system/ill-brb-back.service \
+       /etc/systemd/system/ill-brb-back.service
+  # edit /etc/systemd/system/ill-brb-back.service
+
+  sudo cp conf/etc/systemd/system/ill-brb-front.service \
+       /etc/systemd/system/ill-brb-front.service
+  # edit /etc/systemd/system/ill-brb-front.service
+
+  # load the new services into systemd
   sudo systemctl daemon-reload
+  # make sure back and front start on boot
+  sudo systemctl enable ill-brb-back.service
+  sudo systemctl enable ill-brb-front.service
+  # turn on the backend and frontend right now
+  sudo systemctl start ill-brb-back.service
+  sudo systemctl start ill-brb-front.service
 
-  # Allow ill-brb to restart services
-  sudo tee /etc/sudoers.d/ill-brb <<'EOF'
-  ill-brb ALL=NOPASSWD: /bin/systemctl restart ill-brb-frontend
-  ill-brb ALL=NOPASSWD: /bin/systemctl restart ill-brb-backend
-  EOF
+  ##########################################################
+  # configure apache
+  sudo cp conf/etc/apache2/sites-available/ill-brb.example.com.conf \
+       /etc/apache2/sites-available/ill-brb.example.com.conf
+  # edit /etc/apache2/sites-available/ill-brb.example.com.conf
+
+  sudo a2ensite ill-brb.example.com
+  sudo systemctl reload apache2
+
 #+end_src
 
-deploy.sh:
+* deploy
+
 #+begin_src bash
-  #!/bin/bash
-  cd /var/www/ill-brb.example.com
-  git pull
-  cd front
-  npm run build
-  sudo systemctl restart ill-brb-frontend ill-brb-backend
+  sudo -iu ill-brb
+  cd /var/www/ill-brb.example.com/backend/
+  npm install
+
+  npx dotenv -- sequelize db:migrate
+  npx dotenv -- sequelize db:seed:all
+
+  cd /var/www/ill-brb.example.com/frontend
+  npm install
+  sudo systemctl restart ill-brb-back
+  sudo systemctl restart ill-brb-front
 #+end_src
+
+* useful systemd commands
+#+begin_src bash
+  sudo systemctl status something.service
+  journalctl -u something.service -f
+#+end_src
+common flags for journalctl:
+#+begin_quote
+-f: Follow new log entries
+-n N: Show last N entries
+--since "1 hour ago": Show recent logs
+-o json: Output in JSON format
+#+end_quote
