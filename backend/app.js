@@ -2,7 +2,10 @@ const express = require("express");
 require("express-async-errors");
 const morgan = require("morgan");
 const cors = require("cors");
+
+// TODO use csrf instead of csurf
 const csurf = require("csurf");
+
 const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
 
@@ -36,6 +39,8 @@ app.use(
       secure: isProduction,
       sameSite: isProduction && "Lax",
       httpOnly: true,
+      path: "/",
+      maxAge: 24 * 60 * 60 * 1000,
     },
   }),
 );
