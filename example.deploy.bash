@@ -9,4 +9,3 @@ cd ../frontend
 npm install
 npm run build
 sudo systemctl restart ill-brb-back
-sudo systemctl restart ill-brb-front

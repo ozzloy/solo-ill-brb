@@ -1,2 +1,5 @@
 * TODO use csrf instead of csurf
 [2025-01-26 Sun 20:42 -0800]
+* DONE try letting backend serve everything on deployment
+CLOSED: [2025-01-27 Mon]
+index.js process.env.node_env === "production"
